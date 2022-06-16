@@ -1,0 +1,28 @@
+.App {
+  width: 100%;
+  .main-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      list-style-type: none;
+      border-bottom: 2px solid #ec5990;
+      margin: 0;
+      padding: 15px 0;
+      li{
+        .header-link{
+          text-decoration: none;
+        margin: 0 15px;
+       
+        }
+        .active{
+          color: #ec5990;
+        }
+      }
+  }
+
+}
+
+
+
+
+
