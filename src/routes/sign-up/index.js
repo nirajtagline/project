@@ -91,7 +91,7 @@ const SignUp = () => {
         <input className="submit-form" type="submit" />
       </form>
       <div>
-        <Link className="auth-link" to="/login">
+        <Link className="auth-link" to="/">
           Login
         </Link>
       </div>

@@ -7,6 +7,8 @@ const NavBar = () => {
   const navigate = useNavigate();
   const { isUserLogged } = useSelector(({ userAuth }) => userAuth);
   const isLogged = localStorage.getItem("user-token");
+  const userRole = localStorage.getItem("user-role");
+
   useEffect(() => {}, [isLogged, isUserLogged]);
   const handleUserLogout = () => {
     localStorage.clear();
@@ -18,6 +20,13 @@ const NavBar = () => {
     <header>
       <ul className="main-header">
         <li>
+          {userRole === "teacher" ? (
+            <h3>{userRole.toLocaleUpperCase()}</h3>
+          ) : (
+            "User role"
+          )}
+        </li>
+        <li>
           <NavLink className="header-link" to="/">
             Home
           </NavLink>
@@ -25,7 +34,7 @@ const NavBar = () => {
         {!isLogged || !isUserLogged ? (
           <>
             <li>
-              <NavLink className="header-link" to="/login">
+              <NavLink className="header-link" to="/">
                 Login
               </NavLink>
             </li>
@@ -37,7 +46,7 @@ const NavBar = () => {
           </>
         ) : (
           <li onClick={handleUserLogout}>
-            <NavLink to="/login" className="header-link">
+            <NavLink to="/" className="header-link">
               Logout
             </NavLink>
           </li>

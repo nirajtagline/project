@@ -34,15 +34,12 @@ export const fetchUserLoginDetailsFailure = (payload) => {
 
 export const getUserLoginDetails = (body) => async (dispatch) => {
   dispatch(fetchUserLoginDetails());
-
   axios
     .post("/users/Login", body)
     .then((res) => {
       dispatch(fetchUserLoginDetailsSuccess(res.data));
       localStorage.setItem("user-token", res.data.data.token);
-      if (res.data.statusCode === 200) {
-        window.location.href = "/";
-      }
+      localStorage.setItem("user-role", res.data.data.role);
     })
     .catch((error) => {
       dispatch(fetchUserLoginDetailsFailure(error.data.message));
