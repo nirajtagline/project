@@ -24,7 +24,7 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     dispatch(getUserSignUpDetails(data)).then(() => {
-      navigate("/login");
+      navigate("/");
     });
   };
 
@@ -77,16 +77,34 @@ const SignUp = () => {
         {errors.password && errors.email.password === "pattern" && (
           <span>Password length min 8 character and max 16 character.</span>
         )}
-        <input
-          type="text"
-          placeholder="Role"
-          {...register("role", {
-            required: true,
-          })}
-        />
-        {errors.password && errors.password.type === "required" && (
-          <span>Please enter your role.</span>
-        )}
+
+        <div className="form-radio-button">
+          <label>Teacher</label>
+          <input
+            type="radio"
+            name="user_role"
+            value="teacher"
+            placeholder="Role"
+            {...register("role", {
+              required: true,
+            })}
+          />
+          <label>Student</label>
+
+          <input
+            type="radio"
+            name="user_role"
+            placeholder="Role"
+            value="student"
+            {...register("role", {
+              required: true,
+            })}
+            checked={true}
+          />
+          {errors.Role && errors.Role.type === "required" && (
+            <span>Please select your role.</span>
+          )}
+        </div>
 
         <input className="submit-form" type="submit" />
       </form>

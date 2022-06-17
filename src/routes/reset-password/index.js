@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useSearchParams } from "react-router-dom";
-import { forgotUserPassword } from "../../redux/actions/userAuth";
-import "./new-password.scss";
+import { getUserPasswordReset } from "../../redux/actions/userAuth";
+import "./reset-password.scss";
 
-const NewPassword = () => {
+const ResetPassword = () => {
   const { handleSubmit } = useForm({});
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams()[0];
-  const { forgotPassword } = useSelector(({ userAuth }) => userAuth);
+  const { userPasswordReset } = useSelector(({ userAuth }) => userAuth);
+  console.log("userPasswordReset", userPasswordReset);
 
   let err = "";
 
   const [password, setPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const handelOldPassword = (e) => {
+    setOldPassword(e.target.value);
+  };
   const handelPassword = (e) => {
     setPassword(e.target.value);
   };
@@ -26,22 +29,30 @@ const NewPassword = () => {
   };
 
   const onSubmit = async () => {
-    console.log("call");
     if (password !== confirmPassword) {
       err = "Password dones not match";
       return;
     }
     const body = {
+      oldPassword,
       Password: password,
       ConfirmPassword: confirmPassword,
     };
-    dispatch(forgotUserPassword(body, searchParams[1]));
+    dispatch(getUserPasswordReset(body));
   };
 
   return (
     <div className="login-page-wrapper">
       <h2 className="form-heading">New password</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          name="password_old"
+          type="password"
+          placeholder="Old password"
+          onChange={handelOldPassword}
+          maxLength={16}
+          minLength={8}
+        />
         <input
           name="password"
           type="password"
@@ -62,14 +73,10 @@ const NewPassword = () => {
         {<p>{err ? err : ""}</p>}
         <input className="submit-form" type="submit" />
       </form>
-      <div>
-        <Link className="auth-link" to="/forgot-password">
-          Forgot Password
-        </Link>
-      </div>
-      <span>{forgotPassword?.message}</span>
+
+      <span>{userPasswordReset?.message}</span>
     </div>
   );
 };
 
-export default NewPassword;
+export default ResetPassword;

@@ -20,17 +20,17 @@ const NavBar = () => {
     <header>
       <ul className="main-header">
         <li>
-          {userRole === "teacher" ? (
-            <h3>{userRole.toLocaleUpperCase()}</h3>
+          {userRole ? (
+            <h2>
+              <NavLink to={`${userRole}-dashboard`}>
+                {userRole.toLocaleUpperCase()}{" "}
+              </NavLink>
+            </h2>
           ) : (
             "User role"
           )}
         </li>
-        <li>
-          <NavLink className="header-link" to="/">
-            Home
-          </NavLink>
-        </li>
+
         {!isLogged || !isUserLogged ? (
           <>
             <li>
@@ -45,11 +45,18 @@ const NavBar = () => {
             </li>
           </>
         ) : (
-          <li onClick={handleUserLogout}>
-            <NavLink to="/" className="header-link">
-              Logout
-            </NavLink>
-          </li>
+          <>
+            <li onClick={handleUserLogout}>
+              <NavLink to="/" className="header-link">
+                Logout
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/reset-password" className="header-link">
+                Reset Password
+              </NavLink>
+            </li>
+          </>
         )}
       </ul>
     </header>

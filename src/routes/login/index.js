@@ -22,7 +22,7 @@ const Login = () => {
         navigate("/student-dashboard");
       }
     }
-  }, [isLogged, userRole, navigate]);
+  }, [isLogged, userRole]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     register,

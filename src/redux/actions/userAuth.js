@@ -8,6 +8,9 @@ import {
   USER_SIGN_UP,
   USER_SIGN_UP_SUCCESS,
   USER_SIGN_UP_FAILURE,
+  USER_RESET_PASSWORD,
+  USER_RESET_PASSWORD_SUCCESS,
+  USER_RESET_PASSWORD_FAILURE,
 } from "../constants/actionTypes";
 
 import axios from "../../config/axios";
@@ -66,18 +69,25 @@ export const userForgotPasswordFailure = (payload) => {
   };
 };
 
-export const forgotUserPassword = (body) => async (dispatch) => {
-  dispatch(userForgotPassword());
+export const forgotUserPassword =
+  (body, searchParams = "") =>
+  async (dispatch) => {
+    dispatch(userForgotPassword());
 
-  axios
-    .post("/users/ForgotPassword", body)
-    .then((res) => {
-      dispatch(userForgotPasswordSuccess(res.data));
-    })
-    .catch((error) => {
-      dispatch(userForgotPasswordFailure({ error: error.data.message }));
-    });
-};
+    axios
+      .post(
+        `/users/ForgotPassword${
+          searchParams ? `/Verify?token=${searchParams}` : ""
+        }`,
+        body
+      )
+      .then((res) => {
+        dispatch(userForgotPasswordSuccess(res));
+      })
+      .catch((error) => {
+        dispatch(userForgotPasswordFailure({ error: error.data.message }));
+      });
+  };
 
 // Signup
 export const userSignUp = (payload) => {
@@ -110,5 +120,40 @@ export const getUserSignUpDetails = (body) => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(userSignUpFailure({ error: error.data.message }));
+    });
+};
+
+// Reset password
+export const userPasswordReset = (payload) => {
+  return {
+    type: USER_RESET_PASSWORD,
+    payload: payload,
+  };
+};
+export const userPasswordResetSuccess = (payload) => {
+  return {
+    type: USER_RESET_PASSWORD_SUCCESS,
+    payload: payload,
+  };
+};
+export const userPasswordResetFailure = (payload) => {
+  return {
+    type: USER_RESET_PASSWORD_FAILURE,
+    payload: payload,
+  };
+};
+
+export const getUserPasswordReset = (body) => async (dispatch) => {
+  dispatch(userPasswordReset());
+
+  axios
+    .post("/users/ResetPassword", body, {
+      headers: { "access-token": `${localStorage.getItem("user-token")}` },
+    })
+    .then((res) => {
+      dispatch(userPasswordResetSuccess(res.data));
+    })
+    .catch((error) => {
+      dispatch(userPasswordResetFailure({ error: error.data.message }));
     });
 };

@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import "./App.scss";
+import Sidebar from "./routes/sidebar";
 
 const App = () => {
   const isLogged = localStorage.getItem("user-token");
@@ -16,7 +17,13 @@ const App = () => {
       <Layout>
         <NavBar />
         <div className="main-section">
-          {isLogged ? <div className="sidebar-section">Sidebar</div> : ""}
+          {isLogged ? (
+            <div className="sidebar-section">
+              <Sidebar />
+            </div>
+          ) : (
+            ""
+          )}
 
           <Routes />
         </div>

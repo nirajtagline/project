@@ -1,23 +1,46 @@
 import React from "react";
 import { Routes as Router, Route } from "react-router-dom";
-import Login from "./login";
-import SignUp from "./sign-up";
-import ForgotPassword from "./forgot-password";
-import TeacherDashboard from "./teacher-dashborad";
-import StudentDashboard from "./student-dashborad";
-import NewPassword from "./new-password";
+import PrivateRoutes from "../components/PrivateRoutes";
+import RoleWiseRoutes from "./RoleWise";
+import RouteList from "./routeList";
 
 const Routes = () => {
+  const userRole = localStorage.getItem("user-role");
+
+  const filteredRoute = RouteList.filter((data) => data?.isRole === userRole);
+  const commonRoute = RouteList.filter((data) => data?.isRole === "general");
+  const commonAuthRoute = RouteList.filter(
+    (data) => data?.isRole === "generalAuth"
+  );
+
   return (
     <>
       <Router>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/newPassword" element={<NewPassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-        <Route path="/student-dashboard" element={<StudentDashboard />} />
+        {commonRoute?.map((route, i) => {
+          return <Route path={route.path} element={route.element} key={i} />;
+        })}
       </Router>
+
+      <PrivateRoutes>
+        <Router>
+          {commonAuthRoute?.map((route, i) => {
+            return <Route path={route.path} element={route.element} key={i} />;
+          })}
+        </Router>
+        <RoleWiseRoutes>
+          <Router>
+            {filteredRoute?.map((roleWiseRoute, i) => {
+              return (
+                <Route
+                  path={roleWiseRoute.path}
+                  element={roleWiseRoute.element}
+                  key={i}
+                />
+              );
+            })}
+          </Router>
+        </RoleWiseRoutes>
+      </PrivateRoutes>
     </>
   );
 };

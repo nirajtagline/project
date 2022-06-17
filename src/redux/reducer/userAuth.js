@@ -8,6 +8,9 @@ import {
   USER_SIGN_UP,
   USER_SIGN_UP_SUCCESS,
   USER_SIGN_UP_FAILURE,
+  USER_RESET_PASSWORD,
+  USER_RESET_PASSWORD_SUCCESS,
+  USER_RESET_PASSWORD_FAILURE,
 } from "../constants/actionTypes";
 
 let initialState = {
@@ -21,6 +24,9 @@ let initialState = {
   userSignUpDetails: {},
   userSignUpDetailsLoading: false,
   userSignUpDetailsError: "",
+  userPasswordReset: {},
+  userPasswordResetLoading: false,
+  userPasswordResetError: "",
 };
 
 const authReducer = (state = initialState, action) => {
@@ -76,7 +82,24 @@ const authReducer = (state = initialState, action) => {
     case USER_SIGN_UP_FAILURE:
       return {
         ...state,
-        fuserSignUpDetailsError: action.payload.error,
+        userSignUpDetailsError: action.payload.error,
+      };
+    // User password reset
+    case USER_RESET_PASSWORD:
+      return {
+        ...state,
+        userPasswordResetLoading: true,
+      };
+    case USER_RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        userPasswordResetLoading: false,
+        userPasswordReset: action.payload,
+      };
+    case USER_RESET_PASSWORD_FAILURE:
+      return {
+        ...state,
+        userPasswordResetError: action.payload.error,
       };
 
     default:
