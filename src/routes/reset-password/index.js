@@ -8,7 +8,6 @@ const ResetPassword = () => {
   const { handleSubmit } = useForm({});
   const dispatch = useDispatch();
   const { userPasswordReset } = useSelector(({ userAuth }) => userAuth);
-  console.log("userPasswordReset", userPasswordReset);
 
   let err = "";
 

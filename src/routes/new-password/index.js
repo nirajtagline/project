@@ -26,7 +26,6 @@ const NewPassword = () => {
   };
 
   const onSubmit = async () => {
-    console.log("call");
     if (password !== confirmPassword) {
       err = "Password dones not match";
       return;

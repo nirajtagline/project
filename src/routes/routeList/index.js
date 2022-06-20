@@ -1,26 +1,46 @@
-import AllStudentData from "../teacher-dashborad/all-student-data";
-import VarifiedStudentData from "../teacher-dashborad/varified-student-data";
-import StudentDetails from "../teacher-dashborad/student-details";
-import CreateExam from "../teacher-dashborad/create-exam";
-import ViewExam from "../teacher-dashborad/view-exam";
-import ViewExamDEtails from "../teacher-dashborad/view-exam-details";
-import AllExamStudent from "../student-dashborad/all-exam-student";
-import ExamPaper from "../student-dashborad/exam-paper";
-import GiveExam from "../student-dashborad/give-exam";
-import StudentProfile from "../student-dashborad/get-student-profile";
-import Login from "../login";
-import SignUp from "../sign-up";
-import NewPassword from "../new-password";
-import ForgotPassword from "../forgot-password";
-import ResetPassword from "../reset-password";
-import TeacherDashboard from "../teacher-dashborad";
-import StudentDashboard from "../student-dashborad";
+import React from "react";
+import { lazy } from "react";
+import EditExamDetails from "../teacher-dashborad/edit-exam-details";
+const AllStudentData = lazy(() =>
+  import("../teacher-dashborad/all-student-data")
+);
+const VarifiedStudentData = lazy(() =>
+  import("../teacher-dashborad/varified-student-data")
+);
+const StudentDetails = lazy(() =>
+  import("../teacher-dashborad/student-details")
+);
+const CreateExam = lazy(() => import("../teacher-dashborad/create-exam"));
+const ViewExam = lazy(() => import("../teacher-dashborad/view-exam"));
+const ViewExamDEtails = lazy(() =>
+  import("../teacher-dashborad/view-exam-details")
+);
+const AllExamStudent = lazy(() =>
+  import("../student-dashborad/all-exam-student")
+);
+const ExamPaper = lazy(() => import("../student-dashborad/exam-paper"));
+const GiveExam = lazy(() => import("../student-dashborad/give-exam"));
+const StudentProfile = lazy(() =>
+  import("../student-dashborad/get-student-profile")
+);
+const Login = lazy(() => import("../login"));
+const SignUp = lazy(() => import("../sign-up"));
+const NewPassword = lazy(() => import("../new-password"));
+const ForgotPassword = lazy(() => import("../forgot-password"));
+const ResetPassword = lazy(() => import("../reset-password"));
+const TeacherDashboard = lazy(() => import("../teacher-dashborad"));
+const StudentDashboard = lazy(() => import("../student-dashborad"));
 
 const routeList = [
   // common route
   {
     path: "/",
     element: <Login />,
+    isRole: "general",
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
     isRole: "general",
   },
   {
@@ -31,11 +51,6 @@ const routeList = [
   {
     path: "/newPassword",
     element: <NewPassword />,
-    isRole: "general",
-  },
-  {
-    path: "/forgot-password",
-    element: <ForgotPassword />,
     isRole: "general",
   },
 
@@ -68,15 +83,20 @@ const routeList = [
     isRole: "teacher",
   },
   {
-    path: "/student-details",
+    path: "/varified-student-data/student-details/:id",
     element: <StudentDetails />,
     isRole: "teacher",
   },
   { path: "/create-exam", element: <CreateExam />, isRole: "teacher" },
   { path: "/view-exam", element: <ViewExam />, isRole: "teacher" },
   {
-    path: "/view-exam-details",
+    path: "/view-exam-details/:examid",
     element: <ViewExamDEtails />,
+    isRole: "teacher",
+  },
+  {
+    path: "/edit-exam-details/:examid",
+    element: <EditExamDetails />,
     isRole: "teacher",
   },
 

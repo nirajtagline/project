@@ -12,14 +12,10 @@ const Sidebar = () => {
       title: "Varify students for exam",
       isRole: "teacher",
     },
-    {
-      to: "/student-details",
-      title: "View student details",
-      isRole: "teacher",
-    },
+
     { to: "/create-exam", title: "Create exam", isRole: "teacher" },
     { to: "/view-exam", title: "view exam", isRole: "teacher" },
-    { to: "/view-exam-details", title: "view exam details", isRole: "teacher" },
+    // { to: "/view-exam-details", title: "view exam details", isRole: "teacher" },
 
     // // Student route link
     {

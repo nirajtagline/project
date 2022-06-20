@@ -78,7 +78,6 @@ export const getVarifiedStudentsData = () => async (dispatch) => {
       },
     })
     .then((res) => {
-      console.log("res", res);
       dispatch(fetchVarifiedStudentsDataSuccess(res.data));
     })
     .catch((error) => {
@@ -110,13 +109,12 @@ export const getStudentsDetails = (studentId) => async (dispatch) => {
   dispatch(fetchStudentsDetails());
 
   axios
-    .get(`/Teachers/viewStudentDetail?id=${studentId}`, {
+    .get(`/dashboard/Teachers/viewStudentDetail?id=${studentId}`, {
       headers: {
         "access-token": `${localStorage.getItem("user-token")}`,
       },
     })
     .then((res) => {
-      console.log("res", res);
       dispatch(fetchStudentsDetailsSuccess(res.data));
     })
     .catch((error) => {

@@ -11,7 +11,7 @@ const PrivateRoutes = (props) => {
     if (!isUserLogged || !isLogged) {
       navigate("/");
     }
-  }, [isUserLogged, isLogged, navigate]);
+  }, [isUserLogged, isLogged]); // eslint-disable-line react-hooks/exhaustive-deps
   return props.children;
 };
 

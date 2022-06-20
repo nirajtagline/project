@@ -22,7 +22,7 @@ axios.defaults.baseURL = "https://nodejsexamination.herokuapp.com/";
 //   (response) => {
 //     if (response.data.status === "token_expired") {
 //       localStorage.clear();
-//       window.location.href = "/login";
+//       window.location.href = "/";
 //       return;
 //     }
 //     return response;
@@ -30,7 +30,7 @@ axios.defaults.baseURL = "https://nodejsexamination.herokuapp.com/";
 //   (error) => {
 //     if (error.response.status === 401) {
 //       localStorage.clear();
-//       window.location.href = "/login";
+//       window.location.href = "/";
 //     } else {
 //       return Promise.reject(error);
 //     }

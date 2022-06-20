@@ -44,7 +44,7 @@ const ForgotPassword = () => {
       </form>
       <div>
         <Link className="auth-link" to="/">
-          Login
+          Back to Login
         </Link>
       </div>
 
