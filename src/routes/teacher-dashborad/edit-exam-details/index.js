@@ -11,7 +11,6 @@ import "./edit-exam.scss";
 const EditExamDetails = () => {
   const dispatch = useDispatch();
   const { examid } = useParams();
-
   const {
     viewExamInDetailsData,
     viewExamData,
@@ -21,7 +20,6 @@ const EditExamDetails = () => {
 
   const examSubjectName = viewExamData?.find((exam) => exam._id === examid);
   const { subjectName = "", notes = [] } = examSubjectName || [];
-  const questions = viewExamInDetailsData?.questions;
 
   const [editSubjectName, setEditSubjectName] = useState();
   const [examDuration, setExamDuration] = useState();
@@ -32,9 +30,9 @@ const EditExamDetails = () => {
   const [editExamBody, setEditExamBody] = useState();
 
   console.log("editExamBody", editExamBody);
-  console.log("questions", questions);
 
   useEffect(() => {
+    const { questions } = viewExamInDetailsData;
     setEditSubjectName(subjectName);
     setExamDuration(notes[0]);
     setExamTime(notes[1]);
@@ -60,17 +58,19 @@ const EditExamDetails = () => {
 
   const handleOptionChange = (e) => {
     const { value } = e.target;
+    const { questions } = viewExamInDetailsData;
     setOption(value);
     questions[optionIndex].answer = value;
   };
   const handelAnswer = (e) => {
+    const { questions } = viewExamInDetailsData;
     const { value, id } = e.target;
     console.log(value);
-
     questions[optionIndex].options[id] = value;
   };
 
   const handleUpdateExamDetails = async () => {
+    const { questions } = viewExamInDetailsData;
     setEditExamBody({
       subjectName: editSubjectName,
       questions,
@@ -115,7 +115,7 @@ const EditExamDetails = () => {
       <div>
         <h3>Please select question for edit</h3>
         <select onChange={(e) => handleSelectQuestion(e)}>
-          {questions?.map((que, i) => {
+          {viewExamInDetailsData?.questions?.map((que, i) => {
             const { question } = que;
             return (
               <option value={i} key={i}>
@@ -131,30 +131,32 @@ const EditExamDetails = () => {
             value={option}
             readOnly="true"
           />
-          {questions &&
-            questions[optionIndex]?.options?.map((opt, i) => {
-              return (
-                <>
-                  <input
-                    type="radio"
-                    name="opions"
-                    id={`opions${i}`}
-                    onChange={(e) => handleOptionChange(e)}
-                    value={opt}
-                  />
-                  <label htmlFor={`opions${i}`}>
+          {viewExamInDetailsData?.questions?.length &&
+            viewExamInDetailsData?.questions[optionIndex]?.options?.map(
+              (opt, i) => {
+                return (
+                  <>
                     <input
-                      type="text"
-                      name="option_Answer1"
-                      placeholder="Enter option 1 answer"
+                      type="radio"
+                      name="opions"
+                      id={`opions${i}`}
+                      onChange={(e) => handleOptionChange(e)}
                       value={opt}
-                      id={i + 1}
-                      onChange={handelAnswer}
                     />
-                  </label>
-                </>
-              );
-            })}
+                    <label htmlFor={`opions${i}`}>
+                      <input
+                        type="text"
+                        name="option_Answer1"
+                        placeholder="Enter option 1 answer"
+                        value={opt}
+                        id={i + 1}
+                        onChange={handelAnswer}
+                      />
+                    </label>
+                  </>
+                );
+              }
+            )}
         </div>
       </div>
       <div>
@@ -177,7 +179,7 @@ const EditExamDetails = () => {
             <th>Answer</th>
             <th>Options</th>
           </tr>
-          {questions?.map((que, i) => {
+          {viewExamInDetailsData?.questions?.map((que, i) => {
             const { question, answer, options } = que;
             return (
               <tr key={i}>
