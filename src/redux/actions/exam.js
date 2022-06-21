@@ -12,6 +12,9 @@ import {
   VIEW_EXAM_DETAILS,
   VIEW_EXAM_DETAILS_SUCCESS,
   VIEW_EXAM_DETAILS_FAILURE,
+  EDIT_EXAM_DETAILS,
+  EDIT_EXAM_DETAILS_SUCCESS,
+  EDIT_EXAM_DETAILS_FAILURE,
 } from "../constants/actionTypes";
 
 import axios from "../../config/axios";
@@ -131,7 +134,7 @@ export const getDeleteExamForStudent = (id) => async (dispatch) => {
     });
 };
 
-// View exam detais
+// View exam details
 export const viewExamInDetails = (payload) => {
   return {
     type: VIEW_EXAM_DETAILS,
@@ -161,8 +164,44 @@ export const getViewExamInDetails = (id) => async (dispatch) => {
     })
     .then((res) => {
       dispatch(viewExamInDetailsSuccess(res.data.data));
+      return;
     })
     .catch((error) => {
       dispatch(viewExamInDetailsFailure({ error: error.message }));
+    });
+};
+
+// Edit exam
+export const editExamForStudent = (payload) => {
+  return {
+    type: EDIT_EXAM_DETAILS,
+    payload: payload,
+  };
+};
+
+export const editExamForStudentSuccess = (payload) => {
+  return {
+    type: EDIT_EXAM_DETAILS_SUCCESS,
+    payload: payload,
+  };
+};
+export const editExamForStudentFailure = (payload) => {
+  return {
+    type: EDIT_EXAM_DETAILS_FAILURE,
+    payload: payload,
+  };
+};
+
+export const getEditExamForStudent = (id, body) => async (dispatch) => {
+  dispatch(editExamForStudent());
+  axios
+    .put(`/dashboard/Teachers/editExam?id=${id}`, body, {
+      headers: { "access-token": `${localStorage.getItem("user-token")}` },
+    })
+    .then((res) => {
+      dispatch(editExamForStudentSuccess(res));
+    })
+    .catch((error) => {
+      dispatch(editExamForStudentFailure({ error: error.message }));
     });
 };

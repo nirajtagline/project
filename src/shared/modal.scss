@@ -1,0 +1,16 @@
+.pop-wrapper{
+    position: relative;
+    background-color: white;
+
+
+.pop-wrapper-child{
+    position: absolute;
+    background-color: rgb(235, 195, 18);
+    width: 300px;
+    height: 100px;
+    z-index: 9999;
+    top: -50px;
+    left: 0;
+    padding: 15px;
+}
+}

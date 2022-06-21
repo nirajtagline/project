@@ -12,6 +12,9 @@ import {
   VIEW_EXAM_DETAILS,
   VIEW_EXAM_DETAILS_SUCCESS,
   VIEW_EXAM_DETAILS_FAILURE,
+  EDIT_EXAM_DETAILS,
+  EDIT_EXAM_DETAILS_SUCCESS,
+  EDIT_EXAM_DETAILS_FAILURE,
 } from "../constants/actionTypes";
 
 let initialState = {
@@ -27,8 +30,13 @@ let initialState = {
   deleteExamDataError: "",
   isDeleteExamData: false,
   viewExamInDetailsData: {},
+  isFetchExamInDetailsData: false,
   viewExamInDetailsDataLoading: false,
   viewExamInDetailsDataError: "",
+  editExamData: {},
+  editExamDataLoading: false,
+  editExamDataError: "",
+  isEditExamData: false,
 };
 
 const createExamReducer = (state = initialState, action) => {
@@ -94,6 +102,25 @@ const createExamReducer = (state = initialState, action) => {
         deleteExamDataError: action.payload.error,
       };
 
+    // Edit exam data
+    case EDIT_EXAM_DETAILS:
+      return {
+        ...state,
+        editExamDataLoading: true,
+      };
+    case EDIT_EXAM_DETAILS_SUCCESS:
+      return {
+        ...state,
+        editExamDataLoading: false,
+        editExamData: action.payload,
+        isEditExamData: true,
+      };
+    case EDIT_EXAM_DETAILS_FAILURE:
+      return {
+        ...state,
+        editExamDataError: action.payload.error,
+      };
+
     // View exam in details
     case VIEW_EXAM_DETAILS:
       return {
@@ -105,6 +132,7 @@ const createExamReducer = (state = initialState, action) => {
         ...state,
         viewExamInDetailsDataLoading: false,
         viewExamInDetailsData: action.payload,
+        isFetchExamInDetailsData: true,
       };
     case VIEW_EXAM_DETAILS_FAILURE:
       return {

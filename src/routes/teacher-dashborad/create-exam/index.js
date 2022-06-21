@@ -18,9 +18,7 @@ const CreateExam = () => {
   const [examBody, setExamBody] = useState({});
   const [examDuration, setExamDuration] = useState("");
   const [examTime, setExamTime] = useState("");
-
-  console.log("createExamBody", createExamBody);
-  console.log("paper", paper);
+  const [optionAnswer, setOptionAnswer] = useState({});
 
   const handleSubmit = () => {
     setExamBody({
@@ -42,14 +40,14 @@ const CreateExam = () => {
       {
         question: question,
         answer: option,
-        options: [" ans 1 ", " ans 2 ", " ans 3 ", " ans 4 "],
+        options: Object.values(optionAnswer),
       },
     ];
     setPaper([...paper, ...paperObj]);
     const createdExam = {
       subjectName,
       questions: [...paper, ...paperObj],
-      notes: [`${examDuration} exam`, `start time ${examTime}`],
+      notes: [`${examDuration}`, `${examTime}`],
     };
     dispatch(createdExamBody(createdExam));
     setQuestion("");
@@ -64,6 +62,16 @@ const CreateExam = () => {
     setExamTime("");
   };
 
+  const handelAnswer = (e) => {
+    const { value, id } = e.target;
+
+    const objName = id;
+
+    setOptionAnswer({ ...optionAnswer, ...{ [objName]: value } });
+    console.log("event", e.target.id);
+  };
+
+  console.log("examBody", examBody);
   return (
     <div>
       {paper.length > 13 ? (
@@ -101,51 +109,82 @@ const CreateExam = () => {
             value={question}
             onChange={handleSetQueations}
           />
+
+          <label htmlFor="opions1">
+            <input
+              type="radio"
+              name="opions"
+              id="opions1"
+              onChange={(e) => setOption(e.target.value)}
+              value={optionAnswer["opt-ans-1"]}
+            />
+            <input
+              type="text"
+              name="option_Answer1"
+              placeholder="Enter option 1 answer"
+              value={optionAnswer["opt-ans-1"]}
+              id="opt-ans-1"
+              onChange={handelAnswer}
+            />
+          </label>
+          <label htmlFor="opions2">
+            <input
+              type="radio"
+              name="opions"
+              id="opions2"
+              onChange={(e) => setOption(e.target.value)}
+              value={optionAnswer["opt-ans-2"]}
+            />
+            <input
+              type="text"
+              name="option_Answer2"
+              placeholder="Enter option 2 answer"
+              value={optionAnswer["opt-ans-2"]}
+              id="opt-ans-2"
+              onChange={handelAnswer}
+            />
+          </label>
+          <label htmlFor="opions3">
+            <input
+              type="radio"
+              name="opions"
+              id="opions3"
+              onChange={(e) => setOption(e.target.value)}
+              value={optionAnswer["opt-ans-3"]}
+            />
+            <input
+              type="text"
+              name="option_Answer3"
+              placeholder="Enter option 3 answer"
+              value={optionAnswer["opt-ans-3"]}
+              id="opt-ans-3"
+              onChange={handelAnswer}
+            />
+          </label>
+          <label htmlFor="opions4">
+            <input
+              type="radio"
+              name="opions"
+              id="opions4"
+              onChange={(e) => setOption(e.target.value)}
+              value={optionAnswer["opt-ans-4"]}
+            />
+            <input
+              type="text"
+              name="option_Answer4"
+              placeholder="Enter option 4 answer"
+              value={optionAnswer["opt-ans-4"]}
+              id="opt-ans-4"
+              onChange={handelAnswer}
+            />
+          </label>
           <input
             type="text"
             placeholder="Select answer"
             value={option}
             readOnly="true"
           />
-          <div>
-            <label htmlFor="opions1">opions 1</label>
-            <input
-              type="radio"
-              name="opions"
-              id="opions1"
-              onChange={(e) => setOption(e.target.value)}
-              value="ans 1"
-            />
 
-            <label htmlFor="opions2">opions 2</label>
-            <input
-              type="radio"
-              name="opions"
-              id="opions2"
-              onChange={(e) => setOption(e.target.value)}
-              value="ans 2"
-            />
-
-            <label htmlFor="opions3">opions 3</label>
-
-            <input
-              type="radio"
-              name="opions"
-              id="opions3"
-              onChange={(e) => setOption(e.target.value)}
-              value="ans 3"
-            />
-
-            <label htmlFor="opions4">opions 4</label>
-
-            <input
-              type="radio"
-              name="opions"
-              id="opions4"
-              onChange={(e) => setOption(e.target.value)}
-              value="ans 4"
-            />
-          </div>
           {paper.length > 15 ? (
             ""
           ) : (
@@ -208,7 +247,13 @@ const CreateExam = () => {
                 <tr key={i}>
                   <td>{question} </td>
                   <td>{answer}</td>
-                  <td>{options}</td>
+                  {options.map((opt) => {
+                    return (
+                      <tr>
+                        <td>{opt}</td>
+                      </tr>
+                    );
+                  })}
                 </tr>
               );
             })}

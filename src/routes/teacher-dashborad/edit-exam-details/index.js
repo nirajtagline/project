@@ -1,39 +1,90 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import {
+  getEditExamForStudent,
+  getViewExamForStudent,
+  getViewExamInDetails,
+} from "../../../redux/actions/exam";
+import "./edit-exam.scss";
 
 const EditExamDetails = () => {
-  const { viewExamInDetailsData, viewExamData } = useSelector(
-    ({ exam }) => exam
-  );
-  console.log("viewExamInDetailsData", viewExamInDetailsData);
+  const dispatch = useDispatch();
   const { examid } = useParams();
 
+  const {
+    viewExamInDetailsData,
+    viewExamData,
+    isEditExamData,
+    isFetchExamInDetailsData,
+  } = useSelector(({ exam }) => exam);
+
   const examSubjectName = viewExamData?.find((exam) => exam._id === examid);
+  const { subjectName = "", notes = [] } = examSubjectName || [];
+  const questions = viewExamInDetailsData?.questions;
 
-  console.log("viewExamData", viewExamData);
-
-  const [editSubjectName, setEditSubjectName] = useState(
-    examSubjectName?.subjectName
-  );
-  const [examDuration, setExamDuration] = useState(examSubjectName?.notes[0]);
-  const [examTime, setExamTime] = useState(examSubjectName?.notes[1]);
-  const [question, setQuestion] = useState("");
+  const [editSubjectName, setEditSubjectName] = useState();
+  const [examDuration, setExamDuration] = useState();
+  const [examTime, setExamTime] = useState();
   const [option, setOption] = useState("");
+  const [optionIndex, setOptionIndex] = useState(0);
 
-  const [editExamBody, setEditExamBody] = useState({
-    subjectName: editSubjectName,
-    questions: viewExamInDetailsData?.questions,
-    notes: [`${examDuration} exam`, `start time ${examTime}`],
-  });
-
-  const handleSelectQuestion = (e) => {
-    console.log("option", e.target.value);
-    setEditExamBody({ editExamBody, ...viewExamInDetailsData?.questions });
-  };
-  const handleUpdateExamDetails = () => {};
+  const [editExamBody, setEditExamBody] = useState();
 
   console.log("editExamBody", editExamBody);
+  console.log("questions", questions);
+
+  useEffect(() => {
+    setEditSubjectName(subjectName);
+    setExamDuration(notes[0]);
+    setExamTime(notes[1]);
+    setEditExamBody({
+      subjectName: editSubjectName,
+      questions,
+      notes: [
+        `${examDuration ?? notes[0]} exam`,
+        `start time ${examTime ?? notes[1]}`,
+      ],
+    });
+  }, [subjectName, notes]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    dispatch(getViewExamForStudent());
+    dispatch(getViewExamInDetails(examid));
+  }, [isEditExamData, isFetchExamInDetailsData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleSelectQuestion = (e) => {
+    const { value } = e.target;
+    setOptionIndex(value);
+  };
+
+  const handleOptionChange = (e) => {
+    const { value } = e.target;
+    setOption(value);
+    questions[optionIndex].answer = value;
+  };
+  const handelAnswer = (e) => {
+    const { value, id } = e.target;
+    console.log(value);
+
+    questions[optionIndex].options[id] = value;
+  };
+
+  const handleUpdateExamDetails = async () => {
+    setEditExamBody({
+      subjectName: editSubjectName,
+      questions,
+      notes: [`${examDuration}`, `${examTime}`],
+    });
+
+    const body = {
+      subjectName: editSubjectName,
+      questions,
+      notes: [`${examDuration} exam`, `start time ${examTime}`],
+    };
+
+    dispatch(getEditExamForStudent(examid, body));
+  };
 
   return (
     <div>
@@ -60,30 +111,12 @@ const EditExamDetails = () => {
         value={examTime}
         placeholder="Exam start time ex(10am)"
       />
-      <table>
-        <tbody>
-          <tr>
-            <th>Question</th>
-            <th>Answer</th>
-            <th>Options</th>
-          </tr>
-          {editExamBody?.questions?.map((que, i) => {
-            const { question, answer, options } = que;
-            return (
-              <tr key={i}>
-                <td>{question} </td>
-                <td>{answer}</td>
-                <td>{options}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+
       <div>
-        <h3>Please select option for edit</h3>
+        <h3>Please select question for edit</h3>
         <select onChange={(e) => handleSelectQuestion(e)}>
-          {editExamBody?.questions?.map((que, i) => {
-            const { question, answer, options } = que;
+          {questions?.map((que, i) => {
+            const { question } = que;
             return (
               <option value={i} key={i}>
                 {question}
@@ -98,43 +131,30 @@ const EditExamDetails = () => {
             value={option}
             readOnly="true"
           />
-          <label htmlFor="opions1">opions 1</label>
-          <input
-            type="radio"
-            name="opions"
-            id="opions1"
-            onChange={(e) => setOption(e.target.value)}
-            value="ans 1"
-          />
-
-          <label htmlFor="opions2">opions 2</label>
-          <input
-            type="radio"
-            name="opions"
-            id="opions2"
-            onChange={(e) => setOption(e.target.value)}
-            value="ans 2"
-          />
-
-          <label htmlFor="opions3">opions 3</label>
-
-          <input
-            type="radio"
-            name="opions"
-            id="opions3"
-            onChange={(e) => setOption(e.target.value)}
-            value="ans 3"
-          />
-
-          <label htmlFor="opions4">opions 4</label>
-
-          <input
-            type="radio"
-            name="opions"
-            id="opions4"
-            onChange={(e) => setOption(e.target.value)}
-            value="ans 4"
-          />
+          {questions &&
+            questions[optionIndex]?.options?.map((opt, i) => {
+              return (
+                <>
+                  <input
+                    type="radio"
+                    name="opions"
+                    id={`opions${i}`}
+                    onChange={(e) => handleOptionChange(e)}
+                    value={opt}
+                  />
+                  <label htmlFor={`opions${i}`}>
+                    <input
+                      type="text"
+                      name="option_Answer1"
+                      placeholder="Enter option 1 answer"
+                      value={opt}
+                      id={i + 1}
+                      onChange={handelAnswer}
+                    />
+                  </label>
+                </>
+              );
+            })}
         </div>
       </div>
       <div>
@@ -149,6 +169,32 @@ const EditExamDetails = () => {
       >
         Update changes
       </button>
+
+      <table>
+        <tbody>
+          <tr>
+            <th>Question</th>
+            <th>Answer</th>
+            <th>Options</th>
+          </tr>
+          {questions?.map((que, i) => {
+            const { question, answer, options } = que;
+            return (
+              <tr key={i}>
+                <td>{question} </td>
+                <td>{answer}</td>
+                {options.map((opt) => {
+                  return (
+                    <tr>
+                      <td>{opt}</td>
+                    </tr>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
