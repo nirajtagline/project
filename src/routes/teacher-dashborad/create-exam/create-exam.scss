@@ -22,7 +22,7 @@ input{
         cursor: pointer;
         height: 42px;
         border-radius: 8px;
-        margin: 0 15px;
+        margin: 10px 15px;
         padding: 5px 10px;
     }
     .disable{
@@ -33,4 +33,9 @@ input{
         display: inline-block;
         height: 20px;
         width: 50px;
+    }
+
+    .text-radio{
+        display: flex;
+        align-items: center;
     }

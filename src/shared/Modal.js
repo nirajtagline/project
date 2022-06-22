@@ -1,18 +1,25 @@
 import React from "react";
 import "./modal.scss";
 
-const ConfirmModal = ({ title, message, hide, isShow, callbackFunction }) => {
+const Modal = ({
+  title,
+  message,
+  isShow,
+  handleConfirm,
+  handleCancle,
+  selectedExam,
+}) => {
   return isShow ? (
     <div className="pop-wrapper">
       <div className="pop-wrapper-child">
         <h2>{title}</h2>
         <p>{message}</p>
-        <button onClick={hide}>Cancel</button>
-        <button onClick={callbackFunction}>delete</button>
+        <button onClick={handleCancle}>Cancel</button>
+        <button onClick={() => handleConfirm(selectedExam)}>delete</button>
       </div>
     </div>
   ) : (
     ""
   );
 };
-export default ConfirmModal;
+export default Modal;

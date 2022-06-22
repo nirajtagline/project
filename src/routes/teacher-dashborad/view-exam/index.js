@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import {
@@ -6,16 +6,24 @@ import {
   getDeleteExamForStudent,
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
+import Modal from "../../../shared/Modal";
 
 const ViewExam = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { viewExamData, isDeleteExamData } = useSelector(({ exam }) => exam);
-  console.log("viewExamData", viewExamData);
+
+  const [showPoppup, setShowPoppup] = useState(false);
+  const [selectedExam, setSelectedExam] = useState(null);
+
+  useEffect(() => {
+    dispatch(getViewExamForStudent());
+  }, [isDeleteExamData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteExam = (id) => {
-    dispatch(getDeleteExamForStudent(id));
+    setShowPoppup(true);
+    setSelectedExam(id);
   };
   const handleViewExamInDetails = (id) => {
     dispatch(getViewExamInDetails(id));
@@ -26,9 +34,14 @@ const ViewExam = () => {
     navigate(`/edit-exam-details/${id}`);
   };
 
-  useEffect(() => {
-    dispatch(getViewExamForStudent());
-  }, [isDeleteExamData]); // eslint-disable-line react-hooks/exhaustive-deps
+  const handleCancle = () => {
+    setShowPoppup(false);
+  };
+  const handleConfirm = (id) => {
+    setShowPoppup(false);
+    setSelectedExam(null);
+    dispatch(getDeleteExamForStudent(id));
+  };
 
   return (
     <div>
@@ -79,6 +92,14 @@ const ViewExam = () => {
           })}
         </tbody>
       </table>
+      <Modal
+        title="Delete exam"
+        message="Are you sure want to delete ?"
+        isShow={showPoppup}
+        selectedExam={selectedExam}
+        handleCancle={handleCancle}
+        handleConfirm={(id) => handleConfirm(id)}
+      />
     </div>
   );
 };
