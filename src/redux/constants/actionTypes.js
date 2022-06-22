@@ -1,3 +1,5 @@
+///////////////////////// Teacher action types ////////////////////////
+
 //Login
 export const FETCH_USER_LOGIN_DETAILS = "FETCH_USER_LOGIN_DETAILS";
 export const FETCH_USER_LOGIN_DETAILS_SUCCESS =
@@ -65,3 +67,17 @@ export const VIEW_EXAM_DETAILS_FAILURE = "VIEW_EXAM_DETAILS_FAILURE";
 export const EDIT_EXAM_DETAILS = "EDIT_EXAM_DETAILS";
 export const EDIT_EXAM_DETAILS_SUCCESS = "EDIT_EXAM_DETAILS_SUCCESS";
 export const EDIT_EXAM_DETAILS_FAILURE = "EDIT_EXAM_DETAILS_FAILURE";
+
+///////////////////////// Student action types ////////////////////////
+
+//Fetch exam for student details
+export const FETCH_EXAM_STUDENTS_DETAILS = "FETCH_EXAM_STUDENTS_DETAILS";
+export const FETCH_EXAM_STUDENTS_DETAILS_SUCCESS =
+  "FETCH_EXAM_STUDENTS_DETAILS_SUCCESS";
+export const FETCH_EXAM_STUDENTS_DETAILS_FAILURE =
+  "FETCH_EXAM_STUDENTS_DETAILS_FAILURE";
+
+//Fetch exam paper
+export const FETCH_EXAM_PAPER = "FETCH_EXAM_PAPER";
+export const FETCH_EXAM_PAPER_SUCCESS = "FETCH_EXAM_PAPER_SUCCESS";
+export const FETCH_EXAM_PAPER_FAILURE = "FETCH_EXAM_PAPER_FAILURE";
