@@ -6,7 +6,7 @@ import {
   getDeleteExamForStudent,
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
-import Modal from "../../../shared/Modal";
+import Modal from "../../../shared/modal/Modal";
 
 const ViewExam = () => {
   const dispatch = useDispatch();
