@@ -90,12 +90,12 @@ const routeList = [
   { path: "/create-exam", element: <CreateExam />, isRole: "teacher" },
   { path: "/view-exam", element: <ViewExam />, isRole: "teacher" },
   {
-    path: "/view-exam-details/:examid",
+    path: "/view-exam-details/:examId",
     element: <ViewExamDEtails />,
     isRole: "teacher",
   },
   {
-    path: "/edit-exam-details/:examid",
+    path: "/edit-exam-details/:examId",
     element: <EditExamDetails />,
     isRole: "teacher",
   },

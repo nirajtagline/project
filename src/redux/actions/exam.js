@@ -41,14 +41,11 @@ export const createExamForStudentFailure = (payload) => {
 
 export const getCreateExamForStudent = (body) => async (dispatch) => {
   dispatch(createExamForStudent());
-  console.log("body", body);
-
   axios
     .post("/dashboard/Teachers/Exam", body, {
       headers: { "access-token": `${localStorage.getItem("user-token")}` },
     })
     .then((res) => {
-      console.log("res", res);
       dispatch(createExamForStudentSuccess(res));
     })
     .catch((error) => {
