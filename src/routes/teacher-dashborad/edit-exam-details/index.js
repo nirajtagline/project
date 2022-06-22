@@ -18,37 +18,34 @@ const EditExamDetails = () => {
     isFetchExamInDetailsData,
   } = useSelector(({ exam }) => exam);
 
+  const initialState = { subjectName: "", questions: [], notes: [] };
+
   const selectedExamForEdit =
     viewExamData && viewExamData?.find((exam) => exam._id === examId);
 
-  const { subjectName = "", notes = [] } = selectedExamForEdit || [];
-  const [editSubjectName, setEditSubjectName] = useState();
-  const [examDuration, setExamDuration] = useState();
-  const [examTime, setExamTime] = useState();
+  const [examDuration, setExamDuration] = useState({});
   const [option, setOption] = useState("");
-  const [optionIndex, setOptionIndex] = useState(0);
+  const [optionIndex, setOptionIndex] = useState();
   const [text, setText] = useState({ 1: "", 2: "", 3: "", 4: "" });
-
-  useEffect(() => {
-    // const { questions = [] } = viewExamInDetailsData || {};
-    let ans =
-      viewExamInDetailsData?.questions?.length &&
-      viewExamInDetailsData?.questions[optionIndex]?.options;
-    const { notes = {} } = selectedExamForEdit || {};
-    setEditSubjectName(subjectName);
-    setExamDuration(notes[0]);
-    setExamTime(notes[1]);
-    ans && setText({ 1: ans[0], 2: ans[1], 3: ans[2], 4: ans[3] });
-  }, [subjectName, notes]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [examForm, setExamForm] = useState(initialState);
 
   useEffect(() => {
     dispatch(getViewExamForStudent());
     dispatch(getViewExamInDetails(examId));
   }, [isEditExamData, isFetchExamInDetailsData]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    const { questions } = viewExamInDetailsData || {};
+    const { subjectName = "", notes = [] } = selectedExamForEdit || [];
+    setExamForm({
+      subjectName,
+      questions,
+      notes,
+    });
+  }, [viewExamInDetailsData]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleSelectQuestion = (e) => {
     const { value } = e.target;
-
     setOptionIndex(value);
   };
 
@@ -61,28 +58,35 @@ const EditExamDetails = () => {
   };
 
   const handelAnswer = (e) => {
-    const { questions } = viewExamInDetailsData;
     const { value, id } = e.target;
-
     setText({ ...text, ...{ [id]: value } });
-
-    console.log("value :>> ", value);
-    // console.log("text :>> ", text);
-
+  };
+  const handleUpdateOptions = () => {
+    const { questions } = examForm;
     questions[optionIndex].options = Object.values(text);
+    setExamForm({
+      ...examForm,
+    });
   };
 
-  console.log("text :>> ", text);
-
   const handleUpdateExamDetails = () => {
-    const { questions } = viewExamInDetailsData;
-    const body = {
-      subjectName: editSubjectName,
-      questions,
-      notes: [`${examDuration}`, `${examTime}`],
-    };
-    console.log("body", body);
-    dispatch(getEditExamForStudent(examId, body));
+    dispatch(getEditExamForStudent(examId, examForm));
+  };
+
+  const handleEditExam = (e) => {
+    const { value, name } = e.target;
+    setExamForm({ ...examForm, ...{ [name]: value } });
+  };
+
+  const handleUpdateNotes = () => {
+    if (!Object.values(examDuration)?.length) return;
+    setExamForm({ ...examForm, notes: Object.values(examDuration) });
+  };
+
+  const handleDuration = (e) => {
+    const { value, id } = e.target;
+
+    setExamDuration({ ...examDuration, ...{ [id]: value } });
   };
 
   return (
@@ -91,25 +95,46 @@ const EditExamDetails = () => {
       <li>subject name : {selectedExamForEdit?.subjectName}</li>{" "}
       <input
         type="text"
-        onChange={(e) => setEditSubjectName(e.target.value)}
-        value={editSubjectName}
+        name="subjectName"
+        onChange={(e) => handleEditExam(e)}
+        value={examForm?.subjectName}
         placeholder="Enter subject name"
       />
-      <li>Exam duration : </li>
-      <input
-        onChange={(e) => setExamDuration(e.target.value)}
-        value={examDuration}
-        placeholder="Exam duration ex(5mins)"
-      />
-      <li>Exam start time : </li>
-      <input
-        onChange={(e) => setExamTime(e.target.value)}
-        value={examTime}
-        placeholder="Exam start time ex(10am)"
-      />
+      <li>Exam duration : {examForm?.notes[0]}</li>
+      <li>Exam start time : {examForm?.notes[1]}</li>
+      <div>
+        <input
+          onChange={(e) => handleDuration(e)}
+          value={examDuration[0]}
+          id={0}
+          name="notes"
+          placeholder=" Update Exam duration"
+        />
+      </div>
+      <div>
+        <input
+          onChange={(e) => handleDuration(e)}
+          placeholder="Update Exam start time"
+          id={1}
+          value={examDuration[1]}
+          name="notes"
+        />
+        <button
+          className={
+            !Object.values(examDuration)?.length
+              ? "submit-form disable"
+              : "submit-form "
+          }
+          type="button"
+          onClick={handleUpdateNotes}
+        >
+          Update notes
+        </button>
+      </div>
       <div>
         <h3>Please select question for edit</h3>
         <select onChange={(e) => handleSelectQuestion(e)}>
+          <option value="">--Please choose an ouestions--</option>
           {viewExamInDetailsData?.questions?.map((que, i) => {
             const { question } = que;
             return (
@@ -120,38 +145,51 @@ const EditExamDetails = () => {
             );
           })}{" "}
         </select>{" "}
-        <div>
-          <input
-            type="text"
-            placeholder="Selected answer"
-            value={option}
-            readOnly="true"
-          />
-          {Object.values(text)?.map((opt, i) => {
-            return (
-              <>
-                <label htmlFor={i + 1}>
-                  <input
-                    type="radio"
-                    name="opions"
-                    id={i + 1}
-                    onChange={(e) => handleOptionChange(e)}
-                    value={opt}
-                  />
-                  <input
-                    type="text"
-                    name="option_Answer1"
-                    placeholder="Enter option 1 answer"
-                    value={opt}
-                    id={i + 1}
-                    onChange={(e) => handelAnswer(e)}
-                  />{" "}
-                </label>
-              </>
-            );
-          })}
-        </div>{" "}
-      </div>{" "}
+        {!!optionIndex ? (
+          <>
+            <div>
+              <input
+                type="text"
+                placeholder="Selected answer"
+                value={option}
+                readOnly="true"
+              />
+              {Object.values(text)?.map((opt, i) => {
+                return (
+                  <>
+                    <label htmlFor={i + 1}>
+                      <input
+                        type="radio"
+                        name="opions"
+                        id={i + 1}
+                        onChange={(e) => handleOptionChange(e)}
+                        value={opt}
+                      />
+                      <input
+                        type="text"
+                        name="option_Answer1"
+                        placeholder="Enter option 1 answer"
+                        value={opt}
+                        id={i + 1}
+                        onChange={(e) => handelAnswer(e)}
+                      />{" "}
+                    </label>
+                  </>
+                );
+              })}
+            </div>
+            <button
+              className="submit-form"
+              type="button"
+              onClick={handleUpdateOptions}
+            >
+              Update options
+            </button>
+          </>
+        ) : (
+          ""
+        )}
+      </div>
       <div>
         <Link className="auth-link" to="/view-exam">
           {" "}
@@ -173,7 +211,7 @@ const EditExamDetails = () => {
             <th>Question</th> <th>Answer</th>
             <th>Options</th>
           </tr>
-          {viewExamInDetailsData?.questions?.map((que, i) => {
+          {examForm?.questions?.map((que, i) => {
             const { question, answer, options } = que;
             return (
               <tr key={i}>
