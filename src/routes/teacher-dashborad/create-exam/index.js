@@ -180,27 +180,26 @@ const CreateExam = () => {
             value={option?.answer}
             readOnly="true"
           />
-          <div>
-            {" "}
-            <input
-              type="text"
-              name="note"
-              placeholder="Notes"
-              onChange={(e) => handleChange(e)}
-              value={examForm?.note}
-            />
-            <button
-              onClick={() => handleAddNotes(examForm?.note)}
-              className={
-                !!examForm?.notes?.length
-                  ? "submit-form"
-                  : "submit-form disable"
-              }
-              disabled={!!examForm?.notes?.length ? false : true}
-            >
-              Add note +
-            </button>{" "}
-          </div>
+          {examForm?.notes?.length === 2 ? (
+            ""
+          ) : (
+            <div>
+              {" "}
+              <input
+                type="text"
+                name="note"
+                placeholder="Notes"
+                onChange={(e) => handleChange(e)}
+                value={examForm?.note}
+              />
+              <button
+                onClick={() => handleAddNotes(examForm?.note)}
+                className="submit-form"
+              >
+                Add note +
+              </button>{" "}
+            </div>
+          )}
           {examForm?.questions?.length > 14 ? (
             ""
           ) : (
