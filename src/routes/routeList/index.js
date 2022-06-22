@@ -106,7 +106,11 @@ const routeList = [
     element: <AllExamStudent />,
     isRole: "student",
   },
-  { path: "/exam-paper", element: <ExamPaper />, isRole: "student" },
+  {
+    path: "/all-exam-student/exam-paper/:examId",
+    element: <ExamPaper />,
+    isRole: "student",
+  },
   { path: "/giv-exam", element: <GiveExam />, isRole: "student" },
   {
     path: "/get-student-profile",

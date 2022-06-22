@@ -31,6 +31,31 @@
     }
   }
 
+  .submit-form{
+    background-color: #ec5990;
+    color: white;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    height: 42px;
+    border-radius: 8px;
+    margin: 10px 15px;
+    padding: 5px 10px;
+}
+.disable{
+    opacity: 0.6;
+}
+.sidebar-section{
+  li{
+    margin: 0;
+    list-style: none;
+    border: 0.5px solid grey;
+    padding: 5px 10px;
+  }
+ 
+}
+
+
 }
 
 

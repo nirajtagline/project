@@ -1,9 +1,8 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Routes from "../src/routes/index";
 import Layout from "./components/Layout";
 import NavBar from "./components/NavBar";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import Sidebar from "./routes/sidebar";
 import Loader from "./shared/Loader";
 import "./App.scss";
@@ -11,9 +10,7 @@ import "./App.scss";
 const App = () => {
   const isLogged = localStorage.getItem("user-token");
   const { isUserLogged } = useSelector(({ userAuth }) => userAuth);
-
   useEffect(() => {}, [isLogged, isUserLogged]);
-
   return (
     <div className="App">
       <Suspense fallback={<Loader />}>

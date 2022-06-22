@@ -15,6 +15,9 @@ import {
   EDIT_EXAM_DETAILS,
   EDIT_EXAM_DETAILS_SUCCESS,
   EDIT_EXAM_DETAILS_FAILURE,
+  FETCH_EXAM_PAPER,
+  FETCH_EXAM_PAPER_SUCCESS,
+  FETCH_EXAM_PAPER_FAILURE,
 } from "../constants/actionTypes";
 
 let initialState = {
@@ -37,6 +40,9 @@ let initialState = {
   editExamDataLoading: false,
   editExamDataError: "",
   isEditExamData: false,
+  examPaper: {},
+  examPaperLoading: false,
+  examPaperError: "",
 };
 
 const createExamReducer = (state = initialState, action) => {
@@ -138,6 +144,23 @@ const createExamReducer = (state = initialState, action) => {
       return {
         ...state,
         viewExamInDetailsDataError: action.payload.error,
+      };
+    // get exam paper
+    case FETCH_EXAM_PAPER:
+      return {
+        ...state,
+        examPaperLoading: true,
+      };
+    case FETCH_EXAM_PAPER_SUCCESS:
+      return {
+        ...state,
+        examPaperLoading: false,
+        examPaperData: action.payload,
+      };
+    case FETCH_EXAM_PAPER_FAILURE:
+      return {
+        ...state,
+        examPaperError: action.payload.error,
       };
 
     default:

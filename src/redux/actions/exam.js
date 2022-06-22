@@ -15,6 +15,9 @@ import {
   EDIT_EXAM_DETAILS,
   EDIT_EXAM_DETAILS_SUCCESS,
   EDIT_EXAM_DETAILS_FAILURE,
+  FETCH_EXAM_PAPER,
+  FETCH_EXAM_PAPER_SUCCESS,
+  FETCH_EXAM_PAPER_FAILURE,
 } from "../constants/actionTypes";
 
 import axios from "../../config/axios";
@@ -200,5 +203,41 @@ export const getEditExamForStudent = (id, body) => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(editExamForStudentFailure({ error: error.message }));
+    });
+};
+
+// Fetch exam paper
+
+export const fetchExamPaper = (payload) => {
+  return {
+    type: FETCH_EXAM_PAPER,
+    payload: payload,
+  };
+};
+export const fetchExamPaperSuccess = (payload) => {
+  return {
+    type: FETCH_EXAM_PAPER_SUCCESS,
+    payload: payload,
+  };
+};
+export const fetchExamPaperFailure = (payload) => {
+  return {
+    type: FETCH_EXAM_PAPER_FAILURE,
+    payload: payload,
+  };
+};
+
+export const getExamPaper = (id) => async (dispatch) => {
+  dispatch(fetchExamPaper());
+
+  axios
+    .get(`/student/examPaper?id=${id}`, {
+      headers: { "access-token": `${localStorage.getItem("user-token")}` },
+    })
+    .then((res) => {
+      dispatch(fetchExamPaperSuccess(res.data));
+    })
+    .catch((error) => {
+      dispatch(fetchExamPaperFailure({ error: error.message }));
     });
 };

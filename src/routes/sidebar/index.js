@@ -5,7 +5,7 @@ const Sidebar = () => {
   const userRole = localStorage.getItem("user-role");
 
   const sideMenuList = [
-    // Teacher route link
+    // // Teacher route link
     { to: "/all-student-data", title: "All student Data", isRole: "teacher" },
     {
       to: "/varified-student-data",
@@ -15,7 +15,6 @@ const Sidebar = () => {
 
     { to: "/create-exam", title: "Create exam", isRole: "teacher" },
     { to: "/view-exam", title: "view exam", isRole: "teacher" },
-    // { to: "/view-exam-details", title: "view exam details", isRole: "teacher" },
 
     // // Student route link
     {
@@ -23,7 +22,7 @@ const Sidebar = () => {
       title: "All Exam for student",
       isRole: "student",
     },
-    { to: "/exam-paper", title: "Exam paper", isRole: "student" },
+
     { to: "/giv-exam", title: "Give exam", isRole: "student" },
     { to: "/get-student-profile", title: "Student profile", isRole: "student" },
   ];
