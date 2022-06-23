@@ -1,38 +1,18 @@
 import React from "react";
-const noop = () => {};
 
 const InputField = ({
-  type = "text",
-  placeholder = "",
-  onChange = noop,
-  className = "",
-  isDisable = false,
-  name = "",
-  id = "",
-  label = "",
-  isReadOnly = false,
-  value,
+  label,
+  handleChange,
+  isShowValidate,
+  message,
+  ...props
 }) => {
-  const handleChange = (e) => {
-    onChange(e);
-  };
-
   return (
     <div>
-      {label && <label>{label}</label>}
-      <input
-        type={type}
-        onChange={handleChange}
-        disabled={isDisable}
-        className={className}
-        placeholder={placeholder}
-        name={name}
-        id={id}
-        readOnly={isReadOnly}
-        value={value}
-      />
+      {label ? <label>{label}</label> : null}
+      <input {...props} onChange={(e) => handleChange && handleChange(e)} />
+      {isShowValidate ? <span>{message}</span> : null}
     </div>
   );
 };
-
 export default InputField;

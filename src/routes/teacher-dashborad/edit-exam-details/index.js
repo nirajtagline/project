@@ -6,7 +6,7 @@ import {
   getViewExamForStudent,
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
-import Button from "../../../shared/Button/Button";
+import CustomButton from "../../../shared/Button/CustomButton";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import "./edit-exam.scss";
 
@@ -121,7 +121,7 @@ const EditExamDetails = () => {
           value={examDuration[1]}
           name="notes"
         />
-        <Button
+        <CustomButton
           type="button"
           className={
             !Object.values(examDuration)?.length
@@ -180,7 +180,7 @@ const EditExamDetails = () => {
               })}
             </div>
 
-            <Button
+            <CustomButton
               type="button"
               className="submit-form"
               onClick={handleUpdateOptions}
@@ -197,7 +197,7 @@ const EditExamDetails = () => {
           Back to view exam page
         </Link>{" "}
       </div>{" "}
-      <Button
+      <CustomButton
         type="button"
         className="submit-form"
         onClick={handleUpdateExamDetails}

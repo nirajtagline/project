@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../Button/Button";
+import CustomButton from "../Button/CustomButton";
 import "./modal.scss";
 
 const Modal = ({
@@ -15,13 +15,13 @@ const Modal = ({
       <div className="pop-wrapper-child">
         <h2>{title}</h2>
         <p>{message}</p>
-        <Button
+        <CustomButton
           type="button"
           onClick={handleCancle}
           className="submit-form"
-          buttonText="Cancle"
+          buttonText="Cancel"
         />
-        <Button
+        <CustomButton
           type="button"
           className="submit-form"
           onClick={() => handleConfirm(selectedExam)}

@@ -4,7 +4,7 @@ import {
   getCreateExamForStudent,
   createdExamBody,
 } from "../../../redux/actions/exam";
-import Button from "../../../shared/Button/Button";
+import CustomButton from "../../../shared/Button/CustomButton";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import "./create-exam.scss";
 
@@ -195,7 +195,7 @@ const CreateExam = () => {
                 onChange={(e) => handleChange(e)}
                 value={examForm?.note}
               />
-              <Button
+              <CustomButton
                 onClick={() => handleAddNotes(examForm?.note)}
                 className="submit-form"
                 buttonText="Add note +"
@@ -206,7 +206,7 @@ const CreateExam = () => {
             ""
           ) : (
             <>
-              <Button
+              <CustomButton
                 buttonText="Add question"
                 onClick={handleAddQuestions}
                 type="button"
@@ -227,7 +227,7 @@ const CreateExam = () => {
                     : "submit-form disable"
                 }
               />
-              <Button
+              <CustomButton
                 type="button"
                 onClick={handleClearForm}
                 className="submit-form"
@@ -242,7 +242,7 @@ const CreateExam = () => {
       ) : (
         <h4>Please add maximum 15 questions.</h4>
       )}
-      <Button
+      <CustomButton
         type="button"
         onClick={handleSubmit}
         className={

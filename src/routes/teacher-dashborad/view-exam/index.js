@@ -6,7 +6,7 @@ import {
   getDeleteExamForStudent,
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
-import Button from "../../../shared/Button/Button";
+import CustomButton from "../../../shared/Button/CustomButton";
 import Modal from "../../../shared/Modal/Modal";
 
 const ViewExam = () => {
@@ -71,7 +71,7 @@ const ViewExam = () => {
                   );
                 })}
                 <td>
-                  <Button
+                  <CustomButton
                     type="button"
                     onClick={() => handleViewExamInDetails(_id)}
                     className="submit-form mt-0 mb-0"
@@ -79,7 +79,7 @@ const ViewExam = () => {
                   />
                 </td>
                 <td>
-                  <Button
+                  <CustomButton
                     type="button"
                     onClick={() => handleEditExam(_id)}
                     className="submit-form mt-0 mb-0"
@@ -87,7 +87,7 @@ const ViewExam = () => {
                   />
                 </td>
                 <td>
-                  <Button
+                  <CustomButton
                     type="button"
                     onClick={() => handleDeleteExam(_id)}
                     className="submit-form mt-0 mb-0"

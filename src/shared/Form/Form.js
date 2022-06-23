@@ -1,14 +1,9 @@
 import React from "react";
-import Button from "../Button/Button";
 
-const Form = ({ handleSubmit, inputArray = [], buttonText = "" }) => {
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <Button type="submit" buttonText={buttonText} className="submit-form" />
-      </form>
-    </div>
-  );
-};
+const CustomForm = ({ children, handleSubmit, ...props }) => (
+  <form {...props} onSubmit={(e) => handleSubmit && handleSubmit(e)}>
+    {children}
+  </form>
+);
 
-export default Form;
+export default CustomForm;

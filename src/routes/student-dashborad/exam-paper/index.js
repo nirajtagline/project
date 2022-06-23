@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router";
 import { getExamPaper, submitExamOfStudent } from "../../../redux/actions";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
-import Button from "../../../shared/Button/Button";
+import CustomButton from "../../../shared/Button/CustomButton";
 
 const ExamPaper = () => {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const ExamPaper = () => {
           handleOptChange={(e) => handleOptChange(e)}
         />
 
-        <Button
+        <CustomButton
           type="button"
           buttonText="Submit exam paper"
           onClick={handleSubmitPaper}

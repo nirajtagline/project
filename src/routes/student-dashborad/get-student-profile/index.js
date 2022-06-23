@@ -5,7 +5,7 @@ import {
   updateStudentProfileData,
 } from "../../../redux/actions";
 import InputField from "../../../shared/InputField/InputField";
-import Button from "../../../shared/Button/Button";
+import CustomButton from "../../../shared/Button/CustomButton";
 
 const StudentProfile = () => {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const StudentProfile = () => {
         isDisable={true}
       />
 
-      <Button
+      <CustomButton
         type="button"
         className="submit-form"
         buttonText="Update profile"
