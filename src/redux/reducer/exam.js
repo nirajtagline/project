@@ -18,6 +18,9 @@ import {
   FETCH_EXAM_PAPER,
   FETCH_EXAM_PAPER_SUCCESS,
   FETCH_EXAM_PAPER_FAILURE,
+  SUBMIT_EXAM_PAPER,
+  SUBMIT_EXAM_PAPER_SUCCESS,
+  SUBMIT_EXAM_PAPER_FAILURE,
 } from "../constants/actionTypes";
 
 let initialState = {
@@ -43,6 +46,9 @@ let initialState = {
   examPaper: {},
   examPaperLoading: false,
   examPaperError: "",
+  submitExamData: {},
+  submitExamDataLoading: false,
+  submitExamDataError: "",
 };
 
 const createExamReducer = (state = initialState, action) => {
@@ -63,6 +69,24 @@ const createExamReducer = (state = initialState, action) => {
       return {
         ...state,
         createExamDataError: action.payload.error,
+      };
+
+    //Submit exam
+    case SUBMIT_EXAM_PAPER:
+      return {
+        ...state,
+        submitExamDataLoading: true,
+      };
+    case SUBMIT_EXAM_PAPER_SUCCESS:
+      return {
+        ...state,
+        submitExamDataLoading: false,
+        submitExamData: action.payload,
+      };
+    case SUBMIT_EXAM_PAPER_FAILURE:
+      return {
+        ...state,
+        submitExamDataError: action.payload.error,
       };
 
     // created exambody

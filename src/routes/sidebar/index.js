@@ -22,8 +22,6 @@ const Sidebar = () => {
       title: "All Exam for student",
       isRole: "student",
     },
-
-    { to: "/giv-exam", title: "Give exam", isRole: "student" },
     { to: "/get-student-profile", title: "Student profile", isRole: "student" },
   ];
 

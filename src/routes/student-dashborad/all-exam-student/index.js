@@ -11,7 +11,7 @@ const AllExamStudent = () => {
 
   useEffect(() => {
     dispatch(getExamForStudentsDetails());
-  }, [examForStudentData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return !!examForStudentData?.length ? (
     <div className="exam-student-wrapper">

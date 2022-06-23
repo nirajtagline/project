@@ -19,7 +19,6 @@ const AllExamStudent = lazy(() =>
   import("../student-dashborad/all-exam-student")
 );
 const ExamPaper = lazy(() => import("../student-dashborad/exam-paper"));
-const GiveExam = lazy(() => import("../student-dashborad/give-exam"));
 const StudentProfile = lazy(() =>
   import("../student-dashborad/get-student-profile")
 );
@@ -111,7 +110,6 @@ const routeList = [
     element: <ExamPaper />,
     isRole: "student",
   },
-  { path: "/giv-exam", element: <GiveExam />, isRole: "student" },
   {
     path: "/get-student-profile",
     element: <StudentProfile />,

@@ -60,7 +60,7 @@ const Login = () => {
           placeholder="Password"
           {...register("password", {
             required: true,
-            // pattern: /^[0-9]{8,16}$/,
+            pattern: /^[0-9]{8,16}$/,
           })}
         />
         {errors?.password && errors?.password?.type === "required" && (

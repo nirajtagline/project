@@ -2,6 +2,12 @@ import {
   FETCH_EXAM_STUDENTS_DETAILS,
   FETCH_EXAM_STUDENTS_DETAILS_SUCCESS,
   FETCH_EXAM_STUDENTS_DETAILS_FAILURE,
+  FETCH_STUDENT_PROFILE,
+  FETCH_STUDENT_PROFILE_SUCCESS,
+  FETCH_STUDENT_PROFILE_FAILURE,
+  UPDATE_STUDENT_PROFILE,
+  UPDATE_STUDENT_PROFILE_SUCCESS,
+  UPDATE_STUDENT_PROFILE_FAILURE,
 } from "../constants/actionTypes";
 
 import axios from "../../config/axios";
@@ -31,9 +37,7 @@ export const getExamForStudentsDetails = () => async (dispatch) => {
 
   axios
     .get("/student/studentExam", {
-      headers: {
-        "access-token": `${localStorage.getItem("user-token")}`,
-      },
+      headers: { "access-token": `${localStorage.getItem("user-token")}` },
     })
     .then((res) => {
       dispatch(fetchExamForStudentsDetailsSuccess(res.data.data));
@@ -42,5 +46,79 @@ export const getExamForStudentsDetails = () => async (dispatch) => {
       dispatch(
         fetchExamForStudentsDetailsFailure({ error: error.data.message })
       );
+    });
+};
+
+// Fetch student profile
+export const fetchStudentProfile = (payload) => {
+  return {
+    type: FETCH_STUDENT_PROFILE,
+    payload: payload,
+  };
+};
+export const fetchStudentProfileSuccess = (payload) => {
+  return {
+    type: FETCH_STUDENT_PROFILE_SUCCESS,
+    payload: payload,
+  };
+};
+export const fetchStudentProfileFailure = (payload) => {
+  return {
+    type: FETCH_STUDENT_PROFILE_FAILURE,
+    payload: payload,
+  };
+};
+
+export const getStudentProfile = () => async (dispatch) => {
+  dispatch(fetchStudentProfile());
+
+  axios
+    .get("/student/getStudentDetail", {
+      headers: {
+        "access-token": `${localStorage.getItem("user-token")}`,
+      },
+    })
+    .then((res) => {
+      dispatch(fetchStudentProfileSuccess(res.data.data));
+    })
+    .catch((error) => {
+      dispatch(fetchStudentProfileFailure({ error: error.data.message }));
+    });
+};
+
+// Update student profile
+export const updateStudentProfile = (payload) => {
+  return {
+    type: UPDATE_STUDENT_PROFILE,
+    payload: payload,
+  };
+};
+export const updateStudentProfileSuccess = (payload) => {
+  return {
+    type: UPDATE_STUDENT_PROFILE_SUCCESS,
+    payload: payload,
+  };
+};
+export const updateStudentProfileFailure = (payload) => {
+  return {
+    type: UPDATE_STUDENT_PROFILE_FAILURE,
+    payload: payload,
+  };
+};
+
+export const updateStudentProfileData = (body) => async (dispatch) => {
+  dispatch(updateStudentProfile());
+
+  axios
+    .put("/student/studentProfile", body, {
+      headers: {
+        "access-token": `${localStorage.getItem("user-token")}`,
+      },
+    })
+    .then((res) => {
+      dispatch(updateStudentProfileSuccess(res.data.data));
+    })
+    .catch((error) => {
+      dispatch(updateStudentProfileFailure({ error: error.data.message }));
     });
 };
