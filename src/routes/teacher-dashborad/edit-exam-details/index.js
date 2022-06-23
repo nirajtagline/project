@@ -6,6 +6,7 @@ import {
   getViewExamForStudent,
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
+import Button from "../../../shared/Button/Button";
 import "./edit-exam.scss";
 
 const EditExamDetails = () => {
@@ -119,17 +120,16 @@ const EditExamDetails = () => {
           value={examDuration[1]}
           name="notes"
         />
-        <button
+        <Button
+          type="button"
           className={
             !Object.values(examDuration)?.length
               ? "submit-form disable"
               : "submit-form "
           }
-          type="button"
           onClick={handleUpdateNotes}
-        >
-          Update notes
-        </button>
+          buttonText="Update notes"
+        />
       </div>
       <div>
         <h3>Please select question for edit</h3>
@@ -178,13 +178,13 @@ const EditExamDetails = () => {
                 );
               })}
             </div>
-            <button
-              className="submit-form"
+
+            <Button
               type="button"
+              className="submit-form"
               onClick={handleUpdateOptions}
-            >
-              Update options
-            </button>
+              buttonText="Update options"
+            />
           </>
         ) : (
           ""
@@ -196,13 +196,12 @@ const EditExamDetails = () => {
           Back to view exam page
         </Link>{" "}
       </div>{" "}
-      <button
-        className="submit-form"
+      <Button
         type="button"
+        className="submit-form"
         onClick={handleUpdateExamDetails}
-      >
-        Update changes
-      </button>
+        buttonText="Update changes"
+      />
       <table>
         {" "}
         <tbody>

@@ -31,3 +31,13 @@ th, td {
   border: 1px solid black;
   padding: 3px 10px;
 }
+
+.m{
+  margin: 0;
+}
+.mt-0{
+  margin-top: 0;
+}
+.mb-0{
+  margin-bottom: 0;
+}

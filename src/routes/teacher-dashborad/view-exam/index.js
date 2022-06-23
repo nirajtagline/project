@@ -6,7 +6,8 @@ import {
   getDeleteExamForStudent,
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
-import Modal from "../../../shared/modal/Modal";
+import Button from "../../../shared/Button/Button";
+import Modal from "../../../shared/Modal/Modal";
 
 const ViewExam = () => {
   const dispatch = useDispatch();
@@ -70,22 +71,28 @@ const ViewExam = () => {
                   );
                 })}
                 <td>
-                  <button
+                  <Button
                     type="button"
                     onClick={() => handleViewExamInDetails(_id)}
-                  >
-                    View exam Details
-                  </button>
+                    className="submit-form mt-0 mb-0"
+                    buttonText="View exam Details"
+                  />
                 </td>
                 <td>
-                  <button type="button" onClick={() => handleEditExam(_id)}>
-                    Edit exam
-                  </button>
+                  <Button
+                    type="button"
+                    onClick={() => handleEditExam(_id)}
+                    className="submit-form mt-0 mb-0"
+                    buttonText=" Edit exam"
+                  />
                 </td>
                 <td>
-                  <button type="button" onClick={() => handleDeleteExam(_id)}>
-                    Delete exam
-                  </button>
+                  <Button
+                    type="button"
+                    onClick={() => handleDeleteExam(_id)}
+                    className="submit-form mt-0 mb-0"
+                    buttonText="   Delete exam"
+                  />
                 </td>
               </tr>
             );
