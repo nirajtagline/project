@@ -1,7 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import InputField from "../InputField/InputField";
 
-const TableWithMultiData = ({ tableHeadData, tableData, link }) => {
+const TableWithMultiData = ({
+  tableHeadData,
+  tableData,
+  link,
+  isRadio = false,
+  handleOptChange,
+}) => {
   const { path = "", linkText = "" } = link || false;
 
   return (
@@ -33,10 +40,20 @@ const TableWithMultiData = ({ tableHeadData, tableData, link }) => {
                 {_id ? <td>{_id} </td> : ""}
 
                 {!!options.length &&
-                  options.map((opt) => {
+                  options.map((opt, i) => {
                     return (
-                      <tr>
+                      <tr key={i}>
                         <td>{opt}</td>
+                        {isRadio ? (
+                          <InputField
+                            type="radio"
+                            onChange={(e) => handleOptChange(e)}
+                            name={_id}
+                            id={opt}
+                          />
+                        ) : (
+                          ""
+                        )}
                       </tr>
                     );
                   })}

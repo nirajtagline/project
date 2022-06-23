@@ -41,3 +41,8 @@ th, td {
 .mb-0{
   margin-bottom: 0;
 }
+
+.flex{
+  display: flex;
+  align-items: baseline;
+}

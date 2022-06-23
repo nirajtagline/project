@@ -7,6 +7,7 @@ import {
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
 import Button from "../../../shared/Button/Button";
+import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import "./edit-exam.scss";
 
 const EditExamDetails = () => {
@@ -202,32 +203,10 @@ const EditExamDetails = () => {
         onClick={handleUpdateExamDetails}
         buttonText="Update changes"
       />
-      <table>
-        {" "}
-        <tbody>
-          <tr>
-            {" "}
-            <th>Question</th> <th>Answer</th>
-            <th>Options</th>
-          </tr>
-          {examForm?.questions?.map((que, i) => {
-            const { question, answer, options } = que;
-            return (
-              <tr key={i}>
-                {" "}
-                <td>{question} </td> <td>{answer}</td>{" "}
-                {options.map((opt) => {
-                  return (
-                    <tr>
-                      <td>{opt}</td>{" "}
-                    </tr>
-                  );
-                })}
-              </tr>
-            );
-          })}{" "}
-        </tbody>
-      </table>{" "}
+      <TableWithMultiData
+        tableHeadData={["Question", "Answer", "Options"]}
+        tableData={examForm?.questions}
+      />
     </div>
   );
 };

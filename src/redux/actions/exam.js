@@ -18,6 +18,9 @@ import {
   FETCH_EXAM_PAPER,
   FETCH_EXAM_PAPER_SUCCESS,
   FETCH_EXAM_PAPER_FAILURE,
+  SUBMIT_EXAM_PAPER,
+  SUBMIT_EXAM_PAPER_SUCCESS,
+  SUBMIT_EXAM_PAPER_FAILURE,
 } from "../constants/actionTypes";
 
 import axios from "../../config/axios";
@@ -239,5 +242,40 @@ export const getExamPaper = (id) => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(fetchExamPaperFailure({ error: error.message }));
+    });
+};
+
+// Submit exam
+export const submitExam = (payload) => {
+  return {
+    type: SUBMIT_EXAM_PAPER,
+    payload: payload,
+  };
+};
+export const submitExamSuccess = (payload) => {
+  return {
+    type: SUBMIT_EXAM_PAPER_SUCCESS,
+    payload: payload,
+  };
+};
+export const submitExamFailure = (payload) => {
+  return {
+    type: SUBMIT_EXAM_PAPER_FAILURE,
+    payload: payload,
+  };
+};
+
+export const submitExamOfStudent = (body, id) => async (dispatch) => {
+  dispatch(submitExam());
+  axios
+    .post(`student/giveExam?id=${id}`, body, {
+      headers: { "access-token": `${localStorage.getItem("user-token")}` },
+    })
+    .then((res) => {
+      dispatch(submitExamSuccess(res));
+      return;
+    })
+    .catch((error) => {
+      dispatch(submitExamFailure({ error: error.message }));
     });
 };

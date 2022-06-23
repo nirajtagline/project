@@ -7,7 +7,7 @@ const Button = ({
   buttonText,
   onClick = noop,
   className = "",
-  isDisable,
+  isDisable = false,
 }) => {
   const handleClick = (e) => {
     onClick(e);

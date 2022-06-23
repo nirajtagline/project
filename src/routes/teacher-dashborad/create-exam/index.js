@@ -5,6 +5,7 @@ import {
   createdExamBody,
 } from "../../../redux/actions/exam";
 import Button from "../../../shared/Button/Button";
+import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import "./create-exam.scss";
 
 const initialState = { subjectName: "", questions: [], notes: [] };
@@ -259,31 +260,10 @@ const CreateExam = () => {
         {createExamBody?.notes?.map((time, i) => {
           return <li key={i}>{time} </li>;
         })}
-        <table>
-          {" "}
-          <tbody>
-            <tr>
-              {" "}
-              <th>Question</th> <th>Answer</th> <th>Options</th>
-            </tr>
-            {createExamBody?.questions?.map((que, i) => {
-              const { question, answer, options } = que;
-              return (
-                <tr key={i}>
-                  {" "}
-                  <td>{question} </td> <td>{answer}</td>{" "}
-                  {options.map((opt) => {
-                    return (
-                      <tr>
-                        <td>{opt}</td>{" "}
-                      </tr>
-                    );
-                  })}
-                </tr>
-              );
-            })}{" "}
-          </tbody>
-        </table>{" "}
+        <TableWithMultiData
+          tableHeadData={["Question", "Answer", "Options"]}
+          tableData={createExamBody?.questions}
+        />
       </div>
     </div>
   );

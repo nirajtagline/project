@@ -1,49 +1,56 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { getExamPaper } from "../../../redux/actions";
+import { Navigate, useParams } from "react-router";
+import { getExamPaper, submitExamOfStudent } from "../../../redux/actions";
+import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
+import Button from "../../../shared/Button/Button";
 
 const ExamPaper = () => {
   const dispatch = useDispatch();
   const { examId } = useParams();
+  const { examPaperData, submitExamData } = useSelector(({ exam }) => exam);
 
   useEffect(() => {
     dispatch(getExamPaper(examId));
   }, [examId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { examPaperData } = useSelector(({ exam }) => exam);
+  const [answerSheet, setAnswerSheet] = useState([]);
+
+  const handleOptChange = ({ target }) => {
+    const { name, id } = target;
+    let answer = { question: name, answer: id };
+    setAnswerSheet([...answerSheet, answer]);
+  };
+  console.log("answerSheet", answerSheet);
+
+  const handleSubmitPaper = () => {
+    dispatch(submitExamOfStudent(answerSheet, examId)).then(() => {
+      Navigate("/all-exam-student");
+    });
+  };
 
   return (
-    <div>
-      <h2>{examPaperData?.message ? examPaperData?.message : ""}</h2>
-      <table>
-        <tbody>
-          <tr>
-            <th>Questions</th>
-            <th>ID</th>
-            <th>Options</th>
-          </tr>
+    <div className="flex">
+      <h2>{submitExamData?.message ? submitExamData?.message : ""}</h2>
+      <div>
+        <h2>{examPaperData?.message ? examPaperData?.message : ""}</h2>
 
-          {examPaperData?.data?.map((que) => {
-            const { question, _id, options } = que;
-            return (
-              <tr>
-                <td>{question}</td>
-                <td>{_id}</td>
-                <td>
-                  {options?.map((opt) => {
-                    return (
-                      <tr>
-                        <td>{opt}</td>
-                      </tr>
-                    );
-                  })}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+        <TableWithMultiData
+          tableHeadData={["Question", "Answer", "Options"]}
+          tableData={examPaperData?.data}
+          isRadio={true}
+          handleOptChange={(e) => handleOptChange(e)}
+        />
+
+        <Button
+          type="button"
+          buttonText="Submit exam paper"
+          onClick={handleSubmitPaper}
+          className={
+            !submitExamData.message ? "submit-form" : "submit-form disable"
+          }
+        />
+      </div>
     </div>
   );
 };
