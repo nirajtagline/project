@@ -17,10 +17,16 @@ const ExamPaper = () => {
   const [answerSheet, setAnswerSheet] = useState([]);
 
   const handleOptChange = ({ target }) => {
+    const cloneData = [...answerSheet];
     const { name, id } = target;
     let answer = { question: name, answer: id };
-    setAnswerSheet([...answerSheet, answer]);
+    if (cloneData.map((data) => data.question).includes(name)) {
+      const index = cloneData.findIndex((data) => data.question === name);
+      cloneData[index] = answer;
+      setAnswerSheet(cloneData);
+    } else setAnswerSheet([...answerSheet, answer]);
   };
+
   console.log("answerSheet", answerSheet);
 
   const handleSubmitPaper = () => {
