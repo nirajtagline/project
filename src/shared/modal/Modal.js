@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../Button/Button";
 import "./modal.scss";
 
 const Modal = ({
@@ -14,8 +15,18 @@ const Modal = ({
       <div className="pop-wrapper-child">
         <h2>{title}</h2>
         <p>{message}</p>
-        <button onClick={handleCancle}>Cancel</button>
-        <button onClick={() => handleConfirm(selectedExam)}>delete</button>
+        <Button
+          type="button"
+          onClick={handleCancle}
+          className="submit-form"
+          buttonText="Cancle"
+        />
+        <Button
+          type="button"
+          className="submit-form"
+          onClick={() => handleConfirm(selectedExam)}
+          buttonText="Delete"
+        />
       </div>
     </div>
   ) : (

@@ -4,6 +4,7 @@ import {
   getCreateExamForStudent,
   createdExamBody,
 } from "../../../redux/actions/exam";
+import Button from "../../../shared/Button/Button";
 import "./create-exam.scss";
 
 const initialState = { subjectName: "", questions: [], notes: [] };
@@ -11,6 +12,7 @@ const initialState = { subjectName: "", questions: [], notes: [] };
 const CreateExam = () => {
   const dispatch = useDispatch();
   const { createExamBody } = useSelector(({ exam }) => exam);
+
   const [question, setQuestion] = useState("");
   const [option, setOption] = useState({ answer: "", key: null });
   const [optionAnswer, setOptionAnswer] = useState({});
@@ -192,21 +194,29 @@ const CreateExam = () => {
                 onChange={(e) => handleChange(e)}
                 value={examForm?.note}
               />
-              <button
+              <Button
                 onClick={() => handleAddNotes(examForm?.note)}
                 className="submit-form"
-              >
-                Add note +
-              </button>{" "}
+                buttonText="Add note +"
+              />
             </div>
           )}
           {examForm?.questions?.length > 14 ? (
             ""
           ) : (
             <>
-              <button
-                type="button"
+              <Button
+                buttonText="Add question"
                 onClick={handleAddQuestions}
+                type="button"
+                isDisable={
+                  !!examForm?.subjectName &&
+                  !!question &&
+                  !!option &&
+                  !!examForm?.notes?.length
+                    ? false
+                    : true
+                }
                 className={
                   !!examForm?.subjectName &&
                   !!question &&
@@ -215,24 +225,13 @@ const CreateExam = () => {
                     ? "submit-form"
                     : "submit-form disable"
                 }
-                disabled={
-                  !!examForm?.subjectName &&
-                  !!question &&
-                  !!option &&
-                  !!examForm?.notes?.length
-                    ? false
-                    : true
-                }
-              >
-                Add question
-              </button>
-              <button
+              />
+              <Button
                 type="button"
                 onClick={handleClearForm}
                 className="submit-form"
-              >
-                Clear form
-              </button>{" "}
+                buttonText=" Clear form"
+              />
             </>
           )}{" "}
         </>
@@ -241,8 +240,8 @@ const CreateExam = () => {
         ""
       ) : (
         <h4>Please add maximum 15 questions.</h4>
-      )}{" "}
-      <button
+      )}
+      <Button
         type="button"
         onClick={handleSubmit}
         className={
@@ -250,10 +249,10 @@ const CreateExam = () => {
             ? "submit-form"
             : "submit-form disable"
         }
-        disabled={examForm?.questions?.length > 14 ? false : true}
-      >
-        Create exam{" "}
-      </button>{" "}
+        isDisable={examForm?.questions?.length > 14 ? false : true}
+        buttonText="Create exam"
+      />
+
       <hr />
       <div>
         <li>subject name : {createExamBody?.subjectName}</li>{" "}
