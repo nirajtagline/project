@@ -157,7 +157,7 @@ const EditExamDetails = () => {
               />
               {Object.values(text)?.map((opt, i) => {
                 return (
-                  <>
+                  <React.Fragment key={i}>
                     <label htmlFor={i + 1}>
                       <input
                         type="radio"
@@ -175,7 +175,7 @@ const EditExamDetails = () => {
                         onChange={(e) => handelAnswer(e)}
                       />{" "}
                     </label>
-                  </>
+                  </React.Fragment>
                 );
               })}
             </div>

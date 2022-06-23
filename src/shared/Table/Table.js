@@ -8,14 +8,14 @@ const Table = ({ tableHeadData, tableData, link }) => {
       <table>
         <tbody>
           <tr>
-            {tableHeadData?.map((head) => {
-              return <th>{head}</th>;
+            {tableHeadData?.map((head, index) => {
+              return <th key={index}>{head}</th>;
             })}
           </tr>
           {tableData?.map((student, i) => {
             const { status, _id, name, email } = student;
             return (
-              <tr key={_id}>
+              <tr key={i}>
                 <td>{status}</td>
                 <td>{name}</td>
                 <td>{email}</td>

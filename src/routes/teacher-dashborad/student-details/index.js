@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getStudentsDetails } from "../../../redux/actions";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 const StudentDetails = () => {
   const dispatch = useDispatch();
   const param = useParams();
@@ -22,10 +22,10 @@ const StudentDetails = () => {
             <th>email</th>
             <th>id</th>
           </tr>
-          {data?.map((student) => {
+          {data?.map((student, index) => {
             const { _id, name, email, Result } = student;
             return (
-              <>
+              <React.Fragment key={index}>
                 <tr>
                   <td>{name}</td>
                   <td>{email}</td>
@@ -41,7 +41,7 @@ const StudentDetails = () => {
                       resultStatus,
                     } = value;
                     return (
-                      <>
+                      <React.Fragment key={id}>
                         <li>{subjectName}</li>
                         <li>{rank}</li>
                         <li>{score}</li>
@@ -51,19 +51,19 @@ const StudentDetails = () => {
                           {studentAnswer?.map((res, i) => {
                             const { question, answer } = res;
                             return (
-                              <>
+                              <React.Fragment key={i}>
                                 <li>Que :-{question}</li>
                                 <li>Ans :-{answer}</li>
                                 <hr />
-                              </>
+                              </React.Fragment>
                             );
                           })}
                         </tr>
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </tr>
-              </>
+              </React.Fragment>
             );
           })}
         </tbody>

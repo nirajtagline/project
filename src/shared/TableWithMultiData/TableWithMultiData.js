@@ -20,7 +20,7 @@ const TableWithMultiData = ({
               return <th key={i}>{head}</th>;
             })}
           </tr>
-          {tableData?.map((que) => {
+          {tableData?.map((que, index) => {
             const {
               question = "",
               answer = "",
@@ -32,13 +32,12 @@ const TableWithMultiData = ({
               Result = [],
             } = que;
             return (
-              <tr key={_id}>
+              <tr key={index}>
                 {question ? <td>{question} </td> : ""}
                 {answer ? <td>{answer} </td> : ""}
                 {subjectName ? <td>{subjectName} </td> : ""}
                 {email ? <td>{email} </td> : ""}
                 {_id ? <td>{_id} </td> : ""}
-
                 {!!options.length &&
                   options.map((opt, i) => {
                     return (
@@ -78,11 +77,11 @@ const TableWithMultiData = ({
                 {!!Result.length && (
                   <td>
                     <p>Result</p>
-                    {Result?.map((res) => {
+                    {Result?.map((res, id) => {
                       const { subjectName, _id, rank, score, resultStatus } =
                         res;
                       return (
-                        <>
+                        <React.Fragment key={id}>
                           <tr>
                             <td>{resultStatus}</td>
                           </tr>
@@ -98,7 +97,7 @@ const TableWithMultiData = ({
                           <tr>
                             <td>{score}</td>
                           </tr>
-                        </>
+                        </React.Fragment>
                       );
                     })}
                   </td>
