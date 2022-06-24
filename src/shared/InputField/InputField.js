@@ -19,7 +19,7 @@ const InputField = ({
         onChange={(e) => handleChange && handleChange(e)}
         disabled={disable}
       />
-      {isShowValidate ? <span>{message}</span> : null}
+      {isShowValidate ? <span className="error-message">{message}</span> : null}
     </div>
   );
 };
