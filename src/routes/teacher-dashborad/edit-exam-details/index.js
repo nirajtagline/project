@@ -7,6 +7,7 @@ import {
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
 import CustomButton from "../../../shared/Button/CustomButton";
+import InputField from "../../../shared/InputField/InputField";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import "./edit-exam.scss";
 
@@ -95,32 +96,33 @@ const EditExamDetails = () => {
     <div>
       <h2>Edit exam</h2>
       <li>subject name : {selectedExamForEdit?.subjectName}</li>{" "}
-      <input
+      <InputField
         type="text"
-        name="subjectName"
-        onChange={(e) => handleEditExam(e)}
-        value={examForm?.subjectName}
         placeholder="Enter subject name"
+        name="subjectName"
+        value={examForm?.subjectName}
+        handleChange={(e) => handleEditExam(e)}
       />
       <li>Exam duration : {examForm?.notes[0]}</li>
       <li>Exam start time : {examForm?.notes[1]}</li>
       <div>
-        <input
-          onChange={(e) => handleDuration(e)}
-          value={examDuration[0]}
-          id={0}
+        <InputField
           name="notes"
           placeholder=" Update Exam duration"
+          value={examDuration[0]}
+          id={0}
+          handleChange={(e) => handleDuration(e)}
         />
       </div>
       <div>
-        <input
-          onChange={(e) => handleDuration(e)}
-          placeholder="Update Exam start time"
-          id={1}
-          value={examDuration[1]}
+        <InputField
           name="notes"
+          placeholder="Update Exam start time"
+          value={examDuration[1]}
+          id={1}
+          handleChange={(e) => handleDuration(e)}
         />
+
         <CustomButton
           type="button"
           className={
@@ -149,35 +151,38 @@ const EditExamDetails = () => {
         {!!optionIndex ? (
           <>
             <div>
-              <input
+              <div className="flex">
+                {Object.values(text)?.map((opt, i) => {
+                  return (
+                    <React.Fragment key={i}>
+                      <label htmlFor={i + 1} className="flex">
+                        <InputField
+                          type="radio"
+                          name="opions"
+                          id={i + 1}
+                          value={opt}
+                          handleChange={(e) => handleOptionChange(e)}
+                        />
+                        <InputField
+                          type="text"
+                          name="option_Answer1"
+                          placeholder="Enter option 1 answer"
+                          value={opt}
+                          id={i + 1}
+                          handleChange={(e) => handelAnswer(e)}
+                        />
+                      </label>
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+              <InputField
                 type="text"
                 placeholder="Selected answer"
                 value={option}
                 readOnly="true"
+                label="Selected option :-  "
               />
-              {Object.values(text)?.map((opt, i) => {
-                return (
-                  <React.Fragment key={i}>
-                    <label htmlFor={i + 1}>
-                      <input
-                        type="radio"
-                        name="opions"
-                        id={i + 1}
-                        onChange={(e) => handleOptionChange(e)}
-                        value={opt}
-                      />
-                      <input
-                        type="text"
-                        name="option_Answer1"
-                        placeholder="Enter option 1 answer"
-                        value={opt}
-                        id={i + 1}
-                        onChange={(e) => handelAnswer(e)}
-                      />{" "}
-                    </label>
-                  </React.Fragment>
-                );
-              })}
             </div>
 
             <CustomButton

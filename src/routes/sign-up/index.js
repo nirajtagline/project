@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserSignUpDetails } from "../../redux/actions/userAuth";
-import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 
@@ -102,12 +101,12 @@ const SignUp = () => {
         return "Email is invalid, email should be xyz@abcd.xyz";
       }
     } else if (key === "password") {
-      const passwordRegex = /^[0-9]{10,10}$/;
+      const passwordRegex = /^[0-9]{8,16}$/;
 
       if (!value && value.trim() === "") {
         return "Password is required";
       } else if (passwordRegex.test(value)) {
-        return "Password is invalid, password should be number and maximum 9 character.";
+        return "Password is invalid, password should be number and minimum 8 character and maximum 16 character.";
       }
     } else return;
   };
@@ -133,17 +132,12 @@ const SignUp = () => {
   return (
     <div className="sign-up-page-wrapper">
       <h2 className="form-heading">Signup here</h2>
-      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
+
+      <CustomForm handleSubmit={(e) => handleSubmit(e)} buttonText="Sign up">
         {loginFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
-        <CustomButton
-          type="submit"
-          className="submit-form"
-          buttonText="Sign up"
-        />
       </CustomForm>
-
       <div>
         <Link className="auth-link" to="/">
           Login

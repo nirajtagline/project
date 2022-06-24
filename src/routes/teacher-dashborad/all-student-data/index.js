@@ -18,7 +18,7 @@ const AllStudentData = () => {
   return (
     <div className="student-list-table-wrapper">
       <Table
-        tableHeadData={["Status", "name", "email", "id"]}
+        tableHeadData={["Id", "Email", "Name", "Status"]}
         tableData={data}
       />
     </div>

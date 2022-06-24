@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { forgotUserPassword } from "../../redux/actions/userAuth";
-import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import "./forgot-password.scss";
@@ -67,15 +66,14 @@ const ForgotPassword = () => {
   return (
     <div className="forgot-password-page-wrapper">
       <h2 className="form-heading">Forgot Password</h2>
-      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
+
+      <CustomForm
+        handleSubmit={(e) => handleSubmit(e)}
+        buttonText="Submit email"
+      >
         {forgotPasswordFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
-        <CustomButton
-          type="submit"
-          className="submit-form"
-          buttonText="Submit email"
-        />
       </CustomForm>
 
       <div>

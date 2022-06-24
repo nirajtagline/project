@@ -77,6 +77,7 @@ export const getVarifiedStudentsData = () => async (dispatch) => {
         "access-token": `${localStorage.getItem("user-token")}`,
       },
     })
+
     .then((res) => {
       dispatch(fetchVarifiedStudentsDataSuccess(res.data));
     })

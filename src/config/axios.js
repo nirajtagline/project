@@ -7,20 +7,21 @@ axios.defaults.baseURL = "https://nodejsexamination.herokuapp.com/";
 //   timeout: 100000,
 // });
 
-// request inceptors for taking token
+// // request inceptors for taking token
 // axiosInstance.interceptors.request.use(
-//     config => {
-//       config.headers.authorization = `bearer ${localStorage.getItem(
-//         "user-token")}`
-//       return config;
-//     },
-//     error => Promise.reject(error),
-//   );
+//   (config) => {
+//     config.headers["Authorization"] = `Bearer ${localStorage.getItem(
+//       "user-token",
+//     )}`;
+//     return config;
+//   },
+//   (error) => Promise.reject(error),
+// );
 
-// response inceptors for handling response
+// // response inceptors for handling response
 // axiosInstance.interceptors.response.use(
 //   (response) => {
-//     if (response.data.status === "token_expired") {
+//     if (response.data.status === "jwt_expired") {
 //       localStorage.clear();
 //       window.location.href = "/";
 //       return;

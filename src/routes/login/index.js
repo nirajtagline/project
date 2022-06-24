@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserLoginDetails } from "../../redux/actions/userAuth";
-import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import "./login.scss";
@@ -70,12 +69,12 @@ const Login = () => {
         return "Email is invalid, email should be xyz@abcd.xyz";
       }
     } else if (key === "password") {
-      const passwordRegex = /^[0-9]{10}$/;
+      const passwordRegex = /^[0-9]{8,16}$/;
 
       if (!value && value.trim() === "") {
         return "Password is required";
       } else if (!passwordRegex.test(value)) {
-        return "Password is invalid, password should be number and maximum 9 character.";
+        return "Password is invalid, password should be number and minimum 8 character and maximum 16 character.";
       }
     } else return;
   };
@@ -99,15 +98,11 @@ const Login = () => {
   return (
     <div className="login-page-wrapper">
       <h2 className="form-heading">Login here</h2>
-      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
+
+      <CustomForm handleSubmit={(e) => handleSubmit(e)} buttonText="Login">
         {loginFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
-        <CustomButton
-          type="submit"
-          className="submit-form"
-          buttonText="Login"
-        />
       </CustomForm>
       <div>
         <Link className="auth-link" to="/forgot-password">

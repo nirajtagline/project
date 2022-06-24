@@ -13,13 +13,14 @@ const Table = ({ tableHeadData, tableData, link }) => {
             })}
           </tr>
           {tableData?.map((student, i) => {
-            const { status, _id, name, email } = student;
+            const { _id } = student;
             return (
               <tr key={i}>
-                <td>{status}</td>
-                <td>{name}</td>
-                <td>{email}</td>
-                <td>{_id}</td>
+                {Object.keys(student)
+                  .sort()
+                  .map((data, i) => {
+                    return <td key={i}>{student[data]}</td>;
+                  })}
 
                 {link ? (
                   <td>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserPasswordReset } from "../../redux/actions/userAuth";
-import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import "./reset-password.scss";
@@ -60,7 +59,7 @@ const ResetPassword = () => {
 
   const checkValidations = (key, value) => {
     if (key === "oldPassword" || key === "Password") {
-      const passwordRegex = /^[0-9]{10}$/;
+      const passwordRegex = /^[0-9]{9}$/;
 
       if (!value && value.trim() === "") {
         return "Password is required";
@@ -68,7 +67,7 @@ const ResetPassword = () => {
         return "Password is invalid, password should be number and maximum 9 character.";
       }
     } else if (key === "ConfirmPassword") {
-      const passwordRegex = /^[0-9]{10}$/;
+      const passwordRegex = /^[0-9]{9}$/;
 
       if (!value && value.trim() === "") {
         return "Confirm Password is required";
@@ -100,15 +99,10 @@ const ResetPassword = () => {
   return (
     <div className="login-page-wrapper">
       <h2 className="form-heading">Reset password</h2>
-      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
+      <CustomForm handleSubmit={(e) => handleSubmit(e)} buttonText="Submit">
         {resetFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
-        <CustomButton
-          type="submit"
-          className="submit-form"
-          buttonText="Submit"
-        />
       </CustomForm>
 
       <span>{userPasswordReset?.message}</span>

@@ -5,6 +5,7 @@ import {
   createdExamBody,
 } from "../../../redux/actions/exam";
 import CustomButton from "../../../shared/Button/CustomButton";
+import InputField from "../../../shared/InputField/InputField";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import "./create-exam.scss";
 
@@ -95,106 +96,104 @@ const CreateExam = () => {
         ""
       ) : (
         <>
-          <input
+          <InputField
             type="text"
-            name="subjectName"
             placeholder="Enter subject name"
-            onChange={(e) => handleChange(e)}
-            value={examForm?.subjectName}
-          />{" "}
-          <input
+            name="subjectName"
+            handleChange={(e) => handleChange(e)}
+          />
+          <InputField
             type="text"
             placeholder="Enter question"
+            name="subjectName"
+            handleChange={(e) => handleSetQuestions(e)}
             value={question}
-            onChange={handleSetQuestions}
           />
           <label className="text-radio" htmlFor="options1">
-            {" "}
-            <input
+            <InputField
               type="radio"
               name="options"
               id="opt-ans-1"
-              onChange={(e) => handelAnswer(e)}
+              handleChange={(e) => handelAnswer(e)}
               value={optionAnswer["opt-ans-1"]}
-            />{" "}
-            <input
+            />
+            <InputField
               type="text"
               name="option_Answer1"
               placeholder="Enter option 1 answer"
               value={optionAnswer["opt-ans-1"]}
               id="opt-ans-1"
-              onChange={(e) => handelAnswer(e, option.key)}
+              handleChange={(e) => handelAnswer(e, option.key)}
             />
           </label>
           <label className="text-radio" htmlFor="options2">
-            <input
+            <InputField
               type="radio"
               name="options"
               id="opt-ans-2"
-              onChange={(e) => handelAnswer(e)}
+              handleChange={(e) => handelAnswer(e)}
               value={optionAnswer["opt-ans-2"]}
-            />{" "}
-            <input
+            />
+            <InputField
               type="text"
               name="option_Answer2"
               placeholder="Enter option 2 answer"
               value={optionAnswer["opt-ans-2"]}
               id="opt-ans-2"
-              onChange={(e) => handelAnswer(e, option.key)}
+              handleChange={(e) => handelAnswer(e, option.key)}
             />
           </label>
           <label className="text-radio" htmlFor="options3">
-            <input
+            <InputField
               type="radio"
               name="options"
               id="opt-ans-3"
-              onChange={(e) => handelAnswer(e)}
+              handleChange={(e) => handelAnswer(e)}
               value={optionAnswer["opt-ans-3"]}
-            />{" "}
-            <input
+            />
+            <InputField
               type="text"
               name="option_Answer3"
               placeholder="Enter option 3 answer"
               value={optionAnswer["opt-ans-3"]}
               id="opt-ans-3"
-              onChange={(e) => handelAnswer(e, option.key)}
+              handleChange={(e) => handelAnswer(e, option.key)}
             />
           </label>
           <label className="text-radio" htmlFor="options4">
-            <input
+            <InputField
               type="radio"
               name="options"
               id="opt-ans-4"
-              onChange={(e) => handelAnswer(e)}
+              handleChange={(e) => handelAnswer(e)}
               value={optionAnswer["opt-ans-4"]}
-            />{" "}
-            <input
+            />
+            <InputField
               type="text"
               name="option_Answer4"
               placeholder="Enter option 4 answer"
               value={optionAnswer["opt-ans-4"]}
               id="opt-ans-4"
-              onChange={(e) => handelAnswer(e, option.key)}
-            />{" "}
-          </label>{" "}
-          <input
+              handleChange={(e) => handelAnswer(e, option.key)}
+            />
+          </label>
+          <InputField
             type="text"
             placeholder="Select answer"
-            value={option?.answer}
             readOnly="true"
+            value={option?.answer}
           />
           {examForm?.notes?.length === 2 ? (
             ""
           ) : (
             <div>
-              {" "}
-              <input
+              <InputField
                 type="text"
                 name="note"
                 placeholder="Notes"
-                onChange={(e) => handleChange(e)}
-                value={examForm?.note}
+                handleChange={(e) => handleChange(e)}
               />
+
               <CustomButton
                 onClick={() => handleAddNotes(examForm?.note)}
                 className="submit-form"
@@ -214,6 +213,7 @@ const CreateExam = () => {
                   !!examForm?.subjectName &&
                   !!question &&
                   !!option &&
+                  !!option?.answer &&
                   !!examForm?.notes?.length
                     ? false
                     : true
@@ -222,6 +222,7 @@ const CreateExam = () => {
                   !!examForm?.subjectName &&
                   !!question &&
                   !!option &&
+                  !!option?.answer &&
                   !!examForm?.notes?.length
                     ? "submit-form"
                     : "submit-form disable"

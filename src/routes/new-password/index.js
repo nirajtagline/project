@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
 import { forgotUserPassword } from "../../redux/actions/userAuth";
-import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import "./new-password.scss";
@@ -49,15 +48,15 @@ const NewPassword = () => {
 
   const checkValidations = (key, value) => {
     if (key === "Password") {
-      const passwordRegex = /^[0-9]{10}$/;
+      const passwordRegex = /^[0-9]{8,16}$/;
 
       if (!value && value.trim() === "") {
         return "Password is required";
       } else if (!passwordRegex.test(value)) {
-        return "Password is invalid, password should be number and maximum 9 character.";
+        return "Password is invalid, password should be number and minimum 8 character and maximum 16 character.";
       }
     } else if (key === "ConfirmPassword") {
-      const passwordRegex = /^[0-9]{10}$/;
+      const passwordRegex = /^[0-9]{8,16}$/;
 
       if (!value && value.trim() === "") {
         return "Confirm Password is required";
@@ -65,7 +64,7 @@ const NewPassword = () => {
         !passwordRegex.test(value) &&
         formData?.ConfirmPassword === formData?.Password
       ) {
-        return "Password is invalid, password should be number and maximum 9 character and match with new password.";
+        return "Password is invalid, password should be number and minimum 8 character and maximum 16 character and match with new password.";
       }
     } else return;
   };
@@ -89,15 +88,13 @@ const NewPassword = () => {
   return (
     <div className="login-page-wrapper">
       <h2 className="form-heading">New password</h2>
-      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
+      <CustomForm
+        handleSubmit={(e) => handleSubmit(e)}
+        buttonText="Update password"
+      >
         {newPasswordFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
-        <CustomButton
-          type="submit"
-          className="submit-form"
-          buttonText="Update password"
-        />
       </CustomForm>
 
       <div>

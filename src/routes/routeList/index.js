@@ -1,8 +1,10 @@
 import React from "react";
 import { lazy } from "react";
-import EditExamDetails from "../teacher-dashborad/edit-exam-details";
 const AllStudentData = lazy(() =>
   import("../teacher-dashborad/all-student-data")
+);
+const EditExamDetails = lazy(() =>
+  import("../teacher-dashborad/edit-exam-details")
 );
 const VarifiedStudentData = lazy(() =>
   import("../teacher-dashborad/varified-student-data")
