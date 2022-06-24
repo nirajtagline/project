@@ -17,9 +17,9 @@ const AllExamStudent = () => {
     <div className="exam-student-wrapper">
       <TableWithMultiData
         tableHeadData={[
+          "Exam id",
           "Subject name",
           "Email",
-          "Exam id",
           "Notes",
           "Give exam",
         ]}

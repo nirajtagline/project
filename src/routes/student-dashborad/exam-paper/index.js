@@ -40,7 +40,7 @@ const ExamPaper = () => {
         <h2>{examPaperData?.message ? examPaperData?.message : ""}</h2>
 
         <TableWithMultiData
-          tableHeadData={["Question", "Answer", "Options"]}
+          tableHeadData={["Question Id", "Question", "Options"]}
           tableData={examPaperData?.data}
           isRadio={true}
           handleOptChange={(e) => handleOptChange(e)}

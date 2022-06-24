@@ -21,23 +21,18 @@ const TableWithMultiData = ({
             })}
           </tr>
           {tableData?.map((que, index) => {
-            const {
-              question = "",
-              answer = "",
-              options = "",
-              email = "",
-              subjectName = "",
-              _id = "",
-              notes = [],
-              Result = [],
-            } = que;
+            const { options = [], _id = "", notes = [], Result = [] } = que;
             return (
               <tr key={index}>
-                {question ? <td>{question} </td> : ""}
-                {answer ? <td>{answer} </td> : ""}
-                {subjectName ? <td>{subjectName} </td> : ""}
-                {email ? <td>{email} </td> : ""}
-                {_id ? <td>{_id} </td> : ""}
+                {Object.keys(que)
+                  .filter(
+                    (flt) =>
+                      flt !== "options" && flt !== "notes" && flt !== "Result"
+                  )
+                  .map((data) => {
+                    return <td>{que[data]} </td>;
+                  })}
+
                 {!!options.length &&
                   options.map((opt, i) => {
                     return (
@@ -78,25 +73,17 @@ const TableWithMultiData = ({
                   <td>
                     <p>Result</p>
                     {Result?.map((res, id) => {
-                      const { subjectName, _id, rank, score, resultStatus } =
-                        res;
                       return (
                         <React.Fragment key={id}>
-                          <tr>
-                            <td>{resultStatus}</td>
-                          </tr>
-                          <tr>
-                            <td>{subjectName}</td>
-                          </tr>
-                          <tr>
-                            <td>{_id}</td>
-                          </tr>
-                          <tr>
-                            <td>{rank}</td>
-                          </tr>
-                          <tr>
-                            <td>{score}</td>
-                          </tr>
+                          {Object.keys(res).map((ele, i) => {
+                            return (
+                              <tr key={i}>
+                                <td>
+                                  {ele} - {res[ele]}
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </React.Fragment>
                       );
                     })}
