@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getStudentsDetails } from "../../../redux/actions";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 const StudentDetails = () => {
@@ -20,6 +20,9 @@ const StudentDetails = () => {
         tableHeadData={["Student id", "Name", "Email", "Result"]}
         tableData={data}
       />
+      <hr />
+
+      <Link to="/varified-student-data">Back</Link>
     </div>
   );
 };

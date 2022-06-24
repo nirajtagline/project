@@ -10,7 +10,7 @@ import {
   UPDATE_STUDENT_PROFILE_FAILURE,
 } from "../constants/actionTypes";
 
-import axios from "../../config/axios";
+import axiosInstance from "../../config/axios";
 
 // Fetch exam for student data
 export const fetchExamForStudentsDetails = (payload) => {
@@ -35,10 +35,8 @@ export const fetchExamForStudentsDetailsFailure = (payload) => {
 export const getExamForStudentsDetails = () => async (dispatch) => {
   dispatch(fetchExamForStudentsDetails());
 
-  axios
-    .get("/student/studentExam", {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .get("/student/studentExam")
     .then((res) => {
       dispatch(fetchExamForStudentsDetailsSuccess(res.data.data));
     })
@@ -72,12 +70,8 @@ export const fetchStudentProfileFailure = (payload) => {
 export const getStudentProfile = () => async (dispatch) => {
   dispatch(fetchStudentProfile());
 
-  axios
-    .get("/student/getStudentDetail", {
-      headers: {
-        "access-token": `${localStorage.getItem("user-token")}`,
-      },
-    })
+  axiosInstance
+    .get("/student/getStudentDetail")
     .then((res) => {
       dispatch(fetchStudentProfileSuccess(res.data.data));
     })
@@ -109,12 +103,8 @@ export const updateStudentProfileFailure = (payload) => {
 export const updateStudentProfileData = (body) => async (dispatch) => {
   dispatch(updateStudentProfile());
 
-  axios
-    .put("/student/studentProfile", body, {
-      headers: {
-        "access-token": `${localStorage.getItem("user-token")}`,
-      },
-    })
+  axiosInstance
+    .put("/student/studentProfile", body)
     .then((res) => {
       dispatch(updateStudentProfileSuccess(res.data.data));
     })

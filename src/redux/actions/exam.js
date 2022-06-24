@@ -23,7 +23,7 @@ import {
   SUBMIT_EXAM_PAPER_FAILURE,
 } from "../constants/actionTypes";
 
-import axios from "../../config/axios";
+import axiosInstance from "../../config/axios";
 
 // Create exam
 export const createExamForStudent = (payload) => {
@@ -47,10 +47,8 @@ export const createExamForStudentFailure = (payload) => {
 
 export const getCreateExamForStudent = (body) => async (dispatch) => {
   dispatch(createExamForStudent());
-  axios
-    .post("/dashboard/Teachers/Exam", body, {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .post("/dashboard/Teachers/Exam", body)
     .then((res) => {
       dispatch(createExamForStudentSuccess(res));
     })
@@ -89,10 +87,8 @@ export const viewExamForStudentFailure = (payload) => {
 export const getViewExamForStudent = () => async (dispatch) => {
   dispatch(viewExamForStudent());
 
-  axios
-    .get("/dashboard/Teachers/viewExam", {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .get("/dashboard/Teachers/viewExam")
     .then((res) => {
       dispatch(viewExamForStudentSuccess(res.data.data));
     })
@@ -125,10 +121,8 @@ export const deleteExamForStudentFailure = (payload) => {
 export const getDeleteExamForStudent = (id) => async (dispatch) => {
   dispatch(viewExamForStudent());
 
-  axios
-    .delete(`/dashboard/Teachers/deleteExam?id=${id}`, {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .delete(`/dashboard/Teachers/deleteExam?id=${id}`)
     .then((res) => {
       dispatch(deleteExamForStudentSuccess(res.data.data));
     })
@@ -161,10 +155,8 @@ export const viewExamInDetailsFailure = (payload) => {
 export const getViewExamInDetails = (id) => async (dispatch) => {
   dispatch(viewExamInDetails());
 
-  axios
-    .get(`/dashboard/Teachers/examDetail?id=${id}`, {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .get(`/dashboard/Teachers/examDetail?id=${id}`)
     .then((res) => {
       dispatch(viewExamInDetailsSuccess(res.data.data));
       return;
@@ -197,10 +189,8 @@ export const editExamForStudentFailure = (payload) => {
 
 export const getEditExamForStudent = (id, body) => async (dispatch) => {
   dispatch(editExamForStudent());
-  axios
-    .put(`/dashboard/Teachers/editExam?id=${id}`, body, {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .put(`/dashboard/Teachers/editExam?id=${id}`, body)
     .then((res) => {
       dispatch(editExamForStudentSuccess(res));
     })
@@ -233,10 +223,8 @@ export const fetchExamPaperFailure = (payload) => {
 export const getExamPaper = (id) => async (dispatch) => {
   dispatch(fetchExamPaper());
 
-  axios
-    .get(`/student/examPaper?id=${id}`, {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .get(`/student/examPaper?id=${id}`)
     .then((res) => {
       dispatch(fetchExamPaperSuccess(res.data));
     })
@@ -267,10 +255,8 @@ export const submitExamFailure = (payload) => {
 
 export const submitExamOfStudent = (body, id) => async (dispatch) => {
   dispatch(submitExam());
-  axios
-    .post(`student/giveExam?id=${id}`, body, {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .post(`student/giveExam?id=${id}`, body)
     .then((res) => {
       dispatch(submitExamSuccess(res));
       return;

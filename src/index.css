@@ -31,6 +31,11 @@ th, td {
   border: 1px solid black;
   padding: 3px 10px;
 }
+tr{
+  border: 1px solid black;
+  padding: 3px 10px;
+
+}
 
 .m{
   margin: 0;

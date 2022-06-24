@@ -13,7 +13,7 @@ import {
   USER_RESET_PASSWORD_FAILURE,
 } from "../constants/actionTypes";
 
-import axios from "../../config/axios";
+import axiosInstance from "../../config/axios";
 
 // fetch login data
 export const fetchUserLoginDetails = (payload) => {
@@ -37,7 +37,7 @@ export const fetchUserLoginDetailsFailure = (payload) => {
 
 export const getUserLoginDetails = (body) => async (dispatch) => {
   dispatch(fetchUserLoginDetails());
-  axios
+  axiosInstance
     .post("/users/Login", body)
     .then((res) => {
       dispatch(fetchUserLoginDetailsSuccess(res.data));
@@ -74,7 +74,7 @@ export const forgotUserPassword =
   async (dispatch) => {
     dispatch(userForgotPassword());
 
-    axios
+    axiosInstance
       .post(
         `/users/ForgotPassword${
           searchParams ? `/Verify?token=${searchParams}` : ""
@@ -112,7 +112,7 @@ export const userSignUpFailure = (payload) => {
 export const getUserSignUpDetails = (body) => async (dispatch) => {
   dispatch(userSignUp());
 
-  axios
+  axiosInstance
     .post("/users/SignUp", body)
     .then((res) => {
       dispatch(userSignUpSuccess(res.data));
@@ -146,10 +146,8 @@ export const userPasswordResetFailure = (payload) => {
 export const getUserPasswordReset = (body) => async (dispatch) => {
   dispatch(userPasswordReset());
 
-  axios
-    .post("/users/ResetPassword", body, {
-      headers: { "access-token": `${localStorage.getItem("user-token")}` },
-    })
+  axiosInstance
+    .post("/users/ResetPassword", body)
     .then((res) => {
       dispatch(userPasswordResetSuccess(res.data));
     })

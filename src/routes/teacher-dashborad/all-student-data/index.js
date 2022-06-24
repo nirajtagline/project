@@ -12,7 +12,7 @@ const AllStudentData = () => {
   } = useSelector(({ allStudentData }) => allStudentData);
 
   useEffect(() => {
-    dispatch(getfetchAllStudentsData());
+    !data.length && dispatch(getfetchAllStudentsData());
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

@@ -10,7 +10,7 @@ import {
   FETCH_STUDENTS_DETAILS_FAILURE,
 } from "../constants/actionTypes";
 
-import axios from "../../config/axios";
+import axiosInstance from "../../config/axios";
 
 // Fetch all student data
 export const fetchAllStudentsData = (payload) => {
@@ -35,12 +35,8 @@ export const fetchAllStudentsDataFailure = (payload) => {
 export const getfetchAllStudentsData = () => async (dispatch) => {
   dispatch(fetchAllStudentsData());
 
-  axios
-    .get("/dashboard/Teachers", {
-      headers: {
-        "access-token": `${localStorage.getItem("user-token")}`,
-      },
-    })
+  axiosInstance
+    .get("/dashboard/Teachers")
     .then((res) => {
       dispatch(fetchAllStudentsDataSuccess(res.data));
     })
@@ -71,12 +67,8 @@ export const fetchVarifiedStudentsDataFailure = (payload) => {
 export const getVarifiedStudentsData = () => async (dispatch) => {
   dispatch(fetchVarifiedStudentsData());
 
-  axios
-    .get("/dashboard/Teachers/StudentForExam", {
-      headers: {
-        "access-token": `${localStorage.getItem("user-token")}`,
-      },
-    })
+  axiosInstance
+    .get("/dashboard/Teachers/StudentForExam")
 
     .then((res) => {
       dispatch(fetchVarifiedStudentsDataSuccess(res.data));
@@ -109,12 +101,8 @@ export const fetchStudentsDetailsFailure = (payload) => {
 export const getStudentsDetails = (studentId) => async (dispatch) => {
   dispatch(fetchStudentsDetails());
 
-  axios
-    .get(`/dashboard/Teachers/viewStudentDetail?id=${studentId}`, {
-      headers: {
-        "access-token": `${localStorage.getItem("user-token")}`,
-      },
-    })
+  axiosInstance
+    .get(`/dashboard/Teachers/viewStudentDetail?id=${studentId}`)
     .then((res) => {
       dispatch(fetchStudentsDetailsSuccess(res.data));
     })

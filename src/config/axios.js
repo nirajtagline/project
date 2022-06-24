@@ -1,41 +1,37 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://nodejsexamination.herokuapp.com/";
+let axiosInstance = axios.create({
+  baseURL: "https://nodejsexamination.herokuapp.com/",
+  timeout: 100000,
+});
 
-// let axiosInstance = axios.create({
-//   baseURL: "hhttps://nodejsexamination.herokuapp.com/",
-//   timeout: 100000,
-// });
+// request inceptors for taking token
+axiosInstance.interceptors.request.use(
+  (config) => {
+    config.headers["access-token"] = `${localStorage.getItem("user-token")}`;
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// // request inceptors for taking token
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     config.headers["Authorization"] = `Bearer ${localStorage.getItem(
-//       "user-token",
-//     )}`;
-//     return config;
-//   },
-//   (error) => Promise.reject(error),
-// );
+// response inceptors for handling response
+axiosInstance.interceptors.response.use(
+  (response) => {
+    if (response.data.status === "jwt_expired") {
+      localStorage.clear();
+      window.location.href = "/";
+      return;
+    }
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      localStorage.clear();
+      window.location.href = "/";
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 
-// // response inceptors for handling response
-// axiosInstance.interceptors.response.use(
-//   (response) => {
-//     if (response.data.status === "jwt_expired") {
-//       localStorage.clear();
-//       window.location.href = "/";
-//       return;
-//     }
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response.status === 401) {
-//       localStorage.clear();
-//       window.location.href = "/";
-//     } else {
-//       return Promise.reject(error);
-//     }
-//   },
-// );
-
-export default axios;
+export default axiosInstance;
