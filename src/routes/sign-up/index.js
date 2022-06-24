@@ -1,29 +1,131 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserSignUpDetails } from "../../redux/actions/userAuth";
+import CustomButton from "../../shared/Button/CustomButton";
+import CustomForm from "../../shared/Form/Form";
+import InputField from "../../shared/InputField/InputField";
 
 import "./sign-up.scss";
+
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+};
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const isLogged = localStorage.getItem("user-token");
+  const [formData, setFormData] = useState(initialState);
+  const [error, setError] = useState({});
+
   useEffect(() => {
     if (isLogged) {
       navigate("/");
     }
-  }, [isLogged, navigate]);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  }, [isLogged]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onSubmit = (data) => {
-    dispatch(getUserSignUpDetails(data)).then(() => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setError({ ...error, [name]: checkValidations(name, value) });
+  };
+
+  const loginFormData = [
+    {
+      label: "Name",
+      name: "name",
+      value: formData?.name,
+      type: "text",
+      isShowValidate: true,
+      placeholder: "Enter your name",
+      handleChange,
+      message: error?.name,
+    },
+    {
+      label: "Email",
+      name: "email",
+      value: formData?.email,
+      type: "text",
+      isShowValidate: true,
+      placeholder: "Enter your email",
+      handleChange,
+      message: error?.email,
+    },
+    {
+      label: "Password",
+      name: "password",
+      value: formData?.password,
+      placeholder: "Enter your password",
+      type: "password",
+      isShowValidate: true,
+      handleChange,
+      message: error?.password,
+    },
+    {
+      label: "Teacher",
+      name: "role",
+      value: "Teacher",
+      type: "radio",
+      isShowValidate: false,
+      handleChange,
+    },
+    {
+      label: "Student",
+      name: "role",
+      value: "Student",
+      type: "radio",
+      checked: true,
+      isShowValidate: false,
+      handleChange,
+    },
+  ];
+
+  const checkValidations = (key, value) => {
+    if (key === "name") {
+      const nameRegex = /[a-z]{3,10}/;
+
+      if (!value && value.trim() === "") {
+        return "Name is required";
+      } else if (!nameRegex.test(value)) {
+        return "Name should be maximum 3 character";
+      }
+    }
+    if (key === "email") {
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!value && value.trim() === "") {
+        return "Email is required";
+      } else if (!emailRegex.test(value)) {
+        return "Email is invalid, email should be xyz@abcd.xyz";
+      }
+    } else if (key === "password") {
+      const passwordRegex = /^[0-9]{10,10}$/;
+
+      if (!value && value.trim() === "") {
+        return "Password is required";
+      } else if (passwordRegex.test(value)) {
+        return "Password is invalid, password should be number and maximum 9 character.";
+      }
+    } else return;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validateError = {};
+    Object.keys(formData).forEach((key) => {
+      const message = checkValidations(key, formData[key]);
+      if (message) {
+        validateError[key] = message;
+      }
+    });
+    if (Object.keys(validateError).length) {
+      setError({ ...error, ...validateError });
+      return;
+    }
+    dispatch(getUserSignUpDetails(formData)).then(() => {
       navigate("/");
     });
   };
@@ -31,83 +133,17 @@ const SignUp = () => {
   return (
     <div className="sign-up-page-wrapper">
       <h2 className="form-heading">Signup here</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
-          placeholder="Name"
-          {...register("name", {
-            required: true,
-            pattern: /[a-z]{2,10}/,
-          })}
+      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
+        {loginFormData.map((data, id) => {
+          return <InputField key={id} {...data} />;
+        })}
+        <CustomButton
+          type="submit"
+          className="submit-form"
+          buttonText="Sign up"
         />
-        {errors.email && errors.email.type === "required" && (
-          <span>Please enter name.</span>
-        )}
-        {errors.email && errors.email.type === "pattern" && (
-          <span>The name should have morethan 2 character.</span>
-        )}
-        <input
-          type="text"
-          placeholder="Email"
-          {...register("email", {
-            required: true,
-            pattern: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-          })}
-        />
-        {errors.email && errors.email.type === "required" && (
-          <span>Please enter email.</span>
-        )}
-        {errors.email && errors.email.type === "pattern" && (
-          <span>
-            The email address entered is invalid, please check the formatting
-            (e.g. email@domain.com)
-          </span>
-        )}
-        <input
-          type="password"
-          placeholder="Password"
-          {...register("password", {
-            required: true,
-            pattern: /^[0-9]{8,16}$/,
-          })}
-        />
-        {errors.password && errors.password.type === "required" && (
-          <span>Please enter password.</span>
-        )}
-        {errors.password && errors.email.password === "pattern" && (
-          <span>Password length min 8 character and max 16 character.</span>
-        )}
+      </CustomForm>
 
-        <div className="form-radio-button">
-          <label>Teacher</label>
-          <input
-            type="radio"
-            name="user_role"
-            value="teacher"
-            placeholder="Role"
-            {...register("role", {
-              required: true,
-            })}
-          />
-          <label>Student</label>
-
-          <input
-            type="radio"
-            name="user_role"
-            placeholder="Role"
-            value="student"
-            {...register("role", {
-              required: true,
-            })}
-            checked={true}
-          />
-          {errors.Role && errors.Role.type === "required" && (
-            <span>Please select your role.</span>
-          )}
-        </div>
-
-        <input className="submit-form" type="submit" />
-      </form>
       <div>
         <Link className="auth-link" to="/">
           Login

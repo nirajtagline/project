@@ -5,12 +5,17 @@ const InputField = ({
   handleChange,
   isShowValidate,
   message,
+  className = "",
   ...props
 }) => {
   return (
     <div>
       {label ? <label>{label}</label> : null}
-      <input {...props} onChange={(e) => handleChange && handleChange(e)} />
+      <input
+        {...props}
+        className={className}
+        onChange={(e) => handleChange && handleChange(e)}
+      />
       {isShowValidate ? <span>{message}</span> : null}
     </div>
   );

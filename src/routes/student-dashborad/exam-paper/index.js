@@ -27,8 +27,6 @@ const ExamPaper = () => {
     } else setAnswerSheet([...answerSheet, answer]);
   };
 
-  console.log("answerSheet", answerSheet);
-
   const handleSubmitPaper = () => {
     dispatch(submitExamOfStudent(answerSheet, examId)).then(() => {
       Navigate("/all-exam-student");

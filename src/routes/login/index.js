@@ -45,6 +45,7 @@ const Login = () => {
       value: formData?.email,
       type: "text",
       isShowValidate: true,
+      placeholder: "Enter your email",
       handleChange,
       message: error?.email,
     },
@@ -52,6 +53,7 @@ const Login = () => {
       label: "Password",
       name: "password",
       value: formData?.password,
+      placeholder: "Enter your password",
       type: "password",
       isShowValidate: true,
       handleChange,
@@ -61,9 +63,20 @@ const Login = () => {
 
   const checkValidations = (key, value) => {
     if (key === "email") {
-      return !value && value.trim() === "" ? "Email is required" : "";
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!value && value.trim() === "") {
+        return "Email is required";
+      } else if (!emailRegex.test(value)) {
+        return "Email is invalid, email should be xyz@abcd.xyz";
+      }
     } else if (key === "password") {
-      return !value && value.trim() === "" ? "Password is required" : "";
+      const passwordRegex = /^[0-9]{10}$/;
+
+      if (!value && value.trim() === "") {
+        return "Password is required";
+      } else if (!passwordRegex.test(value)) {
+        return "Password is invalid, password should be number and maximum 9 character.";
+      }
     } else return;
   };
 

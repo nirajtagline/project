@@ -33,6 +33,12 @@
     &:hover{
         border: 1px solid #ec5990;
     }
+   
+    }
+    input[type="radio" i]  {
+        display: inline-block;
+        height: 20px !important;
+        width: 20px !important;
     }
     .submit-form{
         background-color: #ec5990;
