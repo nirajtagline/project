@@ -82,6 +82,7 @@ const authReducer = (state = initialState, action) => {
     case USER_SIGN_UP_FAILURE:
       return {
         ...state,
+        userSignUpDetailsLoading: false,
         userSignUpDetailsError: action.payload.error,
       };
     // User password reset

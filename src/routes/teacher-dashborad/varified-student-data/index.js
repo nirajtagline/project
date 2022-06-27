@@ -7,14 +7,13 @@ import Loader from "../../../shared/Loader";
 const VarifiedStudentData = () => {
   const dispatch = useDispatch();
 
-  const {
-    varifiedStudentList: { data = [] },
-    varifiedStudentListLoading,
-  } = useSelector(({ allStudentData }) => allStudentData);
+  const { varifiedStudentList, varifiedStudentListLoading } = useSelector(
+    ({ allStudentData }) => allStudentData
+  );
 
   useEffect(() => {
-    !data?.length && dispatch(getVarifiedStudentsData());
-  }, [data?.length]); // eslint-disable-line react-hooks/exhaustive-deps
+    !varifiedStudentList?.data?.length && dispatch(getVarifiedStudentsData());
+  }, [varifiedStudentList?.data?.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tableLink = {
     path: "student-details",
@@ -23,9 +22,15 @@ const VarifiedStudentData = () => {
 
   return !varifiedStudentListLoading ? (
     <div className="student-list-table-wrapper">
+      {varifiedStudentList?.message ? (
+        <h2>{varifiedStudentList?.message}</h2>
+      ) : (
+        ""
+      )}
+
       <Table
         tableHeadData={["Id", "Email", "Name", "Status"]}
-        tableData={data}
+        tableData={varifiedStudentList?.data}
         link={tableLink}
       />
     </div>

@@ -17,7 +17,7 @@ axiosInstance.interceptors.request.use(
 // response inceptors for handling response
 axiosInstance.interceptors.response.use(
   (response) => {
-    if (response.data.status === "jwt_expired") {
+    if (response.data.message === "jwt_expired") {
       localStorage.clear();
       window.location.href = "/";
       return;

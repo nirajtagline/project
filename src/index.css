@@ -30,6 +30,7 @@ table {
 th, td {
   border: 1px solid black;
   padding: 3px 10px;
+  vertical-align: baseline;
 }
 tr{
   border: 1px solid black;

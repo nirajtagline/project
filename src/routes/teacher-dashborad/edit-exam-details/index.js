@@ -31,7 +31,7 @@ const EditExamDetails = () => {
   const selectedExamForEdit =
     viewExamData && viewExamData?.find((exam) => exam._id === examId);
 
-  const [examDuration, setExamDuration] = useState({});
+  const [examDuration, setExamDuration] = useState({ 0: "", 1: "" });
   const [option, setOption] = useState("");
   const [optionIndex, setOptionIndex] = useState();
   const [text, setText] = useState({ 1: "", 2: "", 3: "", 4: "" });
@@ -89,7 +89,16 @@ const EditExamDetails = () => {
 
   const handleUpdateNotes = () => {
     if (!Object.values(examDuration)?.length) return;
-    setExamForm({ ...examForm, notes: Object.values(examDuration) });
+    const cloneExamDuration = { ...examDuration };
+
+    if (cloneExamDuration[0] === "") {
+      cloneExamDuration[0] = examForm?.notes[0];
+    }
+    if (cloneExamDuration[1] === "") {
+      cloneExamDuration[1] = examForm?.notes[1];
+    }
+
+    setExamForm({ ...examForm, notes: Object.values(cloneExamDuration) });
   };
 
   const handleDuration = (e) => {
@@ -191,7 +200,7 @@ const EditExamDetails = () => {
                 type="text"
                 placeholder="Selected answer"
                 value={option}
-                readOnly="true"
+                readOnly={true}
                 label="Selected option :-  "
               />
             </div>

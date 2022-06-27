@@ -29,8 +29,8 @@ const TableWithMultiData = ({
                     (flt) =>
                       flt !== "options" && flt !== "notes" && flt !== "Result"
                   )
-                  .map((data) => {
-                    return <td>{que[data]} </td>;
+                  .map((data, i) => {
+                    return <td key={i}>{que[data]} </td>;
                   })}
 
                 {!!options.length &&

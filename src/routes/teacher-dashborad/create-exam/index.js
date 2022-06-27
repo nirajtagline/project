@@ -43,6 +43,13 @@ const CreateExam = () => {
       answer: option?.answer,
       options: Object.values(optionAnswer),
     };
+    if (
+      createExamBody?.questions
+        ?.map((ele) => ele.question)
+        .includes(paperObj?.question)
+    )
+      return;
+
     cloneQuestions.push(paperObj);
     setExamForm({
       ...examForm,
@@ -66,10 +73,21 @@ const CreateExam = () => {
     setOptionAnswer({});
   };
 
+  const isUnique = (value, index, array) => {
+    return array.indexOf(value) === array.lastIndexOf(value);
+  };
+
   const handelAnswer = (e, key) => {
     const { value, id, name } = e.target;
-    name === "options" && setOption({ answer: value, key: id });
-    id === key && setOption({ answer: value, key: id });
+
+    if (name === "options" && Object.values(optionAnswer).every(isUnique)) {
+      setOption({ answer: value, key: id });
+    } else {
+      setOption({ answer: "", key: "" });
+    }
+    if (id === key) {
+      setOption({ answer: value, key: id });
+    }
     setOptionAnswer({ ...optionAnswer, ...{ [id]: value } });
   };
   const handleChange = ({ target }) => {
@@ -190,7 +208,7 @@ const CreateExam = () => {
           <InputField
             type="text"
             placeholder="Select answer"
-            readOnly="true"
+            readOnly={true}
             value={option?.answer}
           />
           {examForm?.notes?.length === 2 ? (
@@ -203,7 +221,12 @@ const CreateExam = () => {
                 placeholder="Notes"
                 handleChange={(e) => handleChange(e)}
               />
-              {examForm?.notes?.length > 1 ? "" : <h4>Please add 2 notes.</h4>}
+
+              {examForm?.notes?.length === 1 ? (
+                <h4>Please add 1 more notes.</h4>
+              ) : (
+                <h4>Please add 2 notes.</h4>
+              )}
               <CustomButton
                 onClick={() => handleAddNotes(examForm?.note)}
                 className="submit-form"
@@ -219,7 +242,7 @@ const CreateExam = () => {
                 buttonText="Add question"
                 onClick={handleAddQuestions}
                 type="button"
-                isDisable={
+                disabled={
                   !!examForm?.subjectName &&
                   !!question &&
                   !!option &&
@@ -245,13 +268,13 @@ const CreateExam = () => {
                 buttonText=" Clear form"
               />
             </>
-          )}{" "}
+          )}
         </>
       )}
       {examForm?.questions?.length > 14 ? (
         ""
       ) : (
-        <h4>Please add maximum 15 questions.</h4>
+        <h4>Please add maximum 15 unique questions.</h4>
       )}
       <CustomButton
         type="button"
@@ -261,13 +284,13 @@ const CreateExam = () => {
             ? "submit-form"
             : "submit-form disable"
         }
-        isDisable={examForm?.questions?.length > 14 ? false : true}
+        disabled={examForm?.questions?.length > 14 ? false : true}
         buttonText="Create exam"
       />
 
       <hr />
       <div>
-        <li>subject name : {createExamBody?.subjectName}</li>{" "}
+        <li>subject name : {createExamBody?.subjectName}</li>
         {createExamBody?.notes?.map((time, i) => {
           return <li key={i}>{time} </li>;
         })}

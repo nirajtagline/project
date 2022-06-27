@@ -12,6 +12,7 @@ const initialState = {
   name: "",
   email: "",
   password: "",
+  role: "Student",
 };
 
 const SignUp = () => {
@@ -20,7 +21,9 @@ const SignUp = () => {
 
   const isLogged = localStorage.getItem("user-token");
 
-  const { userSignUpDetailsLoading } = useSelector(({ userAuth }) => userAuth);
+  const { userSignUpDetailsLoading, userSignUpDetails } = useSelector(
+    ({ userAuth }) => userAuth
+  );
 
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
@@ -127,10 +130,10 @@ const SignUp = () => {
       setError({ ...error, ...validateError });
       return;
     }
-    dispatch(getUserSignUpDetails(formData)).then(() => {
-      navigate("/");
-    });
+    dispatch(getUserSignUpDetails(formData));
   };
+
+  console.log("userSignUpDetails :>> ", userSignUpDetails);
 
   return !userSignUpDetailsLoading ? (
     <div className="sign-up-page-wrapper">
@@ -141,6 +144,11 @@ const SignUp = () => {
           return <InputField key={id} {...data} />;
         })}
       </CustomForm>
+      {userSignUpDetails?.message ? (
+        <span className="error-message">{userSignUpDetails?.message}</span>
+      ) : (
+        ""
+      )}
       <div>
         <Link className="auth-link" to="/">
           Back to Login

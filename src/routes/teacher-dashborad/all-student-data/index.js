@@ -8,20 +8,20 @@ import "./student-list-table.scss";
 const AllStudentData = () => {
   const dispatch = useDispatch();
 
-  const {
-    allStudentsList: { data = [] },
-    allStudentsListLoading,
-  } = useSelector(({ allStudentData }) => allStudentData);
+  const { allStudentsList, allStudentsListLoading } = useSelector(
+    ({ allStudentData }) => allStudentData
+  );
 
   useEffect(() => {
-    !data.length && dispatch(getfetchAllStudentsData());
+    !allStudentsList?.data?.length && dispatch(getfetchAllStudentsData());
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return !allStudentsListLoading ? (
     <div className="student-list-table-wrapper">
+      {allStudentsList?.message ? <h2>{allStudentsList?.message}</h2> : ""}
       <Table
         tableHeadData={["Id", "Email", "Name", "Status"]}
-        tableData={data}
+        tableData={allStudentsList?.data}
       />
     </div>
   ) : (
