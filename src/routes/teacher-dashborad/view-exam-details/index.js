@@ -1,12 +1,25 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { getViewExamInDetails } from "../../../redux/actions/exam";
+import Loader from "../../../shared/Loader";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 
 const ViewExamDetails = () => {
-  const { viewExamInDetailsData } = useSelector(({ exam }) => exam);
+  const { examId } = useParams();
+  const dispatch = useDispatch();
 
-  return (
+  const { viewExamInDetailsData, viewExamInDetailsDataLoading } = useSelector(
+    ({ exam }) => exam
+  );
+
+  useEffect(() => {
+    !viewExamInDetailsData?.questions?.length &&
+      dispatch(getViewExamInDetails(examId));
+  }, [viewExamInDetailsData?.questions]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return !viewExamInDetailsDataLoading ? (
     <div>
       <h2>Exam in details view</h2>
 
@@ -21,6 +34,8 @@ const ViewExamDetails = () => {
         </Link>
       </div>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

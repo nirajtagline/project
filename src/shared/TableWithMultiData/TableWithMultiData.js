@@ -7,7 +7,7 @@ const TableWithMultiData = ({
   tableData,
   link,
   isRadio = false,
-  handleOptChange,
+  handleChange,
 }) => {
   const { path = "", linkText = "" } = link || false;
 
@@ -41,7 +41,7 @@ const TableWithMultiData = ({
                         {isRadio ? (
                           <InputField
                             type="radio"
-                            onChange={(e) => handleOptChange(e)}
+                            handleChange={(e) => handleChange(e)}
                             name={_id}
                             id={opt}
                           />
@@ -72,18 +72,21 @@ const TableWithMultiData = ({
                 {!!Result.length && (
                   <td>
                     <p>Result</p>
+
                     {Result?.map((res, id) => {
                       return (
                         <React.Fragment key={id}>
-                          {Object.keys(res).map((ele, i) => {
-                            return (
-                              <tr key={i}>
-                                <td>
-                                  {ele} - {res[ele]}
-                                </td>
-                              </tr>
-                            );
-                          })}
+                          {Object.keys(res)
+                            .filter((ele) => ele !== "studentAnswer")
+                            .map((ele, i) => {
+                              return (
+                                <tr key={i}>
+                                  <td>
+                                    {ele} - {res[ele]}
+                                  </td>
+                                </tr>
+                              );
+                            })}
                         </React.Fragment>
                       );
                     })}

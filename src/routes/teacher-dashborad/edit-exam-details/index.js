@@ -5,10 +5,12 @@ import {
   getEditExamForStudent,
   getViewExamForStudent,
   getViewExamInDetails,
+  editExamForStudentSuccess,
 } from "../../../redux/actions/exam";
 import CustomButton from "../../../shared/Button/CustomButton";
 import InputField from "../../../shared/InputField/InputField";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
+import Loader from "../../../shared/Loader";
 import "./edit-exam.scss";
 
 const EditExamDetails = () => {
@@ -19,6 +21,9 @@ const EditExamDetails = () => {
     viewExamData,
     isEditExamData,
     isFetchExamInDetailsData,
+    editExamDataLoading,
+    editExamData,
+    viewExamDataLoading,
   } = useSelector(({ exam }) => exam);
 
   const initialState = { subjectName: "", questions: [], notes: [] };
@@ -35,6 +40,7 @@ const EditExamDetails = () => {
   useEffect(() => {
     dispatch(getViewExamForStudent());
     dispatch(getViewExamInDetails(examId));
+    dispatch(editExamForStudentSuccess({}));
   }, [isEditExamData, isFetchExamInDetailsData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -54,10 +60,8 @@ const EditExamDetails = () => {
 
   const handleOptionChange = (e) => {
     const { value, id } = e.target;
-    const { questions } = viewExamInDetailsData;
-    setOption(value);
-    setText({ ...text, ...{ [id]: value } });
-    questions[optionIndex].answer = value;
+    !!value && setOption(value);
+    !!value && setText({ ...text, ...{ [id]: value } });
   };
 
   const handelAnswer = (e) => {
@@ -67,6 +71,8 @@ const EditExamDetails = () => {
   const handleUpdateOptions = () => {
     const { questions } = examForm;
     questions[optionIndex].options = Object.values(text);
+    questions[optionIndex].answer = option;
+
     setExamForm({
       ...examForm,
     });
@@ -92,9 +98,14 @@ const EditExamDetails = () => {
     setExamDuration({ ...examDuration, ...{ [id]: value } });
   };
 
-  return (
+  return !editExamDataLoading && !viewExamDataLoading ? (
     <div>
       <h2>Edit exam</h2>
+      {editExamData?.data?.message ? (
+        <h2>{editExamData?.data?.message}</h2>
+      ) : (
+        ""
+      )}
       <li>subject name : {selectedExamForEdit?.subjectName}</li>{" "}
       <InputField
         type="text"
@@ -187,9 +198,10 @@ const EditExamDetails = () => {
 
             <CustomButton
               type="button"
-              className="submit-form"
+              className={!!option ? "submit-form" : "submit-form disable"}
               onClick={handleUpdateOptions}
               buttonText="Update options"
+              disabled={!!option ? false : true}
             />
           </>
         ) : (
@@ -213,6 +225,8 @@ const EditExamDetails = () => {
         tableData={examForm?.questions}
       />
     </div>
+  ) : (
+    <Loader />
   );
 };
 export default EditExamDetails;

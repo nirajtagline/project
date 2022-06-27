@@ -2,24 +2,26 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getVarifiedStudentsData } from "../../../redux/actions";
 import Table from "../../../shared/Table/Table";
+import Loader from "../../../shared/Loader";
 
 const VarifiedStudentData = () => {
   const dispatch = useDispatch();
 
   const {
     varifiedStudentList: { data = [] },
+    varifiedStudentListLoading,
   } = useSelector(({ allStudentData }) => allStudentData);
 
   useEffect(() => {
-    dispatch(getVarifiedStudentsData());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    !data?.length && dispatch(getVarifiedStudentsData());
+  }, [data?.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tableLink = {
     path: "student-details",
     linkText: "Student Details",
   };
 
-  return (
+  return !varifiedStudentListLoading ? (
     <div className="student-list-table-wrapper">
       <Table
         tableHeadData={["Id", "Email", "Name", "Status"]}
@@ -27,6 +29,8 @@ const VarifiedStudentData = () => {
         link={tableLink}
       />
     </div>
+  ) : (
+    <Loader />
   );
 };
 

@@ -106,7 +106,7 @@ export const updateStudentProfileData = (body) => async (dispatch) => {
   axiosInstance
     .put("/student/studentProfile", body)
     .then((res) => {
-      dispatch(updateStudentProfileSuccess(res.data.data));
+      dispatch(updateStudentProfileSuccess(res.data));
     })
     .catch((error) => {
       dispatch(updateStudentProfileFailure({ error: error.data.message }));

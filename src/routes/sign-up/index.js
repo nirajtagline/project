@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserSignUpDetails } from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
+import Loader from "../../shared/Loader";
 
 import "./sign-up.scss";
 
@@ -18,6 +19,9 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const isLogged = localStorage.getItem("user-token");
+
+  const { userSignUpDetailsLoading } = useSelector(({ userAuth }) => userAuth);
+
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
 
@@ -92,8 +96,7 @@ const SignUp = () => {
       } else if (!nameRegex.test(value)) {
         return "Name should be maximum 3 character";
       }
-    }
-    if (key === "email") {
+    } else if (key === "email") {
       const emailRegex = /\S+@\S+\.\S+/;
       if (!value && value.trim() === "") {
         return "Email is required";
@@ -105,7 +108,7 @@ const SignUp = () => {
 
       if (!value && value.trim() === "") {
         return "Password is required";
-      } else if (passwordRegex.test(value)) {
+      } else if (!passwordRegex.test(value)) {
         return "Password is invalid, password should be number and minimum 8 character and maximum 16 character.";
       }
     } else return;
@@ -129,7 +132,7 @@ const SignUp = () => {
     });
   };
 
-  return (
+  return !userSignUpDetailsLoading ? (
     <div className="sign-up-page-wrapper">
       <h2 className="form-heading">Signup here</h2>
 
@@ -140,10 +143,12 @@ const SignUp = () => {
       </CustomForm>
       <div>
         <Link className="auth-link" to="/">
-          Login
+          Back to Login
         </Link>
       </div>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

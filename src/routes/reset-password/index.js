@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserPasswordReset } from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
+import Loader from "../../shared/Loader";
 import "./reset-password.scss";
 
 const initialState = {
@@ -13,15 +14,17 @@ const initialState = {
 
 const ResetPassword = () => {
   const dispatch = useDispatch();
-  const { userPasswordReset } = useSelector(({ userAuth }) => userAuth);
+  const { userPasswordReset, userPasswordResetLoading } = useSelector(
+    ({ userAuth }) => userAuth
+  );
 
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
     setError({ ...error, [name]: checkValidations(name, value) });
+    setFormData({ ...formData, [name]: value });
   };
 
   const resetFormData = [
@@ -59,23 +62,22 @@ const ResetPassword = () => {
 
   const checkValidations = (key, value) => {
     if (key === "oldPassword" || key === "Password") {
-      const passwordRegex = /^[0-9]{9}$/;
+      const passwordRegex = /^[0-9]{8,16}$/;
 
       if (!value && value.trim() === "") {
         return "Password is required";
       } else if (!passwordRegex.test(value)) {
-        return "Password is invalid, password should be number and maximum 9 character.";
+        return "Password is invalid, password should be number and manimum 8 character and maximum 16 character.";
       }
     } else if (key === "ConfirmPassword") {
-      const passwordRegex = /^[0-9]{9}$/;
+      const passwordRegex = /^[0-9]{8,16}$/;
 
       if (!value && value.trim() === "") {
         return "Confirm Password is required";
-      } else if (
-        !passwordRegex.test(value) &&
-        formData?.ConfirmPassword === formData?.Password
-      ) {
-        return "Password is invalid, password should be number and maximum 9 character and match with new password.";
+      } else if (!passwordRegex.test(value)) {
+        return "Password is invalid, password should be number and manimum 8 character and maximum 16 character and match with new password.";
+      } else if (value !== formData?.Password) {
+        return "Password is invalid, password should be match with new password.";
       }
     } else return;
   };
@@ -96,7 +98,7 @@ const ResetPassword = () => {
     dispatch(getUserPasswordReset(formData));
   };
 
-  return (
+  return !userPasswordResetLoading ? (
     <div className="login-page-wrapper">
       <h2 className="form-heading">Reset password</h2>
       <CustomForm handleSubmit={(e) => handleSubmit(e)} buttonText="Submit">
@@ -107,6 +109,8 @@ const ResetPassword = () => {
 
       <span>{userPasswordReset?.message}</span>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

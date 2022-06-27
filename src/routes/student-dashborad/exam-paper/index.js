@@ -4,11 +4,17 @@ import { Navigate, useParams } from "react-router";
 import { getExamPaper, submitExamOfStudent } from "../../../redux/actions";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import CustomButton from "../../../shared/Button/CustomButton";
+import Loader from "../../../shared/Loader";
 
 const ExamPaper = () => {
   const dispatch = useDispatch();
   const { examId } = useParams();
-  const { examPaperData, submitExamData } = useSelector(({ exam }) => exam);
+  const {
+    examPaperData,
+    submitExamData,
+    submitExamDataLoading,
+    examPaperLoading,
+  } = useSelector(({ exam }) => exam);
 
   useEffect(() => {
     dispatch(getExamPaper(examId));
@@ -20,6 +26,7 @@ const ExamPaper = () => {
     const cloneData = [...answerSheet];
     const { name, id } = target;
     let answer = { question: name, answer: id };
+
     if (cloneData.map((data) => data.question).includes(name)) {
       const index = cloneData.findIndex((data) => data.question === name);
       cloneData[index] = answer;
@@ -33,29 +40,40 @@ const ExamPaper = () => {
     });
   };
 
-  return (
+  return !submitExamDataLoading && !examPaperLoading ? (
     <div className="flex">
-      <h2>{submitExamData?.message ? submitExamData?.message : ""}</h2>
+      <h2>
+        {submitExamData?.data?.message ? submitExamData?.data?.message : ""}
+      </h2>
       <div>
         <h2>{examPaperData?.message ? examPaperData?.message : ""}</h2>
 
-        <TableWithMultiData
-          tableHeadData={["Question Id", "Question", "Options"]}
-          tableData={examPaperData?.data}
-          isRadio={true}
-          handleOptChange={(e) => handleOptChange(e)}
-        />
+        {!!examPaperData?.data?.length ? (
+          <>
+            <TableWithMultiData
+              tableHeadData={["Question Id", "Question", "Options"]}
+              tableData={examPaperData?.data}
+              isRadio={true}
+              handleChange={(e) => handleOptChange(e)}
+            />
 
-        <CustomButton
-          type="button"
-          buttonText="Submit exam paper"
-          onClick={handleSubmitPaper}
-          className={
-            !submitExamData.message ? "submit-form" : "submit-form disable"
-          }
-        />
+            <CustomButton
+              type="button"
+              buttonText="Submit exam paper"
+              onClick={handleSubmitPaper}
+              className={
+                answerSheet?.length > 6 ? "submit-form" : "submit-form disable"
+              }
+              disabled={answerSheet?.length > 6 ? false : true}
+            />
+          </>
+        ) : (
+          ""
+        )}
       </div>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

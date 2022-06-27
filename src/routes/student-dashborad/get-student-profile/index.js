@@ -6,6 +6,7 @@ import {
 } from "../../../redux/actions";
 import InputField from "../../../shared/InputField/InputField";
 import CustomForm from "../../../shared/Form/Form";
+import Loader from "../../../shared/Loader";
 
 const initialState = {
   name: "",
@@ -14,9 +15,12 @@ const initialState = {
 const StudentProfile = () => {
   const dispatch = useDispatch();
 
-  const { studentProfileData, updatedStudentProfileData } = useSelector(
-    ({ student }) => student
-  );
+  const {
+    studentProfileData,
+    updatedStudentProfileData,
+    studentProfileDataLoading,
+    updatedStudentProfileDataLoading,
+  } = useSelector(({ student }) => student);
 
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
@@ -93,7 +97,7 @@ const StudentProfile = () => {
     setFormData({ name: studentProfileData?.name });
   }, [studentProfileData?.name, updatedStudentProfileData.message]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
+  return !studentProfileDataLoading && !updatedStudentProfileDataLoading ? (
     <div>
       <h2>Student Profile</h2>
       <h3>
@@ -108,6 +112,8 @@ const StudentProfile = () => {
         })}
       </CustomForm>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

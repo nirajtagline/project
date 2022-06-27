@@ -8,18 +8,21 @@ import {
 } from "../../../redux/actions/exam";
 import CustomButton from "../../../shared/Button/CustomButton";
 import Modal from "../../../shared/Modal/Modal";
+import Loader from "../../../shared/Loader";
 
 const ViewExam = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { viewExamData, isDeleteExamData } = useSelector(({ exam }) => exam);
+  const { viewExamData, isDeleteExamData, viewExamDataLoading } = useSelector(
+    ({ exam }) => exam
+  );
 
   const [showPoppup, setShowPoppup] = useState(false);
   const [selectedExam, setSelectedExam] = useState(null);
 
   useEffect(() => {
-    dispatch(getViewExamForStudent());
+    !viewExamData?.length && dispatch(getViewExamForStudent());
   }, [isDeleteExamData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteExam = (id) => {
@@ -44,7 +47,7 @@ const ViewExam = () => {
     dispatch(getDeleteExamForStudent(id));
   };
 
-  return (
+  return !viewExamDataLoading ? (
     <div>
       <h2>Exam data</h2>
       <table>
@@ -53,50 +56,56 @@ const ViewExam = () => {
             <th>Subject Name</th>
             <th>Exam Id</th>
             <th>Email</th>
-            <th>Time</th>
+            <th>Notes</th>
           </tr>
-          {viewExamData?.map((data, i) => {
-            const { subjectName, _id, email, notes } = data;
-            return (
-              <tr key={i}>
-                <td>{subjectName}</td>
-                <td>{_id}</td>
-                <td>{email}</td>
+          {!!viewExamData?.length ? (
+            <>
+              {viewExamData?.map((data, i) => {
+                const { subjectName, _id, email, notes } = data;
+                return (
+                  <tr key={i}>
+                    <td>{subjectName}</td>
+                    <td>{_id}</td>
+                    <td>{email}</td>
 
-                {notes?.map((note, i) => {
-                  return (
-                    <tr key={i}>
-                      <td>{note}</td>
-                    </tr>
-                  );
-                })}
-                <td>
-                  <CustomButton
-                    type="button"
-                    onClick={() => handleViewExamInDetails(_id)}
-                    className="submit-form mt-0 mb-0"
-                    buttonText="View exam Details"
-                  />
-                </td>
-                <td>
-                  <CustomButton
-                    type="button"
-                    onClick={() => handleEditExam(_id)}
-                    className="submit-form mt-0 mb-0"
-                    buttonText=" Edit exam"
-                  />
-                </td>
-                <td>
-                  <CustomButton
-                    type="button"
-                    onClick={() => handleDeleteExam(_id)}
-                    className="submit-form mt-0 mb-0"
-                    buttonText="   Delete exam"
-                  />
-                </td>
-              </tr>
-            );
-          })}
+                    {notes?.map((note, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>{note}</td>
+                        </tr>
+                      );
+                    })}
+                    <td>
+                      <CustomButton
+                        type="button"
+                        onClick={() => handleViewExamInDetails(_id)}
+                        className="submit-form mt-0 mb-0"
+                        buttonText="View exam Details"
+                      />
+                    </td>
+                    <td>
+                      <CustomButton
+                        type="button"
+                        onClick={() => handleEditExam(_id)}
+                        className="submit-form mt-0 mb-0"
+                        buttonText=" Edit exam"
+                      />
+                    </td>
+                    <td>
+                      <CustomButton
+                        type="button"
+                        onClick={() => handleDeleteExam(_id)}
+                        className="submit-form mt-0 mb-0"
+                        buttonText="   Delete exam"
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </>
+          ) : (
+            <h3>No data available....</h3>
+          )}
         </tbody>
       </table>
       <Modal
@@ -108,6 +117,8 @@ const ViewExam = () => {
         handleConfirm={(id) => handleConfirm(id)}
       />
     </div>
+  ) : (
+    <Loader />
   );
 };
 

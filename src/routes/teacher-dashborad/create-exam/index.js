@@ -7,13 +7,16 @@ import {
 import CustomButton from "../../../shared/Button/CustomButton";
 import InputField from "../../../shared/InputField/InputField";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
+import Loader from "../../../shared/Loader";
 import "./create-exam.scss";
 
 const initialState = { subjectName: "", questions: [], notes: [] };
 
 const CreateExam = () => {
   const dispatch = useDispatch();
-  const { createExamBody } = useSelector(({ exam }) => exam);
+  const { createExamBody, createExamDataLoading, createExamData } = useSelector(
+    ({ exam }) => exam
+  );
 
   const [question, setQuestion] = useState("");
   const [option, setOption] = useState({ answer: "", key: null });
@@ -22,8 +25,9 @@ const CreateExam = () => {
 
   const handleSubmit = () => {
     const { subjectName, notes, questions } = examForm;
-    if (examForm?.questions?.length > 14) return;
+    if (examForm?.questions?.length < 15) return;
     dispatch(getCreateExamForStudent({ subjectName, notes, questions }));
+    setExamForm(initialState);
   };
 
   const handleSetQuestions = (e) => {
@@ -85,8 +89,14 @@ const CreateExam = () => {
       note: "",
     });
   };
-  return (
+
+  return !createExamDataLoading ? (
     <div>
+      {!!createExamData?.data?.message ? (
+        <h2>{createExamData?.data?.message}</h2>
+      ) : (
+        ""
+      )}
       {examForm?.questions?.length > 14 ? (
         <h2>Please click create exam button for submit exam paper</h2>
       ) : (
@@ -193,7 +203,7 @@ const CreateExam = () => {
                 placeholder="Notes"
                 handleChange={(e) => handleChange(e)}
               />
-
+              {examForm?.notes?.length > 1 ? "" : <h4>Please add 2 notes.</h4>}
               <CustomButton
                 onClick={() => handleAddNotes(examForm?.note)}
                 className="submit-form"
@@ -267,6 +277,8 @@ const CreateExam = () => {
         />
       </div>
     </div>
+  ) : (
+    <Loader />
   );
 };
 export default CreateExam;

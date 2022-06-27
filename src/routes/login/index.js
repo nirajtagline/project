@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUserLoginDetails } from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
+import Loader from "../../shared/Loader";
 import "./login.scss";
 
 const initialState = {
@@ -18,7 +19,9 @@ const Login = () => {
   const userRole = localStorage.getItem("user-role");
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
-  const { userLoginDetails } = useSelector(({ userAuth }) => userAuth);
+  const { userLoginDetails, userLoginDetailsLoading } = useSelector(
+    ({ userAuth }) => userAuth
+  );
 
   useEffect(() => {
     if (isLogged) {
@@ -70,7 +73,6 @@ const Login = () => {
       }
     } else if (key === "password") {
       const passwordRegex = /^[0-9]{8,16}$/;
-
       if (!value && value.trim() === "") {
         return "Password is required";
       } else if (!passwordRegex.test(value)) {
@@ -95,7 +97,7 @@ const Login = () => {
     dispatch(getUserLoginDetails(formData));
   };
 
-  return (
+  return !userLoginDetailsLoading ? (
     <div className="login-page-wrapper">
       <h2 className="form-heading">Login here</h2>
 
@@ -111,6 +113,8 @@ const Login = () => {
       </div>
       <span>{userLoginDetails?.message ? userLoginDetails?.message : ""}</span>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

@@ -4,6 +4,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { forgotUserPassword } from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
+import Loader from "../../shared/Loader";
 import "./new-password.scss";
 
 const initialState = {
@@ -13,7 +14,9 @@ const initialState = {
 const NewPassword = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams()[0];
-  const { forgotPassword } = useSelector(({ userAuth }) => userAuth);
+  const { forgotPassword, forgotPasswordLoading } = useSelector(
+    ({ userAuth }) => userAuth
+  );
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
 
@@ -60,11 +63,10 @@ const NewPassword = () => {
 
       if (!value && value.trim() === "") {
         return "Confirm Password is required";
-      } else if (
-        !passwordRegex.test(value) &&
-        formData?.ConfirmPassword === formData?.Password
-      ) {
-        return "Password is invalid, password should be number and minimum 8 character and maximum 16 character and match with new password.";
+      } else if (!passwordRegex.test(value)) {
+        return "Password is invalid, password should be number and manimum 8 character and maximum 16 character and match with new password.";
+      } else if (value !== formData?.Password) {
+        return "Password is invalid, password should be match with new password.";
       }
     } else return;
   };
@@ -85,7 +87,7 @@ const NewPassword = () => {
     dispatch(forgotUserPassword(formData, searchParams[1]));
   };
 
-  return (
+  return !forgotPasswordLoading ? (
     <div className="login-page-wrapper">
       <h2 className="form-heading">New password</h2>
       <CustomForm
@@ -102,8 +104,10 @@ const NewPassword = () => {
           Forgot Password
         </Link>
       </div>
-      <span>{forgotPassword?.message}</span>
+      <span>{forgotPassword?.data?.message}</span>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

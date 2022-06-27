@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { forgotUserPassword } from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
+import Loader from "../../shared/Loader";
 import "./forgot-password.scss";
 
 const initialState = {
@@ -12,7 +13,9 @@ const initialState = {
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
-  const { forgotPassword } = useSelector(({ userAuth }) => userAuth);
+  const { forgotPassword, forgotPasswordLoading } = useSelector(
+    ({ userAuth }) => userAuth
+  );
 
   const [error, setError] = useState({});
   const [formData, setFormData] = useState(initialState);
@@ -63,7 +66,7 @@ const ForgotPassword = () => {
     dispatch(forgotUserPassword(formData));
   };
 
-  return (
+  return !forgotPasswordLoading ? (
     <div className="forgot-password-page-wrapper">
       <h2 className="form-heading">Forgot Password</h2>
 
@@ -82,8 +85,10 @@ const ForgotPassword = () => {
         </Link>
       </div>
 
-      <span>{forgotPassword?.message}</span>
+      <span className="message-green">{forgotPassword?.data?.message}</span>
     </div>
+  ) : (
+    <Loader />
   );
 };
 
