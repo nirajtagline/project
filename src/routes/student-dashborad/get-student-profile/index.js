@@ -7,6 +7,7 @@ import {
 import InputField from "../../../shared/InputField/InputField";
 import CustomForm from "../../../shared/Form/Form";
 import Loader from "../../../shared/Loader";
+import { Validation } from "../../../Validation";
 
 const initialState = {
   name: "",
@@ -28,7 +29,7 @@ const StudentProfile = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setError({ ...error, [name]: checkValidations(name, value) });
+    setError({ ...error, [name]: Validation(name, value) });
   };
 
   const studentFormData = [
@@ -66,21 +67,11 @@ const StudentProfile = () => {
     },
   ];
 
-  const checkValidations = (key, value) => {
-    if (key === "name") {
-      if (!value && value.trim() === "") {
-        return "Name is required";
-      } else if (value < 3) {
-        return "Name must be more than 3 character";
-      }
-    } else return;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const validateError = {};
     Object.keys(formData).forEach((key) => {
-      const message = checkValidations(key, formData[key]);
+      const message = Validation(key, formData[key]);
       if (message) {
         validateError[key] = message;
       }

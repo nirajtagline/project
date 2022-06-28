@@ -77,15 +77,18 @@ const CreateExam = () => {
   };
 
   const handleClearForm = () => {
-    setExamForm({
-      ...examForm,
-      questions: [],
-      subjectName: "",
-      notes: [],
+    setQuestion({ que: "", err: "" });
+    setOption({ answer: "", key: null });
+    setOptionAnswer({
+      "opt-ans-1": "",
+      "opt-ans-2": "",
+      "opt-ans-3": "",
+      "opt-ans-4": "",
     });
-    setQuestion({});
-    setOption({});
-    setOptionAnswer({});
+    let radio = document.querySelector(
+      "input[type=radio][name=options]:checked"
+    );
+    radio.checked = false;
   };
 
   const isUnique = (value, index, array) => {
@@ -131,7 +134,8 @@ const CreateExam = () => {
         ""
       )}
 
-      {createExamData?.data?.statusCode === 500 ? (
+      {createExamData?.data?.statusCode === 500 ||
+      createExamData?.data?.statusCode === 401 ? (
         ""
       ) : (
         <>
@@ -149,6 +153,8 @@ const CreateExam = () => {
                 placeholder="Enter subject name"
                 name="subjectName"
                 handleChange={(e) => handleChange(e)}
+                disable={createExamBody?.subjectName ? true : false}
+                value={createExamBody?.subjectName || examForm?.subjectName}
               />
               <InputField
                 type="text"
@@ -162,96 +168,56 @@ const CreateExam = () => {
               ) : (
                 ""
               )}
-              <label className="text-radio" htmlFor="options1">
-                <InputField
-                  type="radio"
-                  name="options"
-                  id="opt-ans-1"
-                  handleChange={(e) => handelAnswer(e)}
-                  value={optionAnswer["opt-ans-1"]}
-                />
-                <InputField
-                  type="text"
-                  name="option_Answer1"
-                  placeholder="Enter option 1 answer"
-                  value={optionAnswer["opt-ans-1"]}
-                  id="opt-ans-1"
-                  handleChange={(e) => handelAnswer(e, option.key)}
-                />
-              </label>
-              <label className="text-radio" htmlFor="options2">
-                <InputField
-                  type="radio"
-                  name="options"
-                  id="opt-ans-2"
-                  handleChange={(e) => handelAnswer(e)}
-                  value={optionAnswer["opt-ans-2"]}
-                />
-                <InputField
-                  type="text"
-                  name="option_Answer2"
-                  placeholder="Enter option 2 answer"
-                  value={optionAnswer["opt-ans-2"]}
-                  id="opt-ans-2"
-                  handleChange={(e) => handelAnswer(e, option.key)}
-                />
-              </label>
-              <label className="text-radio" htmlFor="options3">
-                <InputField
-                  type="radio"
-                  name="options"
-                  id="opt-ans-3"
-                  handleChange={(e) => handelAnswer(e)}
-                  value={optionAnswer["opt-ans-3"]}
-                />
-                <InputField
-                  type="text"
-                  name="option_Answer3"
-                  placeholder="Enter option 3 answer"
-                  value={optionAnswer["opt-ans-3"]}
-                  id="opt-ans-3"
-                  handleChange={(e) => handelAnswer(e, option.key)}
-                />
-              </label>
-              <label className="text-radio" htmlFor="options4">
-                <InputField
-                  type="radio"
-                  name="options"
-                  id="opt-ans-4"
-                  handleChange={(e) => handelAnswer(e)}
-                  value={optionAnswer["opt-ans-4"]}
-                />
-                <InputField
-                  type="text"
-                  name="option_Answer4"
-                  placeholder="Enter option 4 answer"
-                  value={optionAnswer["opt-ans-4"]}
-                  id="opt-ans-4"
-                  handleChange={(e) => handelAnswer(e, option.key)}
-                />
-              </label>
+              {[1, 2, 3, 4]?.map((ele, i) => {
+                return (
+                  <label
+                    className="text-radio"
+                    htmlFor={`options${i + 1}`}
+                    key={i}
+                  >
+                    <InputField
+                      type="radio"
+                      name="options"
+                      id={`opt-ans-${i + 1}`}
+                      handleChange={(e) => handelAnswer(e)}
+                      value={optionAnswer[`opt-ans-${i + 1}`]}
+                    />
+                    <InputField
+                      type="text"
+                      name="option_Answer1"
+                      placeholder={`Enter option ${i + 1} answer`}
+                      value={optionAnswer[`opt-ans-${i + 1}`]}
+                      id={`opt-ans-${i + 1}`}
+                      handleChange={(e) => handelAnswer(e, option.key)}
+                    />
+                  </label>
+                );
+              })}
+
               <InputField
                 type="text"
                 placeholder="Select answer"
                 readOnly={true}
                 value={option?.answer}
               />
-              {examForm?.notes?.length === 2 ? (
+              {createExamBody?.notes?.length === 2 ||
+              examForm?.notes?.length === 2 ? (
                 ""
               ) : (
                 <div>
+                  {createExamBody?.notes?.length === 1 ||
+                  examForm?.notes?.length === 1 ? (
+                    <h4>Please add exam time below.</h4>
+                  ) : (
+                    <h4>Please add exam duration below.</h4>
+                  )}
                   <InputField
                     type="text"
                     name="note"
-                    placeholder="Notes"
+                    placeholder="Exam note"
                     handleChange={(e) => handleChange(e)}
                   />
 
-                  {examForm?.notes?.length === 1 ? (
-                    <h4>Please add 1 more notes.</h4>
-                  ) : (
-                    <h4>Please add 2 notes.</h4>
-                  )}
                   <CustomButton
                     onClick={() => handleAddNotes(examForm?.note)}
                     className="submit-form"
@@ -268,20 +234,24 @@ const CreateExam = () => {
                     onClick={handleAddQuestions}
                     type="button"
                     disabled={
-                      !!examForm?.subjectName &&
+                      (!!examForm?.subjectName ||
+                        !!createExamBody?.subjectName) &&
                       !!question?.que &&
                       !!option &&
                       !!option?.answer &&
-                      !!examForm?.notes?.length
+                      (!!examForm?.notes?.length ||
+                        !!createExamBody?.notes?.length)
                         ? false
                         : true
                     }
                     className={
-                      !!examForm?.subjectName &&
+                      (!!examForm?.subjectName ||
+                        !!createExamBody?.subjectName) &&
                       !!question?.que &&
                       !!option &&
                       !!option?.answer &&
-                      !!examForm?.notes?.length
+                      (!!examForm?.notes?.length ||
+                        !!createExamBody?.notes?.length)
                         ? "submit-form"
                         : "submit-form disable"
                     }
