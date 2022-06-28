@@ -81,7 +81,7 @@ const EditExamDetails = () => {
     const { questions } = examForm;
     questions[optionIndex].options = Object.values(text);
     questions[optionIndex].answer = option;
-
+    setOptionIndex();
     setExamForm({
       ...examForm,
     });

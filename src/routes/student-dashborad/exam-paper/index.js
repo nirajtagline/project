@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import {
   getExamPaper,
   submitExamOfStudent,
@@ -26,8 +26,6 @@ const ExamPaper = () => {
     }
   }, [examId, submitExamData?.data?.statusCode]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  console.log("submitExamData :>> ", submitExamData);
-
   const [answerSheet, setAnswerSheet] = useState([]);
 
   const handleOptChange = ({ target }) => {
@@ -43,9 +41,7 @@ const ExamPaper = () => {
   };
 
   const handleSubmitPaper = () => {
-    dispatch(submitExamOfStudent(answerSheet, examId)).then(() => {
-      Navigate("/all-exam-student");
-    });
+    dispatch(submitExamOfStudent(answerSheet, examId));
   };
 
   return !submitExamDataLoading && !examPaperLoading ? (

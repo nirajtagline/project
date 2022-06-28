@@ -134,7 +134,18 @@ const createExamReducer = (state = initialState, action) => {
       };
     case UPDATE_VIEW_EXAM:
       let cloneViewExamData = [...state?.viewExamData];
-      cloneViewExamData.splice(action.payload.index, 1);
+      if (action.payload.index === undefined) {
+        let editExamIndex = cloneViewExamData?.findIndex(
+          (ele) => ele?._id === action.payload?.data?._id
+        );
+        cloneViewExamData.splice(
+          editExamIndex,
+          1,
+          action.payload?.res?.data?.data
+        );
+      } else {
+        cloneViewExamData.splice(action.payload.index, 1);
+      }
 
       return {
         ...state,

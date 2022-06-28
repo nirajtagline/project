@@ -133,8 +133,6 @@ const SignUp = () => {
     dispatch(getUserSignUpDetails(formData));
   };
 
-  console.log("userSignUpDetails :>> ", userSignUpDetails);
-
   return !userSignUpDetailsLoading ? (
     <div className="sign-up-page-wrapper">
       <h2 className="form-heading">Signup here</h2>

@@ -203,6 +203,7 @@ export const getEditExamForStudent = (id, body) => async (dispatch) => {
     .put(`/dashboard/Teachers/editExam?id=${id}`, body)
     .then((res) => {
       dispatch(editExamForStudentSuccess(res));
+      dispatch(updateViewExam({ id, res }));
     })
     .catch((error) => {
       dispatch(editExamForStudentFailure({ error: error.message }));
