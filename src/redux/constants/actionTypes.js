@@ -53,6 +53,8 @@ export const VIEW_EXAM = "VIEW_EXAM";
 export const VIEW_EXAM_SUCCESS = "VIEW_EXAM_SUCCESS";
 export const VIEW_EXAM_FAILURE = "VIEW_EXAM_FAILURE";
 
+export const UPDATE_VIEW_EXAM = "UPDATE_VIEW_EXAM";
+
 // Delete exam
 export const DELETE_EXAM = "DELETE_EXAM";
 export const DELETE_EXAM_SUCCESS = "DELETE_EXAM_SUCCESS";

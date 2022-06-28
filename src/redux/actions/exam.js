@@ -21,6 +21,7 @@ import {
   SUBMIT_EXAM_PAPER,
   SUBMIT_EXAM_PAPER_SUCCESS,
   SUBMIT_EXAM_PAPER_FAILURE,
+  UPDATE_VIEW_EXAM,
 } from "../constants/actionTypes";
 
 import axiosInstance from "../../config/axios";
@@ -83,6 +84,12 @@ export const viewExamForStudentFailure = (payload) => {
     payload: payload,
   };
 };
+export const updateViewExam = (payload) => {
+  return {
+    type: UPDATE_VIEW_EXAM,
+    payload: payload,
+  };
+};
 
 export const getViewExamForStudent = () => async (dispatch) => {
   dispatch(viewExamForStudent());
@@ -118,18 +125,21 @@ export const deleteExamForStudentFailure = (payload) => {
   };
 };
 
-export const getDeleteExamForStudent = (id) => async (dispatch) => {
-  dispatch(viewExamForStudent());
+export const getDeleteExamForStudent =
+  ({ id, index }) =>
+  async (dispatch) => {
+    dispatch(viewExamForStudent());
 
-  axiosInstance
-    .delete(`/dashboard/Teachers/deleteExam?id=${id}`)
-    .then((res) => {
-      dispatch(deleteExamForStudentSuccess(res.data.data));
-    })
-    .catch((error) => {
-      dispatch(deleteExamForStudentFailure({ error: error.message }));
-    });
-};
+    axiosInstance
+      .delete(`/dashboard/Teachers/deleteExam?id=${id}`)
+      .then((res) => {
+        dispatch(deleteExamForStudentSuccess(res.data.statusCode));
+        dispatch(updateViewExam({ id, index }));
+      })
+      .catch((error) => {
+        dispatch(deleteExamForStudentFailure({ error: error.message }));
+      });
+  };
 
 // View exam details
 export const viewExamInDetails = (payload) => {

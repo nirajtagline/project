@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   getEditExamForStudent,
   getViewExamForStudent,
@@ -15,6 +15,8 @@ import "./edit-exam.scss";
 
 const EditExamDetails = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { examId } = useParams();
   const {
     viewExamInDetailsData,
@@ -42,6 +44,13 @@ const EditExamDetails = () => {
     dispatch(getViewExamInDetails(examId));
     dispatch(editExamForStudentSuccess({}));
   }, [isEditExamData, isFetchExamInDetailsData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (editExamData?.data?.statusCode === 200) {
+      dispatch(editExamForStudentSuccess({}));
+      navigate("/view-exam");
+    }
+  }, [examId, editExamData?.data?.statusCode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const { questions } = viewExamInDetailsData || {};

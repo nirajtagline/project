@@ -21,6 +21,7 @@ import {
   SUBMIT_EXAM_PAPER,
   SUBMIT_EXAM_PAPER_SUCCESS,
   SUBMIT_EXAM_PAPER_FAILURE,
+  UPDATE_VIEW_EXAM,
 } from "../constants/actionTypes";
 
 let initialState = {
@@ -131,6 +132,15 @@ const createExamReducer = (state = initialState, action) => {
         ...state,
         deleteExamDataError: action.payload.error,
       };
+    case UPDATE_VIEW_EXAM:
+      let cloneViewExamData = [...state?.viewExamData];
+      cloneViewExamData.splice(action.payload.index, 1);
+
+      return {
+        ...state,
+        viewExamData: cloneViewExamData,
+        viewExamDataLoading: false,
+      };
 
     // Edit exam data
     case EDIT_EXAM_DETAILS:
@@ -179,7 +189,7 @@ const createExamReducer = (state = initialState, action) => {
       return {
         ...state,
         examPaperLoading: false,
-        examPaperData: action.payload,
+        examPaper: action.payload,
       };
     case FETCH_EXAM_PAPER_FAILURE:
       return {

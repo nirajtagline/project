@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useParams } from "react-router";
-import { getExamPaper, submitExamOfStudent } from "../../../redux/actions";
+import { Navigate, useNavigate, useParams } from "react-router";
+import {
+  getExamPaper,
+  submitExamOfStudent,
+  submitExamSuccess,
+} from "../../../redux/actions";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import CustomButton from "../../../shared/Button/CustomButton";
 import Loader from "../../../shared/Loader";
 
 const ExamPaper = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { examId } = useParams();
-  const {
-    examPaperData,
-    submitExamData,
-    submitExamDataLoading,
-    examPaperLoading,
-  } = useSelector(({ exam }) => exam);
+  const { examPaper, submitExamData, submitExamDataLoading, examPaperLoading } =
+    useSelector(({ exam }) => exam);
 
   useEffect(() => {
     dispatch(getExamPaper(examId));
-  }, [examId]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (submitExamData?.data?.statusCode === 200) {
+      dispatch(submitExamSuccess({}));
+      navigate("/all-exam-student");
+    }
+  }, [examId, submitExamData?.data?.statusCode]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  console.log("submitExamData :>> ", submitExamData);
 
   const [answerSheet, setAnswerSheet] = useState([]);
 
@@ -46,13 +54,13 @@ const ExamPaper = () => {
         {submitExamData?.data?.message ? submitExamData?.data?.message : ""}
       </h2>
       <div>
-        <h2>{examPaperData?.message ? examPaperData?.message : ""}</h2>
+        <h2>{examPaper?.message ? examPaper?.message : ""}</h2>
 
-        {!!examPaperData?.data?.length ? (
+        {!!examPaper?.data?.length ? (
           <>
             <TableWithMultiData
               tableHeadData={["Question Id", "Question", "Options"]}
-              tableData={examPaperData?.data}
+              tableData={examPaper?.data}
               isRadio={true}
               handleChange={(e) => handleOptChange(e)}
             />

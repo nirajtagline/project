@@ -25,9 +25,9 @@ const ViewExam = () => {
     !viewExamData?.length && dispatch(getViewExamForStudent());
   }, [isDeleteExamData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteExam = (id) => {
+  const handleDeleteExam = (id, index) => {
     setShowPoppup(true);
-    setSelectedExam(id);
+    setSelectedExam({ id, index });
   };
   const handleViewExamInDetails = (id) => {
     dispatch(getViewExamInDetails(id));
@@ -41,81 +41,87 @@ const ViewExam = () => {
   const handleCancle = () => {
     setShowPoppup(false);
   };
-  const handleConfirm = (id) => {
+  const handleConfirm = (data) => {
     setShowPoppup(false);
     setSelectedExam(null);
-    dispatch(getDeleteExamForStudent(id));
+    dispatch(getDeleteExamForStudent(data));
   };
 
   return !viewExamDataLoading ? (
     <div>
       <h2>Exam data</h2>
-      <table>
-        <tbody>
-          <tr>
-            <th>Subject Name</th>
-            <th>Exam Id</th>
-            <th>Email</th>
-            <th>Notes</th>
-          </tr>
-          {!!viewExamData?.length ? (
-            <>
-              {viewExamData?.map((data, i) => {
-                const { subjectName, _id, email, notes } = data;
-                return (
-                  <tr key={i}>
-                    <td>{subjectName}</td>
-                    <td>{_id}</td>
-                    <td>{email}</td>
+      {viewExamData?.length ? (
+        <>
+          <table>
+            <tbody>
+              <tr>
+                <th>Subject Name</th>
+                <th>Exam Id</th>
+                <th>Email</th>
+                <th>Notes</th>
+              </tr>
+              {!!viewExamData?.length ? (
+                <>
+                  {viewExamData?.map((data, i) => {
+                    const { subjectName, _id, email, notes } = data;
+                    return (
+                      <tr key={i}>
+                        <td>{subjectName}</td>
+                        <td>{_id}</td>
+                        <td>{email}</td>
 
-                    {notes?.map((note, i) => {
-                      return (
-                        <tr key={i}>
-                          <td>{note}</td>
-                        </tr>
-                      );
-                    })}
-                    <td>
-                      <CustomButton
-                        type="button"
-                        onClick={() => handleViewExamInDetails(_id)}
-                        className="submit-form mt-0 mb-0"
-                        buttonText="View exam Details"
-                      />
-                    </td>
-                    <td>
-                      <CustomButton
-                        type="button"
-                        onClick={() => handleEditExam(_id)}
-                        className="submit-form mt-0 mb-0"
-                        buttonText=" Edit exam"
-                      />
-                    </td>
-                    <td>
-                      <CustomButton
-                        type="button"
-                        onClick={() => handleDeleteExam(_id)}
-                        className="submit-form mt-0 mb-0"
-                        buttonText="   Delete exam"
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </>
-          ) : (
-            <h3>No data available....</h3>
-          )}
-        </tbody>
-      </table>
-      <Modal
-        title="Delete exam"
-        message="Are you sure want to delete ?"
-        isShow={showPoppup}
-        selectedExam={selectedExam}
-        handleCancle={handleCancle}
-        handleConfirm={(id) => handleConfirm(id)}
-      />
+                        {notes?.map((note, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{note}</td>
+                            </tr>
+                          );
+                        })}
+                        <td>
+                          <CustomButton
+                            type="button"
+                            onClick={() => handleViewExamInDetails(_id)}
+                            className="submit-form mt-0 mb-0"
+                            buttonText="View exam Details"
+                          />
+                        </td>
+                        <td>
+                          <CustomButton
+                            type="button"
+                            onClick={() => handleEditExam(_id)}
+                            className="submit-form mt-0 mb-0"
+                            buttonText=" Edit exam"
+                          />
+                        </td>
+                        <td>
+                          <CustomButton
+                            type="button"
+                            onClick={() => handleDeleteExam(_id, i)}
+                            className="submit-form mt-0 mb-0"
+                            buttonText="   Delete exam"
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </>
+              ) : (
+                <h3>No data available....</h3>
+              )}
+            </tbody>
+          </table>
+          <Modal
+            title="Delete exam"
+            message="Are you sure want to delete ?"
+            isShow={showPoppup}
+            selectedExam={selectedExam}
+            handleCancle={handleCancle}
+            handleConfirm={({ id, index }) => handleConfirm({ id, index })}
+          />
+        </>
+      ) : (
+        <h3>No exam available</h3>
+      )}
     </div>
   ) : (
     <Loader />
