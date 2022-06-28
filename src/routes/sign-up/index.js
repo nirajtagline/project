@@ -5,6 +5,7 @@ import { getUserSignUpDetails } from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
+import { Validation } from "../../Validation";
 
 import "./sign-up.scss";
 
@@ -32,12 +33,15 @@ const SignUp = () => {
     if (isLogged) {
       navigate("/");
     }
-  }, [isLogged]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (userSignUpDetails?.statusCode === 200) {
+      navigate("/");
+    }
+  }, [isLogged, userSignUpDetails?.statusCode === 200]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setError({ ...error, [name]: checkValidations(name, value) });
+    setError({ ...error, [name]: Validation(name, value) });
   };
 
   const loginFormData = [
@@ -90,38 +94,11 @@ const SignUp = () => {
     },
   ];
 
-  const checkValidations = (key, value) => {
-    if (key === "name") {
-      const nameRegex = /[a-z]{3,10}/;
-
-      if (!value && value.trim() === "") {
-        return "Name is required";
-      } else if (!nameRegex.test(value)) {
-        return "Name should be maximum 3 character";
-      }
-    } else if (key === "email") {
-      const emailRegex = /\S+@\S+\.\S+/;
-      if (!value && value.trim() === "") {
-        return "Email is required";
-      } else if (!emailRegex.test(value)) {
-        return "Email is invalid, email should be xyz@abcd.xyz";
-      }
-    } else if (key === "password") {
-      const passwordRegex = /^[0-9]{8,16}$/;
-
-      if (!value && value.trim() === "") {
-        return "Password is required";
-      } else if (!passwordRegex.test(value)) {
-        return "Password is invalid, password should be number and minimum 8 character and maximum 16 character.";
-      }
-    } else return;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const validateError = {};
     Object.keys(formData).forEach((key) => {
-      const message = checkValidations(key, formData[key]);
+      const message = Validation(key, formData[key]);
       if (message) {
         validateError[key] = message;
       }

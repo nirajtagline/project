@@ -5,6 +5,7 @@ import { forgotUserPassword } from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
+import { Validation } from "../../Validation";
 import "./forgot-password.scss";
 
 const initialState = {
@@ -23,7 +24,7 @@ const ForgotPassword = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setError({ ...error, [name]: checkValidations(name, value) });
+    setError({ ...error, [name]: Validation(name, value) });
   };
 
   const forgotPasswordFormData = [
@@ -39,22 +40,11 @@ const ForgotPassword = () => {
     },
   ];
 
-  const checkValidations = (key, value) => {
-    if (key === "email") {
-      const emailRegex = /\S+@\S+\.\S+/;
-      if (!value && value.trim() === "") {
-        return "Email is required";
-      } else if (!emailRegex.test(value)) {
-        return "Email is invalid, email should be xyz@abcd.xyz";
-      }
-    } else return;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const validateError = {};
     Object.keys(formData).forEach((key) => {
-      const message = checkValidations(key, formData[key]);
+      const message = Validation(key, formData[key]);
       if (message) {
         validateError[key] = message;
       }

@@ -4,6 +4,7 @@ import { getUserPasswordReset } from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
+import { Validation } from "../../Validation";
 import "./reset-password.scss";
 
 const initialState = {
@@ -23,7 +24,7 @@ const ResetPassword = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setError({ ...error, [name]: checkValidations(name, value) });
+    setError({ ...error, [name]: Validation(name, value, formData) });
     setFormData({ ...formData, [name]: value });
   };
 
@@ -60,33 +61,11 @@ const ResetPassword = () => {
     },
   ];
 
-  const checkValidations = (key, value) => {
-    if (key === "oldPassword" || key === "Password") {
-      const passwordRegex = /^[0-9]{8,16}$/;
-
-      if (!value && value.trim() === "") {
-        return "Password is required";
-      } else if (!passwordRegex.test(value)) {
-        return "Password is invalid, password should be number and manimum 8 character and maximum 16 character.";
-      }
-    } else if (key === "ConfirmPassword") {
-      const passwordRegex = /^[0-9]{8,16}$/;
-
-      if (!value && value.trim() === "") {
-        return "Confirm Password is required";
-      } else if (!passwordRegex.test(value)) {
-        return "Password is invalid, password should be number and manimum 8 character and maximum 16 character and match with new password.";
-      } else if (value !== formData?.Password) {
-        return "Password is invalid, password should be match with new password.";
-      }
-    } else return;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const validateError = {};
     Object.keys(formData).forEach((key) => {
-      const message = checkValidations(key, formData[key]);
+      const message = Validation(key, formData[key], formData);
       if (message) {
         validateError[key] = message;
       }
