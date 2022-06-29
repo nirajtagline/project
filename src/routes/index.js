@@ -1,11 +1,12 @@
 import React from "react";
 import { Routes as Router, Route } from "react-router-dom";
 import PrivateRoutes from "../components/PrivateRoutes";
+import { getLocalItems } from "../utils/localStorage";
 import RoleWiseRoutes from "./RoleWise";
 import RouteList from "./routeList";
 
 const Routes = () => {
-  const userRole = localStorage.getItem("user-role");
+  const userRole = getLocalItems("user-role");
 
   const filteredRoute = RouteList.filter((data) => data?.isRole === userRole);
   const commonRoute = RouteList.filter((data) => data?.isRole === "general");

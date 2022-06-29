@@ -1,8 +1,13 @@
+import {
+  nameRegex,
+  emailRegex,
+  passwordRegex,
+  confirmPasswordRegex,
+} from "../utils/regex";
+
 export const Validation = (key, value, formData) => {
   switch (key) {
     case "name":
-      const nameRegex = /[a-z]{3,10}/;
-
       if (!value && value.trim() === "") {
         return "Name is required";
       } else if (!nameRegex.test(value)) {
@@ -10,7 +15,6 @@ export const Validation = (key, value, formData) => {
       }
       break;
     case "email":
-      const emailRegex = /\S+@\S+\.\S+/;
       if (!value && value.trim() === "") {
         return "Email is required";
       } else if (!emailRegex.test(value)) {
@@ -20,7 +24,6 @@ export const Validation = (key, value, formData) => {
     case "password":
     case "Password":
     case "oldPassword":
-      const passwordRegex = /^[0-9]{8,16}$/;
       if (!value && value.trim() === "") {
         return key === "Password" || key === "password"
           ? "Password is required"
@@ -30,8 +33,6 @@ export const Validation = (key, value, formData) => {
       }
       break;
     case "ConfirmPassword":
-      const confirmPasswordRegex = /^[0-9]{8,16}$/;
-
       if (!value && value.trim() === "") {
         return "Confirm Password is required";
       } else if (!confirmPasswordRegex.test(value)) {

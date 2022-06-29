@@ -47,4 +47,10 @@
         border: none;
         cursor: pointer;
     }
+    .success-message{
+        color: rgb(45, 149, 85);
+    }
+    .error-message{
+        color: red;
+    }
 }

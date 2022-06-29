@@ -117,7 +117,10 @@ const EditExamDetails = () => {
     setExamDuration({ ...examDuration, ...{ [id]: value } });
   };
 
-  return !editExamDataLoading && !viewExamDataLoading ? (
+  return !editExamDataLoading &&
+    !viewExamDataLoading &&
+    selectedExamForEdit &&
+    viewExamInDetailsData?.questions?.length ? (
     <div>
       <h2>Edit exam</h2>
       {editExamData?.data?.message ? (

@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getVarifiedStudentsData } from "../../../redux/actions";
 import Table from "../../../shared/Table/Table";
 import Loader from "../../../shared/Loader";
+import CustomButton from "../../../shared/Button/CustomButton";
 
+const tableLink = {
+  path: "student-details",
+  linkText: "Student Details",
+};
 const VarifiedStudentData = () => {
   const dispatch = useDispatch();
 
@@ -15,9 +20,8 @@ const VarifiedStudentData = () => {
     !varifiedStudentList?.data?.length && dispatch(getVarifiedStudentsData());
   }, [varifiedStudentList?.data?.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const tableLink = {
-    path: "student-details",
-    linkText: "Student Details",
+  const handleRefreshList = () => {
+    dispatch(getVarifiedStudentsData());
   };
 
   return !varifiedStudentListLoading ? (
@@ -27,7 +31,12 @@ const VarifiedStudentData = () => {
       ) : (
         ""
       )}
-
+      <CustomButton
+        type="button"
+        onClick={handleRefreshList}
+        className="submit-form button-align"
+        buttonText="Refresh list"
+      />
       <Table
         tableHeadData={["Id", "Email", "Name", "Status"]}
         tableData={varifiedStudentList?.data}

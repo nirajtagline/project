@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLocalItems } from "../../utils/localStorage";
 
 const TeacherDashboard = () => {
-  const userRole = localStorage.getItem("user-role");
+  const userRole = getLocalItems("user-role");
+
   const navigate = useNavigate();
 
   useEffect(() => {

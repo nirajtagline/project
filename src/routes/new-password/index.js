@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
 import { forgotUserPassword } from "../../redux/actions/userAuth";
+import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
@@ -69,13 +70,15 @@ const NewPassword = () => {
   return !forgotPasswordLoading ? (
     <div className="login-page-wrapper">
       <h2 className="form-heading">New password</h2>
-      <CustomForm
-        handleSubmit={(e) => handleSubmit(e)}
-        buttonText="Update password"
-      >
+      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
         {newPasswordFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
+        <CustomButton
+          type="submit"
+          className="submit-form"
+          buttonText="Update Password"
+        />
       </CustomForm>
 
       <div>

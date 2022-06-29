@@ -1,32 +1,22 @@
 import React, { Suspense, useEffect } from "react";
-import { useSelector } from "react-redux";
 import Routes from "../src/routes/index";
 import Layout from "./components/Layout";
-import NavBar from "./components/NavBar";
-import Sidebar from "./routes/sidebar";
 import Loader from "./shared/Loader";
 import "./App.scss";
+import { getLocalItems } from "./utils/localStorage";
+import { useSelector } from "react-redux";
 
 const App = () => {
-  const isLogged = localStorage.getItem("user-token");
   const { isUserLogged } = useSelector(({ userAuth }) => userAuth);
-  useEffect(() => {}, [isLogged, isUserLogged]);
+  const userToken = getLocalItems("user-token");
+
+  useEffect(() => {}, [userToken, isUserLogged]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="App">
       <Suspense fallback={<Loader />}>
         <Layout>
-          <NavBar />
-          <div className="main-section">
-            {isLogged ? (
-              <div className="sidebar-section">
-                <Sidebar />
-              </div>
-            ) : (
-              ""
-            )}
-
-            <Routes />
-          </div>
+          <Routes />
         </Layout>
       </Suspense>
     </div>

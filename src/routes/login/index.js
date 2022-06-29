@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserLoginDetails } from "../../redux/actions/userAuth";
+import {
+  fetchUserLoginDetailsSuccess,
+  getUserLoginDetails,
+} from "../../redux/actions/userAuth";
+import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
+import { getLocalItems } from "../../utils/localStorage";
 import { Validation } from "../../Validation";
 import "./login.scss";
 
@@ -16,16 +21,14 @@ const initialState = {
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLogged = localStorage.getItem("user-token");
-  const userRole = localStorage.getItem("user-role");
+  const userRole = getLocalItems("user-role");
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
-  const { userLoginDetails, userLoginDetailsLoading } = useSelector(
-    ({ userAuth }) => userAuth
-  );
+  const { userLoginDetails, userLoginDetailsLoading, isUserLogged } =
+    useSelector(({ userAuth }) => userAuth);
 
   useEffect(() => {
-    if (isLogged) {
+    if (isUserLogged) {
       if (userRole === "teacher") {
         navigate("/teacher-dashboard");
       }
@@ -33,7 +36,13 @@ const Login = () => {
         navigate("/student-dashboard");
       }
     }
-  }, [isLogged, userRole]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isUserLogged, userRole]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    return () => {
+      dispatch(fetchUserLoginDetailsSuccess({}));
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,6 +82,7 @@ const Login = () => {
         validateError[key] = message;
       }
     });
+
     if (Object.keys(validateError).length) {
       setError({ ...error, ...validateError });
       return;
@@ -84,17 +94,24 @@ const Login = () => {
     <div className="login-page-wrapper">
       <h2 className="form-heading">Login here</h2>
 
-      <CustomForm handleSubmit={(e) => handleSubmit(e)} buttonText="Login">
+      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
         {loginFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
+        <CustomButton
+          type="submit"
+          className="submit-form"
+          buttonText="Login"
+        />
       </CustomForm>
       <div>
         <Link className="auth-link" to="/forgot-password">
           Forgot Password
         </Link>
       </div>
-      <span>{userLoginDetails?.message ? userLoginDetails?.message : ""}</span>
+      <span className="error-message">
+        {userLoginDetails?.message ? userLoginDetails?.message : ""}
+      </span>
     </div>
   ) : (
     <Loader />

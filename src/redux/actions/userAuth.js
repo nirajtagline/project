@@ -11,9 +11,11 @@ import {
   USER_RESET_PASSWORD,
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAILURE,
+  FETCH_USER_TOKEN,
 } from "../constants/actionTypes";
 
 import axiosInstance from "../../config/axios";
+import { setLocalItems } from "../../utils/localStorage";
 
 // fetch login data
 export const fetchUserLoginDetails = (payload) => {
@@ -34,15 +36,22 @@ export const fetchUserLoginDetailsFailure = (payload) => {
     payload: payload,
   };
 };
+export const fetchUserToken = (payload) => {
+  return {
+    type: FETCH_USER_TOKEN,
+    payload: payload,
+  };
+};
 
 export const getUserLoginDetails = (body) => async (dispatch) => {
   dispatch(fetchUserLoginDetails());
   axiosInstance
     .post("/users/Login", body)
     .then((res) => {
-      dispatch(fetchUserLoginDetailsSuccess(res.data));
-      localStorage.setItem("user-token", res.data.data.token);
-      localStorage.setItem("user-role", res.data.data.role);
+      dispatch(fetchUserLoginDetailsSuccess(res?.data));
+      dispatch(fetchUserToken(res?.data?.data?.token));
+      setLocalItems("user-token", res?.data?.data?.token);
+      setLocalItems("user-role", res?.data?.data?.role);
     })
     .catch((error) => {
       dispatch(fetchUserLoginDetailsFailure(error.data.message));

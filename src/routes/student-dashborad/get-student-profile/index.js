@@ -8,6 +8,7 @@ import InputField from "../../../shared/InputField/InputField";
 import CustomForm from "../../../shared/Form/Form";
 import Loader from "../../../shared/Loader";
 import { Validation } from "../../../Validation";
+import CustomButton from "../../../shared/Button/CustomButton";
 
 const initialState = {
   name: "",
@@ -97,10 +98,15 @@ const StudentProfile = () => {
           : ""}
       </h3>
 
-      <CustomForm handleSubmit={(e) => handleSubmit(e)} buttonText="Update">
+      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
         {studentFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
+        <CustomButton
+          type="submit"
+          className="submit-form"
+          buttonText="Update"
+        />
       </CustomForm>
     </div>
   ) : (

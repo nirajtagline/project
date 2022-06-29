@@ -4,6 +4,7 @@ import {
   getUserPasswordReset,
   userPasswordResetSuccess,
 } from "../../redux/actions/userAuth";
+import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
@@ -87,15 +88,28 @@ const ResetPassword = () => {
   };
 
   return !userPasswordResetLoading ? (
-    <div className="login-page-wrapper">
+    <div className="reset-page-wrapper">
       <h2 className="form-heading">Reset password</h2>
-      <CustomForm handleSubmit={(e) => handleSubmit(e)} buttonText="Submit">
+      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
         {resetFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
+        <CustomButton
+          type="submit"
+          className="submit-form"
+          buttonText="Submit"
+        />
       </CustomForm>
 
-      <span>{userPasswordReset?.message}</span>
+      <span
+        className={
+          userPasswordReset?.statusCode === 500
+            ? "error-message"
+            : "success-message"
+        }
+      >
+        {userPasswordReset?.message}
+      </span>
     </div>
   ) : (
     <Loader />

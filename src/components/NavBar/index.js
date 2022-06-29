@@ -2,14 +2,15 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { getLocalItems } from "../../utils/localStorage";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const { isUserLogged } = useSelector(({ userAuth }) => userAuth);
-  const isLogged = localStorage.getItem("user-token");
-  const userRole = localStorage.getItem("user-role");
 
-  useEffect(() => {}, [isLogged, isUserLogged]);
+  const userRole = getLocalItems("user-role");
+
+  useEffect(() => {}, [isUserLogged]);
   const handleUserLogout = () => {
     localStorage.clear();
     navigate("/");
@@ -31,7 +32,7 @@ const NavBar = () => {
           )}
         </li>
 
-        {!isLogged || !isUserLogged ? (
+        {!isUserLogged ? (
           <>
             <li>
               <NavLink className="header-link" to="/">

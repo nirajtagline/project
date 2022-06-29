@@ -24,14 +24,16 @@ const TableWithMultiData = ({
             const { options = [], _id = "", notes = [], Result = [] } = que;
             return (
               <tr key={index}>
-                {Object.keys(que)
-                  .filter(
-                    (flt) =>
-                      flt !== "options" && flt !== "notes" && flt !== "Result"
-                  )
-                  .map((data, i) => {
-                    return <td key={i}>{que[data]} </td>;
-                  })}
+                {Object.keys(que).map((data, i) => {
+                  if (
+                    data === "options" ||
+                    data === "notes" ||
+                    data === "Result"
+                  ) {
+                    return true;
+                  }
+                  return <td key={i}>{que[data]} </td>;
+                })}
 
                 {!!options.length &&
                   options.map((opt, i) => {
@@ -76,22 +78,22 @@ const TableWithMultiData = ({
                     {Result?.map((res, id) => {
                       return (
                         <React.Fragment key={id}>
-                          {Object.keys(res)
-                            .filter(
-                              (ele) =>
-                                ele !== "studentAnswer" &&
-                                ele !== "_id" &&
-                                ele !== "__v"
-                            )
-                            .map((ele, i) => {
-                              return (
-                                <tr key={i}>
-                                  <td>
-                                    {ele} - {res[ele]}
-                                  </td>
-                                </tr>
-                              );
-                            })}
+                          {Object.keys(res).map((ele, i) => {
+                            if (
+                              ele === "studentAnswer" ||
+                              ele === "_id" ||
+                              ele === "__v"
+                            ) {
+                              return true;
+                            }
+                            return (
+                              <tr key={i}>
+                                <td>
+                                  {ele} - {res[ele]}
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </React.Fragment>
                       );
                     })}

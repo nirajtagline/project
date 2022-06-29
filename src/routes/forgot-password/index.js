@@ -5,6 +5,7 @@ import {
   forgotUserPassword,
   userForgotPasswordSuccess,
 } from "../../redux/actions/userAuth";
+import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
@@ -69,13 +70,15 @@ const ForgotPassword = () => {
     <div className="forgot-password-page-wrapper">
       <h2 className="form-heading">Forgot Password</h2>
 
-      <CustomForm
-        handleSubmit={(e) => handleSubmit(e)}
-        buttonText="Submit email"
-      >
+      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
         {forgotPasswordFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
+        <CustomButton
+          type="submit"
+          className="submit-form"
+          buttonText="Submit email"
+        />
       </CustomForm>
 
       <div>
@@ -84,7 +87,15 @@ const ForgotPassword = () => {
         </Link>
       </div>
 
-      <span className="message-green">{forgotPassword?.data?.message}</span>
+      <span
+        className={
+          forgotPassword?.data?.statusCode === 500
+            ? "error-message"
+            : "message-green"
+        }
+      >
+        {forgotPassword?.data?.message}
+      </span>
     </div>
   ) : (
     <Loader />

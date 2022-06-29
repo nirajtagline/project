@@ -5,9 +5,11 @@ import {
   getUserSignUpDetails,
   userSignUpSuccess,
 } from "../../redux/actions/userAuth";
+import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
+import { getLocalItems } from "../../utils/localStorage";
 import { Validation } from "../../Validation";
 
 import "./sign-up.scss";
@@ -22,24 +24,22 @@ const initialState = {
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userRole = getLocalItems("user-role");
 
-  const isLogged = localStorage.getItem("user-token");
-
-  const { userSignUpDetailsLoading, userSignUpDetails } = useSelector(
-    ({ userAuth }) => userAuth
-  );
+  const { userSignUpDetailsLoading, userSignUpDetails, isUserLogged } =
+    useSelector(({ userAuth }) => userAuth);
 
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
 
   useEffect(() => {
-    if (isLogged) {
-      navigate("/");
+    if (isUserLogged) {
+      navigate(`/${userRole}-dashboard`);
     }
     if (userSignUpDetails?.statusCode === 200) {
       navigate("/");
     }
-  }, [isLogged, userSignUpDetails?.statusCode === 200]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isUserLogged, userSignUpDetails?.statusCode === 200]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     return () => {
@@ -123,10 +123,15 @@ const SignUp = () => {
     <div className="sign-up-page-wrapper">
       <h2 className="form-heading">Signup here</h2>
 
-      <CustomForm handleSubmit={(e) => handleSubmit(e)} buttonText="Sign up">
+      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
         {loginFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}
+        <CustomButton
+          type="submit"
+          className="submit-form"
+          buttonText="Sign up"
+        />
       </CustomForm>
       {userSignUpDetails?.message ? (
         <span className="error-message">{userSignUpDetails?.message}</span>

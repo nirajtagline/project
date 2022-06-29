@@ -11,13 +11,14 @@ import {
   USER_RESET_PASSWORD,
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAILURE,
+  FETCH_USER_TOKEN,
 } from "../constants/actionTypes";
 
 let initialState = {
   userLoginDetails: {},
   userLoginDetailsLoading: false,
   userLoginDetailsError: "",
-  isUserLogged: "false",
+  isUserLogged: "",
   forgotPassword: {},
   forgotPasswordLoading: false,
   forgotPasswordError: "",
@@ -42,12 +43,16 @@ const authReducer = (state = initialState, action) => {
         ...state,
         userLoginDetailsLoading: false,
         userLoginDetails: action.payload,
-        isUserLogged: true,
       };
     case FETCH_USER_LOGIN_DETAILS_FAILURE:
       return {
         ...state,
         userLoginDetailsError: action.payload.error,
+      };
+    case FETCH_USER_TOKEN:
+      return {
+        ...state,
+        isUserLogged: action.payload,
       };
 
     // User forgot password
