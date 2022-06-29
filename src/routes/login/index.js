@@ -29,7 +29,6 @@ const Login = () => {
 
   useLayoutEffect(() => {
     if (isUserLogged) {
-      console.log("call :>> ");
       if (userRole === "teacher") {
         navigate("/teacher-dashboard");
       }

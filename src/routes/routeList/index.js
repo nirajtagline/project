@@ -1,36 +1,21 @@
 import React from "react";
-import { lazy } from "react";
-const AllStudentData = lazy(() =>
-  import("../teacher-dashborad/all-student-data")
-);
-const EditExamDetails = lazy(() =>
-  import("../teacher-dashborad/edit-exam-details")
-);
-const VarifiedStudentData = lazy(() =>
-  import("../teacher-dashborad/varified-student-data")
-);
-const StudentDetails = lazy(() =>
-  import("../teacher-dashborad/student-details")
-);
-const CreateExam = lazy(() => import("../teacher-dashborad/create-exam"));
-const ViewExam = lazy(() => import("../teacher-dashborad/view-exam"));
-const ViewExamDEtails = lazy(() =>
-  import("../teacher-dashborad/view-exam-details")
-);
-const AllExamStudent = lazy(() =>
-  import("../student-dashborad/all-exam-student")
-);
-const ExamPaper = lazy(() => import("../student-dashborad/exam-paper"));
-const StudentProfile = lazy(() =>
-  import("../student-dashborad/get-student-profile")
-);
-const Login = lazy(() => import("../login"));
-const SignUp = lazy(() => import("../sign-up"));
-const NewPassword = lazy(() => import("../new-password"));
-const ForgotPassword = lazy(() => import("../forgot-password"));
-const ResetPassword = lazy(() => import("../reset-password"));
-const TeacherDashboard = lazy(() => import("../teacher-dashborad"));
-const StudentDashboard = lazy(() => import("../student-dashborad"));
+import AllStudentData from "../teacher-dashborad/all-student-data";
+import EditExamDetails from "../teacher-dashborad/edit-exam-details";
+import VarifiedStudentData from "../teacher-dashborad/varified-student-data";
+import StudentDetails from "../teacher-dashborad/student-details";
+import CreateExam from "../teacher-dashborad/create-exam";
+import ViewExam from "../teacher-dashborad/view-exam";
+import ViewExamDEtails from "../teacher-dashborad/view-exam-details";
+import AllExamStudent from "../student-dashborad/all-exam-student";
+import ExamPaper from "../student-dashborad/exam-paper";
+import StudentProfile from "../student-dashborad/get-student-profile";
+import Login from "../login";
+import SignUp from "../sign-up";
+import NewPassword from "../new-password";
+import ForgotPassword from "../forgot-password";
+import ResetPassword from "../reset-password";
+import TeacherDashboard from "../teacher-dashborad";
+import StudentDashboard from "../student-dashborad";
 
 const routeList = [
   // common route

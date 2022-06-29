@@ -1,7 +1,6 @@
-import React, { Suspense, useEffect } from "react";
+import React, { useEffect } from "react";
 import Routes from "../src/routes/index";
 import Layout from "./components/Layout";
-import Loader from "./shared/Loader";
 import "./App.scss";
 import { getLocalItems } from "./utils/localStorage";
 import { useSelector } from "react-redux";
@@ -14,11 +13,9 @@ const App = () => {
 
   return (
     <div className="App">
-      <Suspense fallback={<Loader />}>
-        <Layout>
-          <Routes />
-        </Layout>
-      </Suspense>
+      <Layout>
+        <Routes />
+      </Layout>
     </div>
   );
 };
