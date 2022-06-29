@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -27,8 +27,9 @@ const Login = () => {
   const { userLoginDetails, userLoginDetailsLoading, isUserLogged } =
     useSelector(({ userAuth }) => userAuth);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isUserLogged) {
+      console.log("call :>> ");
       if (userRole === "teacher") {
         navigate("/teacher-dashboard");
       }

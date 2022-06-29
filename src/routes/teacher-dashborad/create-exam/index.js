@@ -27,13 +27,11 @@ const CreateExam = () => {
   const [examForm, setExamForm] = useState(initialState);
 
   useEffect(() => {
-    if (createExamData?.data?.statusCode === 500) {
-      dispatch(createdExamBody(initialState));
-    } else if (createExamData?.data?.statusCode === 200) {
-      dispatch(createdExamBody({ initialState }));
+    if (createExamData?.data?.statusCode === 200) {
       dispatch(createExamForStudentSuccess({}));
       navigate("/view-exam");
     }
+    dispatch(createdExamBody({ initialState }));
   }, [createExamData?.data?.statusCode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = () => {

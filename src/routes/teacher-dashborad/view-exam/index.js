@@ -6,9 +6,9 @@ import {
   getDeleteExamForStudent,
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
-import CustomButton from "../../../shared/Button/CustomButton";
 import Modal from "../../../shared/Modal/Modal";
 import Loader from "../../../shared/Loader";
+import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 
 const ViewExam = () => {
   const dispatch = useDispatch();
@@ -50,6 +50,27 @@ const ViewExam = () => {
     });
   };
 
+  const buttonArray = [
+    {
+      type: "button",
+      handleEvent: handleViewExamInDetails,
+      className: "submit-form mt-0 mb-0",
+      buttonText: "View exam Details",
+    },
+    {
+      type: "button",
+      handleEvent: handleEditExam,
+      className: "submit-form mt-0 mb-0",
+      buttonText: "Edit exam",
+    },
+    {
+      type: "button",
+      handleEvent: handleDeleteExam,
+      className: "submit-form mt-0 mb-0",
+      buttonText: "Delete exam",
+    },
+  ];
+
   return (
     <>
       <div>
@@ -58,64 +79,11 @@ const ViewExam = () => {
           <>
             {viewExamData?.length ? (
               <>
-                <table>
-                  <tbody>
-                    <tr>
-                      <th>Subject Name</th>
-                      <th>Exam Id</th>
-                      <th>Email</th>
-                      <th>Notes</th>
-                    </tr>
-                    {!!viewExamData?.length ? (
-                      <>
-                        {viewExamData?.map((data, i) => {
-                          const { subjectName, _id, email, notes } = data;
-                          return (
-                            <tr key={i}>
-                              <td>{subjectName}</td>
-                              <td>{_id}</td>
-                              <td>{email}</td>
-
-                              {notes?.map((note, i) => {
-                                return (
-                                  <tr key={i}>
-                                    <td>{note}</td>
-                                  </tr>
-                                );
-                              })}
-                              <td>
-                                <CustomButton
-                                  type="button"
-                                  onClick={() => handleViewExamInDetails(_id)}
-                                  className="submit-form mt-0 mb-0"
-                                  buttonText="View exam Details"
-                                />
-                              </td>
-                              <td>
-                                <CustomButton
-                                  type="button"
-                                  onClick={() => handleEditExam(_id)}
-                                  className="submit-form mt-0 mb-0"
-                                  buttonText=" Edit exam"
-                                />
-                              </td>
-                              <td>
-                                <CustomButton
-                                  type="button"
-                                  onClick={() => handleDeleteExam(_id, i)}
-                                  className="submit-form mt-0 mb-0"
-                                  buttonText="   Delete exam"
-                                />
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </>
-                    ) : (
-                      <h3>No data available....</h3>
-                    )}
-                  </tbody>
-                </table>
+                <TableWithMultiData
+                  tableHeadData={["Subject Name", "Exam Id", "Email", "Notes"]}
+                  tableData={viewExamData}
+                  buttonArray={buttonArray}
+                />
               </>
             ) : (
               <h3>No exam available</h3>
@@ -133,6 +101,7 @@ const ViewExam = () => {
         handleCancle={handleCancle}
         handleConfirm={({ id, index }) => handleConfirm({ id, index })}
         loading={viewExamDataLoading}
+        confirmButtonText="Delete"
       />
     </>
   );

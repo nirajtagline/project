@@ -11,6 +11,7 @@ const Modal = ({
   handleCancle,
   selectedExam,
   loading,
+  confirmButtonText = "",
 }) => {
   return isShow ? (
     <div className="pop-wrapper">
@@ -28,7 +29,7 @@ const Modal = ({
             type="button"
             className="submit-form"
             onClick={() => handleConfirm(selectedExam)}
-            buttonText="Delete"
+            buttonText={confirmButtonText}
           />
           {loading ? (
             <span>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import CustomButton from "../Button/CustomButton";
 import InputField from "../InputField/InputField";
 
 const TableWithMultiData = ({
@@ -8,6 +9,7 @@ const TableWithMultiData = ({
   link,
   isRadio = false,
   handleChange,
+  buttonArray,
 }) => {
   const { path = "", linkText = "" } = link || false;
 
@@ -28,7 +30,8 @@ const TableWithMultiData = ({
                   if (
                     data === "options" ||
                     data === "notes" ||
-                    data === "Result"
+                    data === "Result" ||
+                    data === "__v"
                   ) {
                     return true;
                   }
@@ -98,6 +101,24 @@ const TableWithMultiData = ({
                       );
                     })}
                   </td>
+                )}
+                {!!buttonArray?.length ? (
+                  <>
+                    {buttonArray?.map((btn, i) => {
+                      return (
+                        <td key={i}>
+                          <CustomButton
+                            type="button"
+                            onClick={() => btn?.handleEvent(_id, index)}
+                            buttonText={btn?.buttonText}
+                            className={btn?.className}
+                          />
+                        </td>
+                      );
+                    })}
+                  </>
+                ) : (
+                  ""
                 )}
               </tr>
             );

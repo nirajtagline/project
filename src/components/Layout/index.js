@@ -1,11 +1,10 @@
 import Sidebar from "../../routes/sidebar";
 import { useDispatch, useSelector } from "react-redux";
-
 import NavBar from "../NavBar";
-import "./layout.scss";
 import { getLocalItems } from "../../utils/localStorage";
 import { useEffect } from "react";
 import { fetchUserToken } from "../../redux/actions/userAuth";
+import "./layout.scss";
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
