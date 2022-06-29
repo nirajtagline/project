@@ -22,7 +22,7 @@ const ViewExam = () => {
   const [selectedExam, setSelectedExam] = useState(null);
 
   useEffect(() => {
-    !viewExamData?.length && dispatch(getViewExamForStudent());
+    dispatch(getViewExamForStudent());
   }, [isDeleteExamData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteExam = (id, index) => {
