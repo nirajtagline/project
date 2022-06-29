@@ -77,7 +77,12 @@ const TableWithMultiData = ({
                       return (
                         <React.Fragment key={id}>
                           {Object.keys(res)
-                            .filter((ele) => ele !== "studentAnswer")
+                            .filter(
+                              (ele) =>
+                                ele !== "studentAnswer" &&
+                                ele !== "_id" &&
+                                ele !== "__v"
+                            )
                             .map((ele, i) => {
                               return (
                                 <tr key={i}>

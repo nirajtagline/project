@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserSignUpDetails } from "../../redux/actions/userAuth";
+import {
+  getUserSignUpDetails,
+  userSignUpSuccess,
+} from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
@@ -37,6 +40,12 @@ const SignUp = () => {
       navigate("/");
     }
   }, [isLogged, userSignUpDetails?.statusCode === 200]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    return () => {
+      dispatch(userSignUpSuccess({}));
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleChange = (e) => {
     const { name, value } = e.target;

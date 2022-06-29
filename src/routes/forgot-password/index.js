@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { forgotUserPassword } from "../../redux/actions/userAuth";
+import {
+  forgotUserPassword,
+  userForgotPasswordSuccess,
+} from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
@@ -26,6 +29,12 @@ const ForgotPassword = () => {
     setFormData({ ...formData, [name]: value });
     setError({ ...error, [name]: Validation(name, value) });
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(userForgotPasswordSuccess({}));
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const forgotPasswordFormData = [
     {

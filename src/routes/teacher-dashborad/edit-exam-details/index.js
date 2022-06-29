@@ -41,7 +41,8 @@ const EditExamDetails = () => {
 
   useEffect(() => {
     dispatch(getViewExamForStudent());
-    dispatch(getViewExamInDetails(examId));
+    !viewExamInDetailsData?.questions?.length &&
+      dispatch(getViewExamInDetails(examId));
     dispatch(editExamForStudentSuccess({}));
   }, [isEditExamData, isFetchExamInDetailsData]); // eslint-disable-line react-hooks/exhaustive-deps
 

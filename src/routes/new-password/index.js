@@ -79,8 +79,8 @@ const NewPassword = () => {
       </CustomForm>
 
       <div>
-        <Link className="auth-link" to="/forgot-password">
-          Forgot Password
+        <Link className="auth-link" to="/">
+          Back to Login
         </Link>
       </div>
       <span>{forgotPassword?.data?.message}</span>

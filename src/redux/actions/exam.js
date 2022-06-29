@@ -135,6 +135,7 @@ export const getDeleteExamForStudent =
       .then((res) => {
         dispatch(deleteExamForStudentSuccess(res.data.statusCode));
         dispatch(updateViewExam({ id, index }));
+        return;
       })
       .catch((error) => {
         dispatch(deleteExamForStudentFailure({ error: error.message }));

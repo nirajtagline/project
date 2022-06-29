@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserPasswordReset } from "../../redux/actions/userAuth";
+import {
+  getUserPasswordReset,
+  userPasswordResetSuccess,
+} from "../../redux/actions/userAuth";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
@@ -21,6 +24,12 @@ const ResetPassword = () => {
 
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
+
+  useEffect(() => {
+    return () => {
+      dispatch(userPasswordResetSuccess({}));
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleChange = (e) => {
     const { name, value } = e.target;
