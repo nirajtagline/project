@@ -182,7 +182,7 @@ const EditExamDetails = () => {
           })}{" "}
         </select>{" "}
         {!!optionIndex ? (
-          <>
+          <React.Fragment>
             <div>
               <div className="flex">
                 {Object.values(text)?.map((opt, i) => {
@@ -225,7 +225,7 @@ const EditExamDetails = () => {
               buttonText="Update options"
               disabled={!!option ? false : true}
             />
-          </>
+          </React.Fragment>
         ) : (
           ""
         )}

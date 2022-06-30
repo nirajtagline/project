@@ -204,7 +204,14 @@ export const getEditExamForStudent = (id, body) => async (dispatch) => {
     .put(`/dashboard/Teachers/editExam?id=${id}`, body)
     .then((res) => {
       dispatch(editExamForStudentSuccess(res));
-      dispatch(updateViewExam({ id, res }));
+
+      const cloneResData = { ...res };
+      const { data } = cloneResData;
+      const cloneData = { ...data?.data };
+      delete cloneData?.status;
+      delete cloneData?.questions;
+
+      dispatch(updateViewExam({ id, cloneData }));
     })
     .catch((error) => {
       dispatch(editExamForStudentFailure({ error: error.message }));

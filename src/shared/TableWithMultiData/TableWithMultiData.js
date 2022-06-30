@@ -24,6 +24,7 @@ const TableWithMultiData = ({
           </tr>
           {tableData?.map((que, index) => {
             const { options = [], _id = "", notes = [], Result = [] } = que;
+
             return (
               <tr key={index}>
                 {Object.keys(que).map((data, i) => {
@@ -35,7 +36,12 @@ const TableWithMultiData = ({
                   ) {
                     return true;
                   }
-                  return <td key={i}>{que[data]} </td>;
+
+                  return (
+                    <React.Fragment key={i}>
+                      <td>{que[data]} </td>
+                    </React.Fragment>
+                  );
                 })}
 
                 {!!options.length &&
@@ -59,7 +65,7 @@ const TableWithMultiData = ({
                 {!!notes.length &&
                   notes.map((note, i) => {
                     return (
-                      <tr key={i}>
+                      <tr key={`nts${i}`}>
                         <td>{note}</td>
                       </tr>
                     );
@@ -103,10 +109,10 @@ const TableWithMultiData = ({
                   </td>
                 )}
                 {!!buttonArray?.length ? (
-                  <>
+                  <React.Fragment>
                     {buttonArray?.map((btn, i) => {
                       return (
-                        <td key={i}>
+                        <td key={`btn${i}`}>
                           <CustomButton
                             type="button"
                             onClick={() => btn?.handleEvent(_id, index)}
@@ -116,7 +122,7 @@ const TableWithMultiData = ({
                         </td>
                       );
                     })}
-                  </>
+                  </React.Fragment>
                 ) : (
                   ""
                 )}

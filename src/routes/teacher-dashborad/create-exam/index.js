@@ -214,6 +214,7 @@ const CreateExam = () => {
                     name="note"
                     placeholder="Exam note"
                     handleChange={(e) => handleChange(e)}
+                    value={examForm?.note || ""}
                   />
 
                   <CustomButton
@@ -237,8 +238,8 @@ const CreateExam = () => {
                       !!question?.que &&
                       !!option &&
                       !!option?.answer &&
-                      (!!examForm?.notes?.length ||
-                        !!createExamBody?.notes?.length)
+                      (examForm?.notes?.length > 1 ||
+                        createExamBody?.notes?.length > 1)
                         ? false
                         : true
                     }
@@ -248,8 +249,8 @@ const CreateExam = () => {
                       !!question?.que &&
                       !!option &&
                       !!option?.answer &&
-                      (!!examForm?.notes?.length ||
-                        !!createExamBody?.notes?.length)
+                      (examForm?.notes?.length > 1 ||
+                        createExamBody?.notes?.length > 1)
                         ? "submit-form"
                         : "submit-form disable"
                     }

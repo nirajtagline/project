@@ -9,6 +9,7 @@ import {
 import Modal from "../../../shared/Modal/Modal";
 import Loader from "../../../shared/Loader";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
+import CustomButton from "../../../shared/Button/CustomButton";
 
 const ViewExam = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const ViewExam = () => {
   const [selectedExam, setSelectedExam] = useState(null);
 
   useEffect(() => {
-    dispatch(getViewExamForStudent());
+    !viewExamData?.length && dispatch(getViewExamForStudent());
   }, [isDeleteExamData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteExam = (id, index) => {
@@ -48,6 +49,10 @@ const ViewExam = () => {
         setShowPoppup(false);
       }, 1500);
     });
+  };
+
+  const handleRefreshList = () => {
+    dispatch(getViewExamForStudent());
   };
 
   const buttonArray = [
@@ -79,6 +84,12 @@ const ViewExam = () => {
           <>
             {viewExamData?.length ? (
               <>
+                <CustomButton
+                  type="button"
+                  onClick={handleRefreshList}
+                  className="submit-form button-align"
+                  buttonText="Refresh list"
+                />
                 <TableWithMultiData
                   tableHeadData={["Subject Name", "Exam Id", "Email", "Notes"]}
                   tableData={viewExamData}

@@ -136,21 +136,17 @@ const createExamReducer = (state = initialState, action) => {
       let cloneViewExamData = [...state?.viewExamData];
       if (action.payload.index === undefined) {
         let editExamIndex = cloneViewExamData?.findIndex(
-          (ele) => ele?._id === action.payload?.res?.data?.data?._id
+          (ele) => ele?._id === action.payload?._id
         );
-        cloneViewExamData.splice(
-          editExamIndex,
-          1,
-          action.payload?.res?.data?.data
-        );
+        cloneViewExamData.splice(editExamIndex, 1, action.payload?.cloneData);
       } else {
         cloneViewExamData.splice(action.payload.index, 1);
       }
+      console.log("cloneViewExamData :>> ", cloneViewExamData);
 
       return {
         ...state,
         viewExamData: cloneViewExamData,
-        viewExamDataLoading: false,
       };
 
     // Edit exam data
@@ -158,11 +154,13 @@ const createExamReducer = (state = initialState, action) => {
       return {
         ...state,
         editExamDataLoading: true,
+        viewExamDataLoading: true,
       };
     case EDIT_EXAM_DETAILS_SUCCESS:
       return {
         ...state,
         editExamDataLoading: false,
+        viewExamDataLoading: false,
         editExamData: action.payload,
         isEditExamData: true,
       };
