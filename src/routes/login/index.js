@@ -9,7 +9,6 @@ import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
-import { getLocalItems } from "../../utils/localStorage";
 import { Validation } from "../../Validation";
 import "./login.scss";
 
@@ -21,7 +20,6 @@ const initialState = {
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userRole = getLocalItems("user-role");
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState({});
   const { userLoginDetails, userLoginDetailsLoading, isUserLogged } =
@@ -29,14 +27,9 @@ const Login = () => {
 
   useLayoutEffect(() => {
     if (isUserLogged) {
-      if (userRole === "teacher") {
-        navigate("/teacher-dashboard");
-      }
-      if (userRole === "student") {
-        navigate("/student-dashboard");
-      }
+      navigate("/dashboard");
     }
-  }, [isUserLogged, userRole]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isUserLogged]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     return () => {

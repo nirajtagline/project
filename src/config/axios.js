@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getLocalItems } from "../utils/localStorage";
 
 let axiosInstance = axios.create({
   baseURL: "https://nodejsexamination.herokuapp.com/",
@@ -8,7 +9,7 @@ let axiosInstance = axios.create({
 // request inceptors for taking token
 axiosInstance.interceptors.request.use(
   (config) => {
-    config.headers["access-token"] = `${localStorage.getItem("user-token")}`;
+    config.headers["access-token"] = `${getLocalItems("user-token")}`;
     return config;
   },
   (error) => Promise.reject(error)

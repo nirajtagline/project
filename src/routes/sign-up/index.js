@@ -9,7 +9,6 @@ import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
 import Loader from "../../shared/Loader";
-import { getLocalItems } from "../../utils/localStorage";
 import { Validation } from "../../Validation";
 
 import "./sign-up.scss";
@@ -24,7 +23,6 @@ const initialState = {
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userRole = getLocalItems("user-role");
 
   const { userSignUpDetailsLoading, userSignUpDetails, isUserLogged } =
     useSelector(({ userAuth }) => userAuth);
@@ -34,7 +32,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isUserLogged) {
-      navigate(`/${userRole}-dashboard`);
+      navigate("/dashboard");
     }
     if (userSignUpDetails?.statusCode === 200) {
       navigate("/");
@@ -97,8 +95,8 @@ const SignUp = () => {
       name: "role",
       value: "Student",
       type: "radio",
-      checked: true,
       isShowValidate: false,
+      defaultChecked: true,
       handleChange,
     },
   ];
