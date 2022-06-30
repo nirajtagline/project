@@ -205,7 +205,7 @@ const CreateExam = () => {
                 <div>
                   {createExamBody?.notes?.length === 1 ||
                   examForm?.notes?.length === 1 ? (
-                    <h4>Please add exam time below.</h4>
+                    <h4>Please add exam time in minutes below.</h4>
                   ) : (
                     <h4>Please add exam duration below.</h4>
                   )}

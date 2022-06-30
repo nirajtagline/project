@@ -126,6 +126,7 @@ const createExamReducer = (state = initialState, action) => {
         ...state,
         deleteExamDataLoading: false,
         isDeleteExamData: true,
+        viewExamDataLoading: false,
       };
     case DELETE_EXAM_FAILURE:
       return {
@@ -142,7 +143,6 @@ const createExamReducer = (state = initialState, action) => {
       } else {
         cloneViewExamData.splice(action.payload.index, 1);
       }
-      console.log("cloneViewExamData :>> ", cloneViewExamData);
 
       return {
         ...state,

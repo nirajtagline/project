@@ -16,6 +16,7 @@ import ForgotPassword from "../forgot-password";
 import ResetPassword from "../reset-password";
 import TeacherDashboard from "../teacher-dashborad";
 import StudentDashboard from "../student-dashborad";
+import NoPageForYou from "../no-page-for-you";
 
 const routeList = [
   // common route
@@ -47,17 +48,17 @@ const routeList = [
     isRole: "generalAuth",
   },
   {
-    path: "/teacher-dashboard",
-    element: <TeacherDashboard />,
-    isRole: "generalAuth",
-  },
-  {
-    path: "/student-dashboard",
-    element: <StudentDashboard />,
+    path: "*",
+    element: <NoPageForYou />,
     isRole: "generalAuth",
   },
 
   // Teacher route
+  {
+    path: "/teacher-dashboard",
+    element: <TeacherDashboard />,
+    isRole: "teacher",
+  },
   {
     path: "/all-student-data",
     element: <AllStudentData />,
@@ -87,6 +88,11 @@ const routeList = [
   },
 
   // student route
+  {
+    path: "/student-dashboard",
+    element: <StudentDashboard />,
+    isRole: "student",
+  },
   {
     path: "/all-exam-student",
     element: <AllExamStudent />,

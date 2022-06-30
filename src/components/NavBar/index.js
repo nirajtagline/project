@@ -12,9 +12,9 @@ const NavBar = () => {
 
   useEffect(() => {}, [isUserLogged]);
   const handleUserLogout = () => {
+    window.location.reload();
     localStorage.clear();
     navigate("/");
-    window.location.reload();
   };
 
   return (
