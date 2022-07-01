@@ -3,6 +3,7 @@ import userAuth from "./userAuth";
 import allStudentData from "./allStudentData";
 import exam from "./exam";
 import student from "./student";
+import { RESET_STORE } from "../constants/actionTypes";
 
 const appReducer = combineReducers({
   userAuth,
@@ -12,6 +13,9 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
+  if (action.type === RESET_STORE) {
+    state = undefined;
+  }
   return appReducer(state, action);
 };
 

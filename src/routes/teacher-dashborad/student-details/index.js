@@ -3,7 +3,7 @@ import { getStudentsDetails } from "../../../redux/actions";
 import { Link, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
-import Loader from "../../../shared/Loader";
+import Loader from "../../../shared/Loader/Loader";
 const StudentDetails = () => {
   const dispatch = useDispatch();
   const param = useParams();

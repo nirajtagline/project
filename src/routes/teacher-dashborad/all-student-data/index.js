@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getfetchAllStudentsData } from "../../../redux/actions";
 import Table from "../../../shared/Table/Table";
-import Loader from "../../../shared/Loader";
-import "./student-list-table.scss";
+import Loader from "../../../shared/Loader/Loader";
 import CustomButton from "../../../shared/Button/CustomButton";
+import "./student-list-table.scss";
 
 const AllStudentData = () => {
   const dispatch = useDispatch();

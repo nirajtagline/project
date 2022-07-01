@@ -8,7 +8,7 @@ import {
 } from "../../../redux/actions";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import CustomButton from "../../../shared/Button/CustomButton";
-import Loader from "../../../shared/Loader";
+import Loader from "../../../shared/Loader/Loader";
 
 const ExamPaper = () => {
   const dispatch = useDispatch();

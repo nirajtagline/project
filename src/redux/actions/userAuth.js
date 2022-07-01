@@ -12,6 +12,7 @@ import {
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAILURE,
   FETCH_USER_TOKEN,
+  RESET_STORE,
 } from "../constants/actionTypes";
 
 import axiosInstance from "../../config/axios";
@@ -163,4 +164,11 @@ export const getUserPasswordReset = (body) => async (dispatch) => {
     .catch((error) => {
       dispatch(userPasswordResetFailure({ error: error.data.message }));
     });
+};
+
+// to reset the state of redux store
+export const resetStore = () => {
+  return {
+    type: RESET_STORE,
+  };
 };

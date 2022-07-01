@@ -8,7 +8,7 @@ import {
 import CustomButton from "../../../shared/Button/CustomButton";
 import InputField from "../../../shared/InputField/InputField";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
-import Loader from "../../../shared/Loader";
+import Loader from "../../../shared/Loader/Loader";
 import { useNavigate } from "react-router";
 import "./create-exam.scss";
 

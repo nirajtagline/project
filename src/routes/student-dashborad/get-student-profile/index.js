@@ -6,7 +6,7 @@ import {
 } from "../../../redux/actions";
 import InputField from "../../../shared/InputField/InputField";
 import CustomForm from "../../../shared/Form/Form";
-import Loader from "../../../shared/Loader";
+import Loader from "../../../shared/Loader/Loader";
 import { Validation } from "../../../Validation";
 import CustomButton from "../../../shared/Button/CustomButton";
 

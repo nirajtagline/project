@@ -7,7 +7,7 @@ import {
   getViewExamInDetails,
 } from "../../../redux/actions/exam";
 import Modal from "../../../shared/Modal/Modal";
-import Loader from "../../../shared/Loader";
+import Loader from "../../../shared/Loader/Loader";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import CustomButton from "../../../shared/Button/CustomButton";
 

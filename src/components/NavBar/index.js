@@ -3,18 +3,17 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocalItems } from "../../utils/localStorage";
-import { fetchUserToken } from "../../redux/actions/userAuth";
+import { resetStore } from "../../redux/actions/userAuth";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isUserLogged } = useSelector(({ userAuth }) => userAuth);
-
   const userRole = getLocalItems("user-role");
 
   useEffect(() => {}, [isUserLogged]);
   const handleUserLogout = () => {
-    dispatch(fetchUserToken(""));
+    dispatch(resetStore());
     localStorage.clear();
     navigate("/");
   };

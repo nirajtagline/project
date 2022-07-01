@@ -1,4 +1,4 @@
-import Sidebar from "../../routes/sidebar";
+import Sidebar from "../sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "../NavBar";
 import { getLocalItems } from "../../utils/localStorage";
@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
         ) : (
           ""
         )}
-        {children}
+        <div className="routing-section">{children}</div>
       </div>
     </>
   );

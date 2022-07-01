@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getVarifiedStudentsData } from "../../../redux/actions";
 import Table from "../../../shared/Table/Table";
-import Loader from "../../../shared/Loader";
+import Loader from "../../../shared/Loader/Loader";
 import CustomButton from "../../../shared/Button/CustomButton";
 
 const tableLink = {

@@ -1,6 +1,5 @@
 import React from "react";
 import CustomButton from "../Button/CustomButton";
-import Loader from "../Loader";
 import "./modal.scss";
 
 const Modal = ({
@@ -29,15 +28,8 @@ const Modal = ({
             type="button"
             className="submit-form"
             onClick={() => handleConfirm(selectedExam)}
-            buttonText={confirmButtonText}
+            buttonText={loading ? "Deleting..." : confirmButtonText}
           />
-          {loading ? (
-            <span>
-              <Loader />
-            </span>
-          ) : (
-            ""
-          )}
         </div>
       </div>
     </div>

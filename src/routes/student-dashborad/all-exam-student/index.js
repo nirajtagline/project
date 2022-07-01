@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getExamForStudentsDetails } from "../../../redux/actions";
 import CustomButton from "../../../shared/Button/CustomButton";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
-import Loader from "../../../shared/Loader";
+import Loader from "../../../shared/Loader/Loader";
 import "./exam-student.scss";
 
 const AllExamStudent = () => {

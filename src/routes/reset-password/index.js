@@ -7,7 +7,7 @@ import {
 import CustomButton from "../../shared/Button/CustomButton";
 import CustomForm from "../../shared/Form/Form";
 import InputField from "../../shared/InputField/InputField";
-import Loader from "../../shared/Loader";
+import Loader from "../../shared/Loader/Loader";
 import { Validation } from "../../Validation";
 import "./reset-password.scss";
 
