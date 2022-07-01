@@ -7,37 +7,30 @@ import RouteList from "./routeList";
 
 const Routes = () => {
   const userRole = getLocalItems("user-role");
-
-  const filteredRoute = RouteList.filter(
-    (data) => data?.isRole === userRole || data?.isRole === "generalAuth"
-  );
-  const commonRoute = RouteList.filter((data) => data?.isRole === "general");
+  const userToken = getLocalItems("user-token");
 
   return (
     <Router>
-      {/* Public routes */}
-
-      {commonRoute?.map((route, i) => {
-        return (
-          <Route
-            path={route.path}
-            element={<PublicRoutes>{route.element} </PublicRoutes>}
-            key={i}
-          />
-        );
-      })}
-
-      {/* Private routes */}
-
-      {filteredRoute?.map((roleWiseRoute, i) => {
-        return (
-          <Route
-            path={roleWiseRoute.path}
-            exact
-            element={<PrivateRoutes>{roleWiseRoute.element}</PrivateRoutes>}
-            key={i}
-          />
-        );
+      {RouteList?.map(({ isRole, path, element }, i) => {
+        if (isRole === userRole || isRole === "generalAuth") {
+          return (
+            <Route
+              path={path}
+              element={
+                <PrivateRoutes userToken={userToken}>{element}</PrivateRoutes>
+              }
+              key={i}
+            />
+          );
+        } else if (isRole === "general") {
+          return (
+            <Route
+              path={path}
+              element={<PublicRoutes>{element}</PublicRoutes>}
+              key={i}
+            />
+          );
+        } else return true;
       })}
     </Router>
   );

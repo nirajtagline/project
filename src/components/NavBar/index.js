@@ -1,18 +1,20 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocalItems } from "../../utils/localStorage";
+import { fetchUserToken } from "../../redux/actions/userAuth";
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { isUserLogged } = useSelector(({ userAuth }) => userAuth);
 
   const userRole = getLocalItems("user-role");
 
   useEffect(() => {}, [isUserLogged]);
   const handleUserLogout = () => {
-    window.location.reload();
+    dispatch(fetchUserToken(""));
     localStorage.clear();
     navigate("/");
   };
@@ -23,9 +25,7 @@ const NavBar = () => {
         <li>
           {userRole ? (
             <h2>
-              <NavLink to={`${userRole}-dashboard`}>
-                {userRole.toLocaleUpperCase()}{" "}
-              </NavLink>
+              <NavLink to="/dashboard">{userRole.toLocaleUpperCase()} </NavLink>
             </h2>
           ) : (
             "User role"

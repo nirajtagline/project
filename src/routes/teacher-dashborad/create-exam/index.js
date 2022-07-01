@@ -9,8 +9,8 @@ import CustomButton from "../../../shared/Button/CustomButton";
 import InputField from "../../../shared/InputField/InputField";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import Loader from "../../../shared/Loader";
-import "./create-exam.scss";
 import { useNavigate } from "react-router";
+import "./create-exam.scss";
 
 const initialState = { subjectName: "", questions: [], notes: [] };
 
@@ -212,15 +212,23 @@ const CreateExam = () => {
                   <InputField
                     type="text"
                     name="note"
-                    placeholder="Exam note"
+                    placeholder={
+                      createExamBody?.notes?.length === 1 ||
+                      examForm?.notes?.length === 1
+                        ? "Please add exam time ex:- 10am"
+                        : "Please add exam duration ex:- 20mins"
+                    }
                     handleChange={(e) => handleChange(e)}
                     value={examForm?.note || ""}
                   />
 
                   <CustomButton
                     onClick={() => handleAddNotes(examForm?.note)}
-                    className="submit-form"
+                    className={
+                      !!examForm?.note ? "submit-form" : "submit-form disable"
+                    }
                     buttonText="Add note +"
+                    disabled={!!examForm?.note ? false : true}
                   />
                 </div>
               )}

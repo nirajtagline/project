@@ -1,20 +1,15 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
-import { getLocalItems } from "../../utils/localStorage";
+import { Navigate } from "react-router";
 
-const PrivateRoutes = (props) => {
-  const userToken = getLocalItems("user-token");
-  const navigate = useNavigate();
+const PrivateRoutes = ({ userToken, children }) => {
   let url = window.location.href;
 
-  useEffect(() => {
-    if (!userToken) {
-      let path = /newPassword/;
-      if (path.test(url)) return;
-      navigate("/");
-    }
-  }, [userToken]); // eslint-disable-line react-hooks/exhaustive-deps
-  return props.children;
+  if (!userToken) {
+    let path = /newPassword/;
+    if (path.test(url)) return;
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
 
 export default PrivateRoutes;

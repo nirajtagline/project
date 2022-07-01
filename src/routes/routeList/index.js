@@ -39,6 +39,11 @@ const routeList = [
     element: <NewPassword />,
     isRole: "general",
   },
+  {
+    path: "*",
+    element: <NoPageForYou />,
+    isRole: "generalAuth",
+  },
 
   // private auth route
   {
@@ -49,11 +54,6 @@ const routeList = [
   {
     path: "/dashboard",
     element: <DashBoard />,
-    isRole: "generalAuth",
-  },
-  {
-    path: "*",
-    element: <NoPageForYou />,
     isRole: "generalAuth",
   },
 

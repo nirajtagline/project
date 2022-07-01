@@ -87,7 +87,7 @@ const Login = () => {
     <div className="login-page-wrapper">
       <h2 className="form-heading">Login here</h2>
 
-      <CustomForm handleSubmit={(e) => handleSubmit(e)}>
+      <CustomForm handleSubmit={handleSubmit}>
         {loginFormData.map((data, id) => {
           return <InputField key={id} {...data} />;
         })}

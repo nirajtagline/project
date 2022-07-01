@@ -1,5 +1,4 @@
 import React from "react";
-import { Outlet } from "react-router";
 import { getLocalItems } from "../../utils/localStorage";
 
 const DashBoard = () => {
@@ -8,7 +7,6 @@ const DashBoard = () => {
   return (
     <>
       <h1>{userRole?.toLocaleUpperCase()} DASHBOARD</h1>
-      <Outlet />
     </>
   );
 };

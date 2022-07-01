@@ -1,5 +1,5 @@
-const PublicRoutes = (props) => {
-  return props.children;
+const PublicRoutes = ({ children }) => {
+  return children;
 };
 
 export default PublicRoutes;
