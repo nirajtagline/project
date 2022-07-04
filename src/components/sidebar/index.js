@@ -28,7 +28,7 @@ const Sidebar = () => {
 
   return (
     <div>
-      <ul>
+      <ul className="p-0">
         {sideMenuList
           .filter((list) => list.isRole === userRole)
           .map((menu, i) => {

@@ -46,6 +46,20 @@ const CreateExam = () => {
     setQuestion({ ...question, que: value });
   };
 
+  const handleClearForm = () => {
+    setQuestion({ que: "", err: "" });
+    setOption({ answer: "", key: null });
+    setOptionAnswer({
+      "opt-ans-1": "",
+      "opt-ans-2": "",
+      "opt-ans-3": "",
+      "opt-ans-4": "",
+    });
+    let radio = document.querySelector(
+      "input[type=radio][name=options]:checked"
+    );
+    radio.checked = false;
+  };
   const handleAddQuestions = () => {
     const { subjectName, notes, questions } = examForm;
     let cloneQuestions = [...questions];
@@ -71,22 +85,7 @@ const CreateExam = () => {
     dispatch(
       createdExamBody({ subjectName, notes, questions: cloneQuestions })
     );
-    setQuestion({ que: "", err: "" });
-  };
-
-  const handleClearForm = () => {
-    setQuestion({ que: "", err: "" });
-    setOption({ answer: "", key: null });
-    setOptionAnswer({
-      "opt-ans-1": "",
-      "opt-ans-2": "",
-      "opt-ans-3": "",
-      "opt-ans-4": "",
-    });
-    let radio = document.querySelector(
-      "input[type=radio][name=options]:checked"
-    );
-    radio.checked = false;
+    handleClearForm();
   };
 
   const isUnique = (value, index, array) => {
@@ -126,6 +125,7 @@ const CreateExam = () => {
 
   return !createExamDataLoading ? (
     <div>
+      <h1>Create Exam</h1>
       {!!createExamData?.data?.message ? (
         <h2>{createExamData?.data?.message}</h2>
       ) : (
@@ -179,6 +179,7 @@ const CreateExam = () => {
                       id={`opt-ans-${i + 1}`}
                       handleChange={(e) => handelAnswer(e)}
                       value={optionAnswer[`opt-ans-${i + 1}`]}
+                      disable={optionAnswer[`opt-ans-${i + 1}`] ? false : true}
                     />
                     <InputField
                       type="text"
@@ -244,6 +245,9 @@ const CreateExam = () => {
                       (!!examForm?.subjectName ||
                         !!createExamBody?.subjectName) &&
                       !!question?.que &&
+                      Object.keys(optionAnswer).filter(
+                        (k) => optionAnswer[k] !== ""
+                      )?.length > 3 &&
                       !!option &&
                       !!option?.answer &&
                       (examForm?.notes?.length > 1 ||
@@ -255,6 +259,9 @@ const CreateExam = () => {
                       (!!examForm?.subjectName ||
                         !!createExamBody?.subjectName) &&
                       !!question?.que &&
+                      Object.keys(optionAnswer).filter(
+                        (k) => optionAnswer[k] !== ""
+                      )?.length > 3 &&
                       !!option &&
                       !!option?.answer &&
                       (examForm?.notes?.length > 1 ||
@@ -276,7 +283,7 @@ const CreateExam = () => {
           {examForm?.questions?.length > 14 ? (
             ""
           ) : (
-            <h4>Please add maximum 15 unique questions.</h4>
+            <h4>Please add maximum 15 unique questions to create exam.</h4>
           )}
           <CustomButton
             type="button"
@@ -292,7 +299,7 @@ const CreateExam = () => {
 
           <hr />
           <div>
-            <li>subject name : {createExamBody?.subjectName}</li>
+            <li>Subject name : {createExamBody?.subjectName}</li>
             {createExamBody?.notes?.map((time, i) => {
               return <li key={i}>{time} </li>;
             })}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   getUserPasswordReset,
   userPasswordResetSuccess,
@@ -110,6 +111,9 @@ const ResetPassword = () => {
       >
         {userPasswordReset?.message}
       </span>
+      <Link className="auth-link" to="/dashboard">
+        Back to Dashboard
+      </Link>
     </div>
   ) : (
     <Loader />
