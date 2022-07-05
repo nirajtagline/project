@@ -15,17 +15,22 @@ const ViewExamDetails = () => {
   );
 
   useEffect(() => {
-    !viewExamInDetailsData?.questions?.length &&
+    !viewExamInDetailsData?.data?.questions?.length &&
       dispatch(getViewExamInDetails(examId));
-  }, [viewExamInDetailsData?.questions]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [viewExamInDetailsData?.data?.questions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return !viewExamInDetailsDataLoading ? (
     <div>
       <h2>Exam in details view</h2>
+      {viewExamInDetailsData?.statusCode === 500 ? (
+        <h3 className="error-message">{viewExamInDetailsData?.message}</h3>
+      ) : (
+        ""
+      )}
 
       <TableWithMultiData
         tableHeadData={["Question", "Answer", "Options"]}
-        tableData={viewExamInDetailsData?.questions}
+        tableData={viewExamInDetailsData?.data?.questions}
       />
 
       <div>

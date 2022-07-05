@@ -4,12 +4,17 @@ import {
   getCreateExamForStudent,
   createdExamBody,
   createExamForStudentSuccess,
+  getViewExamForStudent,
+  viewExamInDetailsSuccess,
+  getViewExamInDetails,
+  editExamForStudentSuccess,
+  getEditExamForStudent,
 } from "../../../redux/actions/exam";
 import CustomButton from "../../../shared/Button/CustomButton";
 import InputField from "../../../shared/InputField/InputField";
 import TableWithMultiData from "../../../shared/TableWithMultiData/TableWithMultiData";
 import Loader from "../../../shared/Loader/Loader";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import "./create-exam.scss";
 
 const initialState = { subjectName: "", questions: [], notes: [] };
@@ -17,13 +22,27 @@ const initialState = { subjectName: "", questions: [], notes: [] };
 const CreateExam = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { createExamBody, createExamDataLoading, createExamData } = useSelector(
-    ({ exam }) => exam
-  );
+  const { examId } = useParams();
+
+  const {
+    viewExamInDetailsData,
+    viewExamData,
+    editExamDataLoading,
+    editExamData,
+    viewExamDataLoading,
+    createExamBody,
+    createExamDataLoading,
+    createExamData,
+    viewExamInDetailsDataLoading,
+  } = useSelector(({ exam }) => exam);
+
+  const selectedExamForEdit =
+    viewExamData && viewExamData?.find((exam) => exam._id === examId);
 
   const [question, setQuestion] = useState({ que: "", err: "" });
   const [option, setOption] = useState({ answer: "", key: null });
   const [optionAnswer, setOptionAnswer] = useState({});
+  const [optionIndex, setOptionIndex] = useState();
   const [examForm, setExamForm] = useState(initialState);
 
   useEffect(() => {
@@ -31,8 +50,50 @@ const CreateExam = () => {
       dispatch(createExamForStudentSuccess({}));
       navigate("/view-exam");
     }
-    dispatch(createdExamBody({ initialState }));
-  }, [createExamData?.data?.statusCode]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    if (!!examId) {
+      dispatch(getViewExamInDetails(examId));
+      dispatch(getViewExamForStudent());
+      dispatch(createdExamBody({ initialState }));
+      dispatch(editExamForStudentSuccess({}));
+    } else {
+      dispatch(createdExamBody({ initialState }));
+    }
+    if (editExamData?.data?.statusCode === 200) {
+      dispatch(editExamForStudentSuccess({}));
+      navigate("/view-exam");
+    }
+
+    return () => {
+      dispatch(createdExamBody({ initialState }));
+      dispatch(viewExamInDetailsSuccess({}));
+      setOptionAnswer({
+        "opt-ans-1": "",
+        "opt-ans-2": "",
+        "opt-ans-3": "",
+        "opt-ans-4": "",
+      });
+      setQuestion({ que: "", err: "" });
+      setOption({ answer: "", key: null });
+    };
+  }, [
+    examId,
+    editExamData?.data?.statusCode,
+    createExamData?.data?.statusCode,
+  ]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!!examId) {
+      const { questions = [] } = viewExamInDetailsData?.data || {};
+      const { subjectName = "", notes = [] } = selectedExamForEdit || {};
+
+      dispatch(createdExamBody({ subjectName, notes, questions }));
+    }
+  }, [
+    viewExamInDetailsData?.data?.questions?.length,
+    selectedExamForEdit?.subjectName,
+    selectedExamForEdit?.notes?.length,
+  ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = () => {
     const { subjectName, notes, questions } = examForm;
@@ -123,11 +184,59 @@ const CreateExam = () => {
     });
   };
 
-  return !createExamDataLoading ? (
+  // edit exam section
+  const handleSelectQuestion = (e) => {
+    const { value } = e.target;
+    if (value === "") {
+      handleClearForm();
+      return;
+    }
+    setOptionIndex(value);
+
+    let cloneQuestionsAry = viewExamInDetailsData?.data?.questions[value];
+    setQuestion({
+      ...question,
+      que: cloneQuestionsAry?.question,
+    });
+
+    const { options } = cloneQuestionsAry;
+    setOptionAnswer({
+      "opt-ans-1": options[0],
+      "opt-ans-2": options[1],
+      "opt-ans-3": options[2],
+      "opt-ans-4": options[3],
+    });
+  };
+
+  const handleUpdateOptions = () => {
+    const { questions } = createExamBody;
+    let cloneQuestions = [...questions];
+
+    cloneQuestions[optionIndex].options = Object.values(optionAnswer);
+    cloneQuestions[optionIndex].answer = option?.answer;
+
+    setOptionIndex();
+    handleClearForm();
+    let permissionDropdown = document.getElementById("question_dropdown");
+    permissionDropdown.selectedIndex = 0;
+  };
+
+  const handleUpdateExamDetails = () => {
+    dispatch(getEditExamForStudent(examId, createExamBody));
+  };
+  return !createExamDataLoading &&
+    !editExamDataLoading &&
+    !viewExamDataLoading &&
+    !viewExamInDetailsDataLoading ? (
     <div>
-      <h1>Create Exam</h1>
+      <h1>{examId ? "Edit Exam" : "Create Exam"}</h1>
       {!!createExamData?.data?.message ? (
         <h2>{createExamData?.data?.message}</h2>
+      ) : (
+        ""
+      )}
+      {viewExamInDetailsData?.statusCode === 500 ? (
+        <h3 className="error-message">{viewExamInDetailsData?.message}</h3>
       ) : (
         ""
       )}
@@ -154,6 +263,28 @@ const CreateExam = () => {
                 disable={createExamBody?.subjectName ? true : false}
                 value={createExamBody?.subjectName || examForm?.subjectName}
               />
+
+              {!!examId && !viewExamDataLoading ? (
+                <>
+                  <h3>Please select question for edit</h3>
+                  <select
+                    onChange={handleSelectQuestion}
+                    id="question_dropdown"
+                  >
+                    <option value="">--Please Choose an Questions--</option>
+                    {createExamBody?.questions?.map((que, i) => {
+                      const { question } = que;
+                      return (
+                        <option value={i} key={i}>
+                          {question}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </>
+              ) : (
+                ""
+              )}
               <InputField
                 type="text"
                 placeholder="Enter question"
@@ -166,6 +297,7 @@ const CreateExam = () => {
               ) : (
                 ""
               )}
+
               {[1, 2, 3, 4]?.map((ele, i) => {
                 return (
                   <label
@@ -237,65 +369,99 @@ const CreateExam = () => {
                 ""
               ) : (
                 <>
-                  <CustomButton
-                    buttonText="Add question"
-                    onClick={handleAddQuestions}
-                    type="button"
-                    disabled={
-                      (!!examForm?.subjectName ||
-                        !!createExamBody?.subjectName) &&
-                      !!question?.que &&
-                      Object.keys(optionAnswer).filter(
-                        (k) => optionAnswer[k] !== ""
-                      )?.length > 3 &&
-                      !!option &&
-                      !!option?.answer &&
-                      (examForm?.notes?.length > 1 ||
-                        createExamBody?.notes?.length > 1)
-                        ? false
-                        : true
-                    }
-                    className={
-                      (!!examForm?.subjectName ||
-                        !!createExamBody?.subjectName) &&
-                      !!question?.que &&
-                      Object.keys(optionAnswer).filter(
-                        (k) => optionAnswer[k] !== ""
-                      )?.length > 3 &&
-                      !!option &&
-                      !!option?.answer &&
-                      (examForm?.notes?.length > 1 ||
-                        createExamBody?.notes?.length > 1)
-                        ? "submit-form"
-                        : "submit-form disable"
-                    }
-                  />
-                  <CustomButton
-                    type="button"
-                    onClick={handleClearForm}
-                    className="submit-form"
-                    buttonText=" Clear form"
-                  />
+                  {!!examId ? (
+                    ""
+                  ) : (
+                    <>
+                      <CustomButton
+                        buttonText="Add question"
+                        onClick={handleAddQuestions}
+                        type="button"
+                        disabled={
+                          (!!examForm?.subjectName ||
+                            !!createExamBody?.subjectName) &&
+                          !!question?.que &&
+                          Object.keys(optionAnswer).filter(
+                            (k) => optionAnswer[k] !== ""
+                          )?.length > 3 &&
+                          !!option &&
+                          !!option?.answer &&
+                          (examForm?.notes?.length > 1 ||
+                            createExamBody?.notes?.length > 1)
+                            ? false
+                            : true
+                        }
+                        className={
+                          (!!examForm?.subjectName ||
+                            !!createExamBody?.subjectName) &&
+                          !!question?.que &&
+                          Object.keys(optionAnswer).filter(
+                            (k) => optionAnswer[k] !== ""
+                          )?.length > 3 &&
+                          !!option &&
+                          !!option?.answer &&
+                          (examForm?.notes?.length > 1 ||
+                            createExamBody?.notes?.length > 1)
+                            ? "submit-form"
+                            : "submit-form disable"
+                        }
+                      />
+                      <CustomButton
+                        type="button"
+                        onClick={handleClearForm}
+                        className="submit-form"
+                        buttonText=" Clear form"
+                      />
+                    </>
+                  )}
                 </>
+              )}
+              {!!examId ? (
+                <CustomButton
+                  type="button"
+                  className={
+                    !!optionIndex ? "submit-form" : "submit-form disable"
+                  }
+                  onClick={handleUpdateOptions}
+                  buttonText="Update options"
+                  disabled={!!optionIndex ? false : true}
+                />
+              ) : (
+                ""
               )}
             </>
           )}
-          {examForm?.questions?.length > 14 ? (
+          {!!examId ? (
             ""
           ) : (
-            <h4>Please add maximum 15 unique questions to create exam.</h4>
+            <>
+              {examForm?.questions?.length > 14 ? (
+                ""
+              ) : (
+                <h4>Please add maximum 15 unique questions to create exam.</h4>
+              )}
+            </>
           )}
-          <CustomButton
-            type="button"
-            onClick={handleSubmit}
-            className={
-              examForm?.questions?.length > 14
-                ? "submit-form"
-                : "submit-form disable"
-            }
-            disabled={examForm?.questions?.length > 14 ? false : true}
-            buttonText="Create exam"
-          />
+          {!!examId ? (
+            <CustomButton
+              type="button"
+              className="submit-form"
+              onClick={handleUpdateExamDetails}
+              buttonText="Update changes"
+            />
+          ) : (
+            <CustomButton
+              type="button"
+              onClick={handleSubmit}
+              className={
+                examForm?.questions?.length > 14
+                  ? "submit-form"
+                  : "submit-form disable"
+              }
+              disabled={examForm?.questions?.length > 14 ? false : true}
+              buttonText="Create exam"
+            />
+          )}
 
           <hr />
           <div>
@@ -303,10 +469,16 @@ const CreateExam = () => {
             {createExamBody?.notes?.map((time, i) => {
               return <li key={i}>{time} </li>;
             })}
-            <TableWithMultiData
-              tableHeadData={["Question", "Answer", "Options"]}
-              tableData={createExamBody?.questions}
-            />
+            {!viewExamInDetailsDataLoading ? (
+              <TableWithMultiData
+                tableHeadData={["Question", "Answer", "Options"]}
+                tableData={
+                  createExamBody?.questions && createExamBody?.questions
+                }
+              />
+            ) : (
+              "Loading data"
+            )}
           </div>
         </>
       )}

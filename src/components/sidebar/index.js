@@ -14,7 +14,7 @@ const Sidebar = () => {
       isRole: "teacher",
     },
 
-    { to: "/create-exam", title: "Create exam", isRole: "teacher" },
+    { to: "/exam", title: "Create exam", isRole: "teacher" },
     { to: "/view-exam", title: "View exam", isRole: "teacher" },
 
     // // Student route link

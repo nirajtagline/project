@@ -169,8 +169,7 @@ export const getViewExamInDetails = (id) => async (dispatch) => {
   axiosInstance
     .get(`/dashboard/Teachers/examDetail?id=${id}`)
     .then((res) => {
-      dispatch(viewExamInDetailsSuccess(res.data.data));
-      return;
+      dispatch(viewExamInDetailsSuccess(res.data));
     })
     .catch((error) => {
       dispatch(viewExamInDetailsFailure({ error: error.message }));

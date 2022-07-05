@@ -36,7 +36,7 @@ const ViewExam = () => {
   };
 
   const handleEditExam = (id) => {
-    navigate(`/edit-exam-details/${id}`);
+    navigate(`/exam/${id}`);
   };
 
   const handleCancle = () => {
@@ -95,6 +95,10 @@ const ViewExam = () => {
                   tableData={viewExamData}
                   buttonArray={buttonArray}
                 />
+                <h6 className="error-message">
+                  *If recently created exam not show upper list please click on
+                  Refreshlist button.
+                </h6>
               </>
             ) : (
               <h3>No exam available</h3>

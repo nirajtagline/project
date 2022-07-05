@@ -23,6 +23,7 @@ const AllExamStudent = () => {
 
   return !examForStudentDataLoading ? (
     <>
+      <h1>All Exam for Student</h1>
       {examForStudentData?.length ? (
         <div className="exam-student-wrapper">
           <CustomButton

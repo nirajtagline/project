@@ -1,6 +1,5 @@
 import React from "react";
 import AllStudentData from "../teacher-dashborad/all-student-data";
-import EditExamDetails from "../teacher-dashborad/edit-exam-details";
 import VarifiedStudentData from "../teacher-dashborad/varified-student-data";
 import StudentDetails from "../teacher-dashborad/student-details";
 import CreateExam from "../teacher-dashborad/create-exam";
@@ -72,18 +71,15 @@ const routeList = [
     element: <StudentDetails />,
     isRole: "teacher",
   },
-  { path: "/create-exam", element: <CreateExam />, isRole: "teacher" },
+  { path: "/exam", element: <CreateExam />, isRole: "teacher" },
+  { path: "/exam/:examId", element: <CreateExam />, isRole: "teacher" },
   { path: "/view-exam", element: <ViewExam />, isRole: "teacher" },
   {
     path: "/view-exam-details/:examId",
     element: <ViewExamDEtails />,
     isRole: "teacher",
   },
-  {
-    path: "/edit-exam-details/:examId",
-    element: <EditExamDetails />,
-    isRole: "teacher",
-  },
+
   {
     path: "/all-exam-student",
     element: <AllExamStudent />,
